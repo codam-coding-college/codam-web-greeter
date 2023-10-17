@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="stylesheet" href="styles.css" />
+		<title>Codam Theme for nody-greeter</title>
+	</head>
+	<body>
+		<!-- Header for general info -->
+		<header>
+			<div class="horibar-left">
+				<span id="info-hostname"></span>
+			</div>
+			<div class="horibar-right">
+				<span id="info-clock"></span>
+			</div>
+		</header>
+
+		<!-- Login box -->
+		<main>
+			<form action="POST" id="login-form">
+				<input type="text" name="login" id="login" autocomplete="off" placeholder="Enter your login" />
+				<input type="password" name="password" id="password" autocomplete="off" placeholder="Enter your password" />
+				<button type="submit" id="login-button">Login</button>
+			<form>
+		</main>
+
+		<!-- Intra events calendar -->
+		<aside>
+			<!-- TODO -->
+		</aside>
+
+		<!-- Footer for debug info, version info, etc. -->
+		<footer>
+			<div class="horibar-left">
+				<span id="info-version"></span>
+			</div>
+			<div class="horibar-right">
+				<span id="info-debug"></span>
+			</div>
+		</footer>
+
+		<!-- Scripts -->
+		<script src="build/main.js"></script>
+	</body>
+</html>

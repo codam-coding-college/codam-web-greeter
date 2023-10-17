@@ -1,0 +1,28 @@
+:root {
+	/* Codam colors (do not change) */
+	--color-yellow: #F2911A;
+	--color-orange: #EA5C28;
+	--color-red: #E52A2D;
+	--color-purple: #B73188;
+	--color-blue: #3AA2DB;
+	--color-black: #000000;
+
+	/* Background colors */
+	--color-bg: var(--color-black);
+
+	/* Text colors */
+	--color-text-primary: #EDEDED;
+	--color-text-secondary: #A6A6A6;
+	--color-text-tertiary: #6E6E6E;
+	--color-text-error: var(--color-red);
+	--color-text-success: var(--color-blue);
+	--color-text-warning: var(--color-yellow);
+}
+
+html, body {
+	margin: 0;
+	padding: 0;
+	background-color: var(--color-bg);
+	color: var(--color-text-primary);
+	font-size: 16px;
+}

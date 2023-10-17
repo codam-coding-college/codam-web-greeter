@@ -1,0 +1,31 @@
+{
+  "name": "codam-web-greeter",
+  "version": "0.0.1",
+  "description": "LightDM greeter theme for Codam Coding College, compatible with nody-greeter and web-greeter",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codam-internal/codam-web-greeter.git"
+  },
+  "keywords": [
+    "codam",
+    "42born2code",
+    "lightdm",
+    "nody-greeter-theme",
+    "web-greeter-theme",
+    "lightdm-greeter"
+  ],
+  "author": "Codam Coding College",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/codam-internal/codam-web-greeter/issues"
+  },
+  "homepage": "https://github.com/codam-internal/codam-web-greeter#readme",
+  "devDependencies": {
+    "nody-greeter-types": "^1.1.0",
+    "typescript": "^5.2.2"
+  }
+}
