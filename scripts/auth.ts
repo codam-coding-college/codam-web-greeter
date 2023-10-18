@@ -57,8 +57,17 @@ export class Authenticator {
 		// This event gets called when LightDM says the authentication was successful and a session should be started
 		lightdm.authentication_complete.connect(() => {
 			try {
-				console.log("LightDM authentication complete, starting session...");
-				lightdm.start_session(this._session);
+				console.log("LightDM authentication complete");
+				this._authenticating = false;
+				if (lightdm.is_authenticated) {
+					console.log("LightDM authentication successful! Starting session...");
+					this._authenticated = true;
+					lightdm.start_session(this._session ?? null);
+				}
+				else {
+					console.log("LightDM authentication failed!");
+					this._stopAuthentication();
+				}
 			}
 			catch (err) {
 				console.error(err);
