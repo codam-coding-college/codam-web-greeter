@@ -3,8 +3,12 @@ name: NodeJS with Webpack
 on:
   push:
     branches: [ "main" ]
+    tags-ignore:
+      - 'v0.*' # alpha
+      - 'v1.*' # release
   pull_request:
     branches: [ "main" ]
+  workflow_call:
 
 jobs:
   build:
@@ -15,7 +19,7 @@ jobs:
         node-version: [18.x]
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
@@ -33,3 +37,14 @@ jobs:
     - name: Build codam-web-greeter
       run: |
         make build
+
+    - name: Create zip file from dist folder
+      run: |
+        zip -r codam-web-greeter.zip dist
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: codam-web-greeter
+        path: codam-web-greeter.zip
+        retention-days: 1

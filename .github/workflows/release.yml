@@ -1,0 +1,46 @@
+name: Publish new release on GitHub
+
+on:
+  # Run automatically when a new tag is created
+  push:
+    tags:
+      - 'v0.*' # alpha
+      - 'v1.*' # release
+
+
+jobs:
+  build:
+    uses: ./.github/workflows/webpack.yml
+
+  release:
+    runs-on: ubuntu-22.04
+
+    needs: build
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Download Artifact
+      uses: actions/download-artifact@v3
+      with:
+        name: codam-web-greeter
+        path: ./artifacts
+
+    - name: Display structure of downloaded files
+      run: ls -R
+      working-directory: ./artifacts
+
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/v')
+      with:
+        files: ./artifacts/codam-web-greeter.zip
+        tag_name: ${{ github.ref }}
+        generate_release_notes: true
+        draft: false
+        prerelease: true
+        token: ${{ secrets.GITHUB_TOKEN }}
