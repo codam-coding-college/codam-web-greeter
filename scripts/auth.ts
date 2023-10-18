@@ -1,4 +1,4 @@
-import { LightDMPromptType, lightdm } from 'nody-greeter-types/index';
+import { LightDMMessageType, LightDMPromptType, lightdm } from 'nody-greeter-types/index';
 
 export interface UILoginElements {
 	loginForm: HTMLFormElement;
@@ -46,6 +46,26 @@ export class Authenticator {
 						break;
 					default:
 						console.error(`Unknown lightDM prompt type: ${type}`);
+						break;
+				}
+			}
+			catch (err) {
+				console.error(err);
+			}
+		});
+
+		// This event gets called when LightDM wants to display a message in the greeter
+		lightdm.show_message.connect((message: string, type: LightDMMessageType) => {
+			try {
+				switch (type) {
+					case LightDMMessageType.Info:
+						console.log(`LightDM info message: ${message}`);
+						break;
+					case LightDMMessageType.Error:
+						console.error(`LightDM error message: ${message}`);
+						break;
+					default:
+						console.warn(`Unknown lightDM message type: ${type}, message: ${message}`);
 						break;
 				}
 			}
