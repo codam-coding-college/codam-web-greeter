@@ -19,8 +19,8 @@ export class Authenticator {
 	public constructor() {
 		this._loginElements = {
 			loginForm: document.getElementById('login-form') as HTMLFormElement,
-			loginInput: document.getElementById('login-input') as HTMLInputElement,
-			passwordInput: document.getElementById('password-input') as HTMLInputElement,
+			loginInput: document.getElementById('login') as HTMLInputElement,
+			passwordInput: document.getElementById('password') as HTMLInputElement,
 			loginButton: document.getElementById('login-button') as HTMLButtonElement,
 		};
 
