@@ -16,7 +16,8 @@ build: npm-install copy-files
 
 copy-files:
 	mkdir -p $(ROOT_DIR)/dist
-	cp index.html styles.css README.md LICENSE $(ROOT_DIR)/dist
+	cp README.md LICENSE $(ROOT_DIR)/dist
+	cp -r $(ROOT_DIR)/public/* $(ROOT_DIR)/dist
 
 install:
 	install -dm755 $(THEME_DIR)/$(THEME_NAME)
