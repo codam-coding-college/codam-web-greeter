@@ -29,7 +29,7 @@ export class UI {
 		});
 
 		// Populate version info
-		this._infoElements.version.innerText = window.data.version;
+		this._infoElements.version.innerText = window.data.pkgName + " " + window.data.pkgVersion;
 
 		// Populate hostname info
 		this._infoElements.hostname.innerText = window.data.hostname;

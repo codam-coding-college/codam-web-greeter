@@ -6,9 +6,7 @@
 	--color-purple: #B73188;
 	--color-blue: #3AA2DB;
 	--color-black: #000000;
-
-	/* Background colors */
-	--color-bg: var(--color-black);
+	--color-primary: var(--color-blue);
 
 	/* Text colors */
 	--color-text-primary: #EDEDED;
@@ -17,12 +15,189 @@
 	--color-text-error: var(--color-red);
 	--color-text-success: var(--color-blue);
 	--color-text-warning: var(--color-yellow);
+
+	/* Backgrounds */
+	--color-bg: var(--color-black);
+	--default-bg-img: url('assets/default-wallpaper.jpg');
+	--bg-color-darken: rgba(0, 0, 0, 0.2);
+	--bg-color-darken-strong: rgba(0, 0, 0, 0.65);
+	--blur-bg-filter: blur(5px);
+	--bg-color-lighten: rgba(255, 255, 255, 0.2);
+	--text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+
+	/* Others */
+	--border-radius: 4px;
+	--padding: 8px;
 }
 
-html, body {
+/* ***************************************** */
+/* Page setup                                */
+/* ***************************************** */
+
+*,
+*::after,
+*::before {
+	transition: background-color 0.1s, color 0.1s, border-color 0.1s;
+}
+
+*:hover,
+*:hover::after,
+*:active,
+*:active::after,
+*:focus
+*:focus::after {
+	transition: none;
+}
+
+::selection {
+	background-color: var(--color-primary) !important;
+	color: var(--color-text-primary) !important;
+	text-shadow: none !important;
+}
+
+html,
+body {
 	margin: 0;
 	padding: 0;
 	background-color: var(--color-bg);
 	color: var(--color-text-primary);
 	font-size: 16px;
+	font-family: sans-serif;
+}
+
+body {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 100vh;
+	background: var(--default-bg-img);
+	background-position: center center;
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+
+	/* only allow text selection when we specifically allow it */
+	user-select: none;
+}
+
+/* ***************************************** */
+/* Header and footer                         */
+/* ***************************************** */
+
+header,
+footer {
+	box-sizing: border-box;
+	width: 100vw;
+	padding: var(--padding) var(--padding);
+	backdrop-filter: var(--blur-bg-filter);
+	background-color: var(--bg-color-darken);
+	color: var(--color-text-secondary);
+	font-size: small;
+	text-shadow: var(--text-shadow);
+	white-space: nowrap;
+}
+
+/* Disable line breaks in header and footer */
+header br,
+footer br,
+header br::after,
+footer br::after {
+	content: ' ';
+}
+
+.horibar-left {
+	float: left;
+	text-align: left;
+}
+
+.horibar-right {
+	float: right;
+	text-align: right;
+}
+
+header span,
+footer span {
+	margin: 0 var(--padding);
+}
+
+#info-debug {
+	color: var(--color-text-error);
+}
+
+/* ***************************************** */
+/* Main (login fields)                       */
+/* ***************************************** */
+
+main {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+form#login-form {
+	box-sizing: border-box;
+	border: none;
+	width: 264px;
+	max-width: 90%;
+	padding: var(--padding) calc(var(--padding) * 2);
+}
+
+form#login-form input {
+	display: block;
+	box-sizing: border-box;
+	width: 100%;
+	margin: var(--padding) auto;
+	border-style: solid;
+	border-width: 1px;
+	border-color: var(--bg-color-darken-strong);
+	border-radius: var(--border-radius);
+	padding: var(--padding) 0 var(--padding) var(--padding);
+	background-color: var(--bg-color-darken-strong);
+	color: var(--color-text-primary);
+	caret-color: var(--color-text-primary);
+	text-shadow: var(--text-shadow);
+	user-select: text !important;
+}
+
+form#login-form input:focus {
+	outline: none;
+	border-color: var(--color-primary);
+}
+
+form#login-form button {
+	display: block;
+	position: relative;
+	margin: calc(var(--padding) * 1.5) auto 0 auto;
+	text-align: center;
+	border: none;
+	border-radius: var(--border-radius);
+	background: var(--color-primary);
+	padding: var(--padding) calc(var(--padding) * 2);
+}
+
+form#login-form button:hover,
+form#login-form button:focus {
+	cursor: pointer;
+	outline: none;
+}
+
+form#login-form button::after,
+form#login-form button::after {
+	content: '';
+	background: transparent;
+	border-radius: var(--border-radius);
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+form#login-form button:hover::after,
+form#login-form button:focus::after {
+	pointer-events: none;
+	background: var(--bg-color-lighten);
 }

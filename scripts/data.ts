@@ -3,12 +3,14 @@ import { lightdm } from 'nody-greeter-types/index'
 
 
 export class Data {
-	public version: string;
+	public pkgName: string;
+	public pkgVersion: string;
 	public hostname: string;
 
 	constructor() {
 		// Get version from package.json
-		this.version = packageJSON.version;
+		this.pkgName = packageJSON.name;
+		this.pkgVersion = packageJSON.version;
 
 		// Get hostname from LightDM
 		this.hostname = lightdm.hostname;

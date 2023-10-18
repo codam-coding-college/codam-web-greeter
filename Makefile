@@ -30,6 +30,7 @@ uninstall:
 	@echo "Update your /etc/lightdm/web-greeter.yml config file manually to disable the Codam theme if needed"
 
 re:
+	rm -rf $(ROOT_DIR)/build
 	rm -rf $(ROOT_DIR)/dist
 	make build
 

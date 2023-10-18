@@ -9,20 +9,20 @@
 		<!-- Header for general info -->
 		<header>
 			<div class="horibar-left">
-				<span id="info-hostname"></span>
+				<span id="info-hostname">hostname.codam.nl</span>
 			</div>
 			<div class="horibar-right">
-				<span id="info-network-icon"></span>
-				<span id="info-clock"></span>
+				<span id="info-network-icon">Unknown</span>
+				<span id="info-clock">00:00:00</span>
 			</div>
 		</header>
 
 		<!-- Login box -->
 		<main>
 			<form action="POST" id="login-form">
-				<input type="text" name="login" id="login" autocomplete="off" placeholder="Enter your login" autofocus tabindex="0" />
-				<input type="password" name="password" id="password" autocomplete="off" placeholder="Enter your password" tabindex="1" />
-				<button type="submit" id="login-button" tabindex="2">Login</button>
+				<input type="text" name="login" id="login" autocomplete="off" placeholder="Enter your login" maxlength="32" autofocus />
+				<input type="password" name="password" id="password" autocomplete="off" placeholder="Enter your password" maxlength="128" />
+				<button type="submit" id="login-button">Login</button>
 			<form>
 		</main>
 
@@ -34,7 +34,7 @@
 		<!-- Footer for debug info, version info, etc. -->
 		<footer>
 			<div class="horibar-left">
-				<span id="info-version"></span>
+				<span id="info-version">0.0.0</span>
 			</div>
 			<div class="horibar-right">
 				<span id="info-debug">UI population was not started</span>
