@@ -37,13 +37,16 @@ export class Authenticator {
 			try {
 				switch (type) {
 					case LightDMPromptType.Question: // Login (this should never happen as the username was provided by lightdm.authenticate before)
+						console.log("LightDM requested username, responding...");
 						lightdm.respond(this._username);
 						break;
 					case LightDMPromptType.Secret: // Password
+						console.log("LightDM requested password, responding...");
 						lightdm.respond(this._password);
 						break;
 					default:
-						throw new Error(`Unknown lightDM prompt type: ${type}`);
+						console.error(`Unknown lightDM prompt type: ${type}`);
+						break;
 				}
 			}
 			catch (err) {
@@ -54,6 +57,7 @@ export class Authenticator {
 		// This event gets called when LightDM says the authentication was successful and a session should be started
 		lightdm.authentication_complete.connect(() => {
 			try {
+				console.log("LightDM authentication complete, starting session...");
 				lightdm.start_session(this._session);
 			}
 			catch (err) {
@@ -95,6 +99,7 @@ export class Authenticator {
 
 	private _startAuthentication(): void {
 		try {
+			console.log("Starting LightDM authentication...");
 			lightdm.cancel_authentication();
 			if (this._username === "" || this._password === "") {
 				return this._stopAuthentication();
