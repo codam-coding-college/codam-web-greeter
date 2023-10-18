@@ -156,6 +156,7 @@ form#login-form input {
 	border-radius: var(--border-radius);
 	padding: var(--padding) 0 var(--padding) var(--padding);
 	background-color: var(--bg-color-darken-strong);
+	backdrop-filter: var(--blur-bg-filter);
 	color: var(--color-text-primary);
 	caret-color: var(--color-text-primary);
 	text-shadow: var(--text-shadow);
