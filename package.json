@@ -1,6 +1,6 @@
 {
   "name": "codam-web-greeter",
-  "version": "0.0.9",
+  "version": "0.1.0",
   "description": "LightDM greeter theme for Codam Coding College, compatible with nody-greeter and web-greeter",
   "main": "main.js",
   "scripts": {
