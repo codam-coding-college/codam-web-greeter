@@ -44,8 +44,12 @@ export class UI {
 		window.addEventListener('offline', () => this._infoElements.networkIcon.innerHTML = 'Offline');
 	}
 
+	public formatNumber(n: number, digits: number): string {
+		return n.toLocaleString('en-US', { minimumIntegerDigits: digits, useGrouping: false });
+	}
+
 	private _updateClock(): void {
 		const now: Date = new Date();
-		this._infoElements.clock.innerText = now.toLocaleTimeString();
+		this._infoElements.clock.innerText = now.getHours() + ":" + this.formatNumber(now.getMinutes(), 2) + ":" + this.formatNumber(now.getSeconds(), 2);
 	}
 }
