@@ -87,6 +87,7 @@ export class Authenticator {
 				else {
 					console.log("LightDM authentication failed!");
 					this._stopAuthentication();
+					this._wigglePasswordInput();
 				}
 			}
 			catch (err) {
@@ -116,6 +117,18 @@ export class Authenticator {
 		this._loginElements.passwordInput.disabled = false;
 		this._loginElements.loginButton.disabled = false;
 		this._loginElements.loginInput.focus();
+	}
+
+	private _wigglePasswordInput(clearInput: boolean = true): void {
+		this._loginElements.passwordInput.classList.add('wiggle');
+		setTimeout(() => {
+			this._loginElements.passwordInput.classList.remove('wiggle');
+		}, 800); // overdo the animation a bit to make sure it's finished before we remove the class
+
+		if (clearInput) {
+			this._loginElements.passwordInput.value = "";
+			this._loginElements.passwordInput.focus();
+		}
 	}
 
 	private _stopAuthentication(): void {

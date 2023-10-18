@@ -168,6 +168,14 @@ form#login-form input:focus {
 	border-color: var(--color-primary);
 }
 
+form#login-form input::placeholder {
+	color: var(--color-text-tertiary);
+}
+
+form#login-form input.wiggle {
+	animation: wiggle 0.6s ease-in-out;
+}
+
 form#login-form button {
 	display: block;
 	position: relative;
@@ -211,4 +219,16 @@ form#login-form button:active {
 form#login-form button:active::after {
 	pointer-events: none;
 	background-color: var(--bg-color-darken);
+}
+
+@keyframes wiggle {
+	0%, 100% {
+		transform: translateX(0);
+	}
+	12.5%, 37.5%, 62.5%, 87.5% {
+		transform: translateX(-6px);
+	}
+	25%, 50%, 75% {
+		transform: translateX(6px);
+	}
 }
