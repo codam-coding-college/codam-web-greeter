@@ -173,7 +173,7 @@ form#login-form button {
 	position: relative;
 	margin: calc(var(--padding) * 1.5) auto 0 auto;
 	text-align: center;
-	border: none;
+	border: solid 1px var(--color-primary);
 	border-radius: var(--border-radius);
 	background: var(--color-primary);
 	padding: var(--padding) calc(var(--padding) * 2);
@@ -188,17 +188,27 @@ form#login-form button:focus {
 form#login-form button::after,
 form#login-form button::after {
 	content: '';
-	background: transparent;
+	background-color: transparent;
+	border: solid 1px transparent;
 	border-radius: var(--border-radius);
 	width: 100%;
 	height: 100%;
 	position: absolute;
-	top: 0;
-	left: 0;
+	top: -1px;
+	left: -1px;
 }
 
 form#login-form button:hover::after,
 form#login-form button:focus::after {
 	pointer-events: none;
-	background: var(--bg-color-lighten);
+	background-color: var(--bg-color-lighten);
+}
+
+form#login-form button:active {
+	border-style: inset;
+}
+
+form#login-form button:active::after {
+	pointer-events: none;
+	background-color: var(--bg-color-darken);
 }
