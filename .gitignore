@@ -130,4 +130,4 @@ dist
 .pnp.*
 
 # Codam specific
-build/*
+dist/*

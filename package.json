@@ -4,6 +4,7 @@
   "description": "LightDM greeter theme for Codam Coding College, compatible with nody-greeter and web-greeter",
   "main": "main.js",
   "scripts": {
+    "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
