@@ -27,28 +27,38 @@ export class Authenticator {
 		// This event gets called when the user clicks the login button or submits the form in any other way
 		this._loginElements.loginForm.addEventListener('submit', (event: Event) => {
 			event.preventDefault();
-			this._username = this._loginElements.loginInput.value;
-			this._password = this._loginElements.passwordInput.value;
+			this._username = this._loginElements.loginInput.value.trim();
+			this._password = this._loginElements.passwordInput.value.trim();
 			this._login();
 		});
 
 		// This event gets called when LightDM asks for more authentication data
-		window.lightdm?.show_prompt.connect((message: string, type: LightDMPromptType) => {
-			switch (type) {
-				case LightDMPromptType.Question: // Login (this should never happen as the username was provided by lightdm.authenticate before)
-					window.lightdm?.respond(this._username);
-					break;
-				case LightDMPromptType.Secret: // Password
-					window.lightdm?.respond(this._password);
-					break;
-				default:
-					throw new Error(`Unknown lightDM prompt type: ${type}`);
+		lightdm.show_prompt.connect((message: string, type: LightDMPromptType) => {
+			try {
+				switch (type) {
+					case LightDMPromptType.Question: // Login (this should never happen as the username was provided by lightdm.authenticate before)
+						lightdm.respond(this._username);
+						break;
+					case LightDMPromptType.Secret: // Password
+						lightdm.respond(this._password);
+						break;
+					default:
+						throw new Error(`Unknown lightDM prompt type: ${type}`);
+				}
+			}
+			catch (err) {
+				console.error(err);
 			}
 		});
 
 		// This event gets called when LightDM says the authentication was successful and a session should be started
-		window.lightdm?.authentication_complete.connect(() => {
-			window.lightdm?.start_session(this._session);
+		lightdm.authentication_complete.connect(() => {
+			try {
+				lightdm.start_session(this._session);
+			}
+			catch (err) {
+				console.error(err);
+			}
 		});
 	}
 
@@ -76,7 +86,7 @@ export class Authenticator {
 	}
 
 	private _stopAuthentication(): void {
-		window.lightdm?.cancel_authentication();
+		lightdm.cancel_authentication();
 		this._authenticating = false;
 		this._authenticated = false;
 		this._clearAuth();
@@ -84,12 +94,17 @@ export class Authenticator {
 	}
 
 	private _startAuthentication(): void {
-		window.lightdm?.cancel_authentication();
-		if (this._username === "") {
-			return this._stopAuthentication();
+		try {
+			lightdm.cancel_authentication();
+			if (this._username === "" || this._password === "") {
+				return this._stopAuthentication();
+			}
+			this._authenticating = true;
+			lightdm.authenticate(this._username); // provide username to skip the username prompt
 		}
-		this._authenticating = true;
-		window.lightdm?.authenticate(this._username); // provide username to skip the username prompt
+		catch (err) {
+			console.error(err);
+		}
 	}
 
 	private _login(): void {
