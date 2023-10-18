@@ -13,6 +13,7 @@ npm-install:
 
 build: npm-install copy-files
 	npm run build
+	npm run bundle
 
 copy-files:
 	mkdir -p $(ROOT_DIR)/dist
@@ -27,3 +28,9 @@ install:
 uninstall:
 	rm -r $(THEME_DIR)/$(THEME_NAME)
 	@echo "Update your /etc/lightdm/web-greeter.yml config file manually to disable the Codam theme if needed"
+
+re:
+	rm -rf $(ROOT_DIR)/dist
+	make build
+
+.PHONY: all npm-install build copy-files install uninstall re
