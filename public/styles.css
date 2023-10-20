@@ -126,7 +126,7 @@ footer span {
 }
 
 /* ***************************************** */
-/* Main (login fields)                       */
+/* Main (login and lock screen fields)       */
 /* ***************************************** */
 
 main {
@@ -135,9 +135,10 @@ main {
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
+	text-align: center;
 }
 
-form#login-form {
+form {
 	box-sizing: border-box;
 	border: none;
 	width: 264px;
@@ -145,7 +146,7 @@ form#login-form {
 	padding: var(--padding) calc(var(--padding) * 2);
 }
 
-form#login-form input {
+form input {
 	display: block;
 	box-sizing: border-box;
 	width: 100%;
@@ -159,24 +160,25 @@ form#login-form input {
 	backdrop-filter: var(--blur-bg-filter);
 	color: var(--color-text-primary);
 	caret-color: var(--color-text-primary);
+	text-align: left;
 	text-shadow: var(--text-shadow);
 	user-select: text !important;
 }
 
-form#login-form input:focus {
+form input:focus {
 	outline: none;
 	border-color: var(--color-primary);
 }
 
-form#login-form input::placeholder {
+form input::placeholder {
 	color: var(--color-text-tertiary);
 }
 
-form#login-form input.wiggle {
+form input.wiggle {
 	animation: wiggle 0.6s ease-in-out;
 }
 
-form#login-form button {
+form button {
 	display: block;
 	position: relative;
 	margin: calc(var(--padding) * 1.5) auto 0 auto;
@@ -187,14 +189,14 @@ form#login-form button {
 	padding: var(--padding) calc(var(--padding) * 2);
 }
 
-form#login-form button:hover,
-form#login-form button:focus {
+form button:hover,
+form button:focus {
 	cursor: pointer;
 	outline: none;
 }
 
-form#login-form button::after,
-form#login-form button::after {
+form button::after,
+form button::after {
 	content: '';
 	background-color: transparent;
 	border: solid 1px transparent;
@@ -206,19 +208,35 @@ form#login-form button::after {
 	left: -1px;
 }
 
-form#login-form button:hover::after,
-form#login-form button:focus::after {
+form button:hover::after,
+form button:focus::after {
 	pointer-events: none;
 	background-color: var(--bg-color-lighten);
 }
 
-form#login-form button:active {
+form button:active {
 	border-style: inset;
 }
 
-form#login-form button:active::after {
+form button:active::after {
 	pointer-events: none;
 	background-color: var(--bg-color-darken);
+}
+
+/* user display name */
+form h3 {
+	font-weight: bold;
+	margin: var(--padding) 0 0 0;
+	color: var(--color-text-primary);
+	text-shadow: var(--text-shadow);
+}
+
+/* user login name */
+form h4 {
+	font-weight: normal;
+	margin: 0 0 var(--padding) 0;
+	color: var(--color-text-secondary);
+	text-shadow: var(--text-shadow);
 }
 
 @keyframes wiggle {
