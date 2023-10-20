@@ -39,12 +39,13 @@ jobs:
         make build
 
     - name: Create zip file from dist folder
+      working-directory: "$GITHUB_WORKSPACE/dist"
       run: |
-        zip -r codam-web-greeter.zip dist
+        zip -r "$GITHUB_WORKSPACE/codam-web-greeter.zip" *
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v3
       with:
         name: codam-web-greeter
-        path: codam-web-greeter.zip
+        path: "$GITHUB_WORKSPACE/codam-web-greeter.zip"
         retention-days: 1
