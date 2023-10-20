@@ -9,6 +9,7 @@ on:
   pull_request:
     branches: [ "main" ]
   workflow_call:
+  workflow_dispatch:
 
 jobs:
   build:
@@ -39,13 +40,13 @@ jobs:
         make build
 
     - name: Create zip file from dist folder
-      working-directory: "$GITHUB_WORKSPACE/dist"
+      working-directory: dist
       run: |
-        zip -r "$GITHUB_WORKSPACE/codam-web-greeter.zip" *
+        zip -r ../codam-web-greeter.zip *
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v3
       with:
         name: codam-web-greeter
-        path: "$GITHUB_WORKSPACE/codam-web-greeter.zip"
+        path: codam-web-greeter.zip
         retention-days: 1
