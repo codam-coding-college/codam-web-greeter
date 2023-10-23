@@ -43,6 +43,14 @@ export class LoginScreenUI extends UIScreen {
 			this._auth.login(form.loginInput.value, form.passwordInput.value);
 		});
 
+		// Only enable the login button when both the login and password fields are filled in
+		form.loginInput.addEventListener('input', () => {
+			form.loginButton.disabled = form.loginInput.value.trim() === "" || form.passwordInput.value === "";
+		});
+		form.passwordInput.addEventListener('input', () => {
+			form.loginButton.disabled = form.loginInput.value.trim() === "" || form.passwordInput.value === "";
+		});
+
 		// Display the login form
 		form.loginForm.style.display = "block";
 		form.loginInput.focus();

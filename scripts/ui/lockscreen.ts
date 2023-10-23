@@ -51,6 +51,11 @@ export class LockScreenUI extends UIScreen {
 			this._auth.login(this._activeSession.username, form.passwordInput.value);
 		});
 
+		// Only enable the login button when both the login and password fields are filled in
+		form.passwordInput.addEventListener('input', () => {
+			form.unlockButton.disabled = form.passwordInput.value === "";
+		});
+
 		// Display the lock screen form
 		form.lockForm.style.display = "block";
 		form.passwordInput.focus();

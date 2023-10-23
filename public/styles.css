@@ -163,11 +163,18 @@ form input {
 	text-align: left;
 	text-shadow: var(--text-shadow);
 	user-select: text !important;
+	cursor: text;
 }
 
 form input:focus {
 	outline: none;
 	border-color: var(--color-primary);
+}
+
+form input:disabled {
+	cursor: not-allowed;
+	color: var(--color-text-tertiary);
+	cursor: default;
 }
 
 form input::placeholder {
@@ -188,12 +195,19 @@ form button {
 	border-radius: var(--border-radius);
 	background: var(--color-primary);
 	padding: var(--padding) calc(var(--padding) * 2);
+	color: var(--color-text-primary);
+	cursor: pointer;
 }
 
-form button:hover,
-form button:focus {
+form button:not(:disabled):hover,
+form button:not(:disabled):focus {
 	cursor: pointer;
 	outline: none;
+}
+
+form button:disabled {
+	cursor: default;
+	color: rgba(16, 16, 16, 0.3);
 }
 
 form button::after,
@@ -207,20 +221,20 @@ form button::after {
 	position: absolute;
 	top: -1px;
 	left: -1px;
+	pointer-events: none;
 }
 
-form button:hover::after,
-form button:focus::after {
-	pointer-events: none;
+form button:not(:disabled):hover::after,
+form button:not(:disabled):focus::after {
 	background-color: var(--bg-color-lighten);
 }
 
-form button:active {
+form button:not(:disabled):active {
 	border-style: inset;
 }
 
-form button:active::after {
-	pointer-events: none;
+form button:active::after,
+form button:disabled::after {
 	background-color: var(--bg-color-darken);
 }
 
