@@ -1,17 +1,33 @@
 import { Authenticator, AuthenticatorEvents } from "../auth";
-import { UILockScreenElements } from "./lockscreen";
-import { UILoginElements } from "./loginscreen";
 
-export declare class Screen {
+export interface UILoginElements {
+	loginForm: HTMLFormElement;
+	loginInput: HTMLInputElement;
+	passwordInput: HTMLInputElement;
+	loginButton: HTMLButtonElement;
+}
+
+export interface UILockScreenElements {
+	lockForm: HTMLFormElement;
+	displayName: HTMLHeadingElement;
+	loginName: HTMLHeadingElement;
+	passwordInput: HTMLInputElement;
+	unlockButton: HTMLButtonElement;
+}
+
+export abstract class UIScreen {
 	protected _auth: Authenticator;
-	protected _form: UILockScreenElements | UILoginElements;
+	abstract _form: UILockScreenElements | UILoginElements;
 	protected _events: AuthenticatorEvents;
 
-	public constructor();
+	public constructor(auth: Authenticator, events: AuthenticatorEvents) {
+		this._auth = auth;
+		this._events = events;
+	};
 
-	protected _initForm(): void;
-	protected _disableForm(): void;
-	protected _enableForm(): void;
-	protected _wigglePasswordInput(): void;
-	protected _getInputToFocusOn(): HTMLInputElement;
+	protected abstract _initForm(): void;
+	protected abstract _disableForm(): void;
+	protected abstract _enableForm(): void;
+	protected abstract _wigglePasswordInput(): void;
+	protected abstract _getInputToFocusOn(): HTMLInputElement;
 }

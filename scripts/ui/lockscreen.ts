@@ -1,20 +1,30 @@
 import { Authenticator } from "../auth";
 import { LightDMUser } from "nody-greeter-types";
-import { Screen } from "./screen";
+import { UIScreen, UILockScreenElements } from "./screen";
 
-export interface UILockScreenElements {
-	lockForm: HTMLFormElement;
-	displayName: HTMLHeadingElement;
-	loginName: HTMLHeadingElement;
-	passwordInput: HTMLInputElement;
-	unlockButton: HTMLButtonElement;
-}
-
-export class LockScreenUI extends Screen {
+export class LockScreenUI extends UIScreen {
+	public readonly _form: UILockScreenElements;
 	private readonly _activeSession: LightDMUser;
 
 	public constructor(auth: Authenticator, activeSession: LightDMUser) {
-		super();
+		super(auth, {
+			authenticationStart: () => {
+				this._disableForm();
+			},
+			authenticationComplete: () => {
+				// TODO: Add a loading animation here
+			},
+			authenticationFailure: () => {
+				this._enableForm();
+				this._wigglePasswordInput();
+			},
+			errorMessage: (message: string) => {
+				alert(message);
+			},
+			infoMessage: (message: string) => {
+				alert(message);
+			},
+		});
 
 		this._activeSession = activeSession;
 		this._auth = auth;
@@ -26,10 +36,10 @@ export class LockScreenUI extends Screen {
 			unlockButton: document.getElementById('unlock-button') as HTMLButtonElement,
 		} as UILockScreenElements;
 
-		this._initLockScreenForm();
+		this._initForm();
 	}
 
-	private _initLockScreenForm(): void {
+	protected _initForm(): void {
 		const form = this._form as UILockScreenElements;
 
 		// Populate lock screen data

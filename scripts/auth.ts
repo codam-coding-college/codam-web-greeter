@@ -1,4 +1,4 @@
-import { LightDMMessageType, LightDMPromptType, LightDMUser, lightdm } from 'nody-greeter-types/index';
+import { LightDMMessageType, LightDMPromptType, lightdm } from 'nody-greeter-types/index';
 
 export interface AuthenticatorEvents {
 	/**

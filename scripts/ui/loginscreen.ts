@@ -1,16 +1,28 @@
 import { Authenticator } from "../auth";
-import { Screen } from "./screen";
+import { UILoginElements, UIScreen } from "./screen";
 
-export interface UILoginElements {
-	loginForm: HTMLFormElement;
-	loginInput: HTMLInputElement;
-	passwordInput: HTMLInputElement;
-	loginButton: HTMLButtonElement;
-}
+export class LoginScreenUI extends UIScreen {
+	public readonly _form: UILoginElements;
 
-export class LoginScreenUI extends Screen {
 	public constructor(auth: Authenticator) {
-		super();
+		super(auth, {
+			authenticationStart: () => {
+				this._disableForm();
+			},
+			authenticationComplete: () => {
+				// TODO: Add a loading animation here
+			},
+			authenticationFailure: () => {
+				this._enableForm();
+				this._wigglePasswordInput();
+			},
+			errorMessage: (message: string) => {
+				alert(message);
+			},
+			infoMessage: (message: string) => {
+				alert(message);
+			},
+		});
 
 		this._auth = auth;
 		this._form = {
@@ -20,10 +32,10 @@ export class LoginScreenUI extends Screen {
 			loginButton: document.getElementById('login-button') as HTMLButtonElement,
 		} as UILoginElements;
 
-		this._initLoginForm();
+		this._initForm();
 	}
 
-	private _initLoginForm(): void {
+	protected _initForm(): void {
 		const form = this._form as UILoginElements;
 
 		// This event gets called when the user clicks the login button or submits the login form in any other way
@@ -82,24 +94,5 @@ export class LoginScreenUI extends Screen {
 			return form.loginInput;
 		}
 		return form.passwordInput;
-	}
-
-	protected _events = {
-		authenticationStart: () => {
-			this._disableForm();
-		},
-		authenticationComplete: () => {
-			// TODO: Add a loading animation here
-		},
-		authenticationFailure: () => {
-			this._enableForm();
-			this._wigglePasswordInput();
-		},
-		errorMessage: (message: string) => {
-			alert(message);
-		},
-		infoMessage: (message: string) => {
-			alert(message);
-		},
 	}
 }
