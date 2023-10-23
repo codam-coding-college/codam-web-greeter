@@ -6,7 +6,7 @@ export interface UIInfoElements {
 	debug: HTMLSpanElement;
 }
 
-export class UI {
+export class InfoBarsUI {
 	private _infoElements: UIInfoElements;
 
 	public constructor() {
@@ -25,11 +25,11 @@ export class UI {
 		// Populate debug info
 		this._infoElements.debug.innerText = '';
 		window.addEventListener('error', (event: ErrorEvent) => {
-			window.ui._infoElements.debug.innerText += event.error + '\n';
+			this._infoElements.debug.innerText += event.error + '\n';
 		});
 
 		// Populate version info
-		this._infoElements.version.innerText = window.data.pkgName + " " + window.data.pkgVersion;
+		this._infoElements.version.innerText = window.data.pkgName + " v" + window.data.pkgVersion;
 
 		// Populate hostname info
 		this._infoElements.hostname.innerText = window.data.hostname;

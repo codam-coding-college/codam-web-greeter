@@ -1,13 +1,13 @@
 // Import local classes
 import { Data } from './data';
-import { UI } from './ui';
+import { UI } from './ui/ui';
 import { Authenticator } from './auth';
 
 declare global {
 	interface Window {
 		data: Data;
-		ui: UI;
 		auth: Authenticator;
+		ui: UI;
 
 		sleep(ms: number): Promise<void>;
 	}
@@ -24,8 +24,8 @@ window.sleep = sleep;
 async function initGreeter(): Promise<void> {
 	// Initialize local classes
 	window.data = new Data();
-	window.ui = new UI();
 	window.auth = new Authenticator();
+	window.ui = new UI(window.auth);
 }
 
 window.addEventListener("GreeterReady", () => {
