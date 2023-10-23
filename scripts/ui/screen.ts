@@ -18,11 +18,12 @@ export interface UILockScreenElements {
 export abstract class UIScreen {
 	protected _auth: Authenticator;
 	abstract _form: UILockScreenElements | UILoginElements;
-	protected _events: AuthenticatorEvents;
+	private _events: AuthenticatorEvents;
 
 	public constructor(auth: Authenticator, events: AuthenticatorEvents) {
 		this._auth = auth;
 		this._events = events;
+		this._auth.authEvents = this._events;
 	};
 
 	protected abstract _initForm(): void;
@@ -30,4 +31,9 @@ export abstract class UIScreen {
 	protected abstract _enableForm(): void;
 	protected abstract _wigglePasswordInput(): void;
 	protected abstract _getInputToFocusOn(): HTMLInputElement;
+
+	public set authEvents(events: AuthenticatorEvents) {
+		this._events = events;
+		this._auth.authEvents = this._events;
+	}
 }

@@ -27,7 +27,6 @@ export class LockScreenUI extends UIScreen {
 		});
 
 		this._activeSession = activeSession;
-		this._auth = auth;
 		this._form = {
 			lockForm: document.getElementById('lock-form') as HTMLFormElement,
 			displayName: document.getElementById('active-user-session-display-name') as HTMLHeadingElement,

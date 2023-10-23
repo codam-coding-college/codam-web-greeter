@@ -24,7 +24,6 @@ export class LoginScreenUI extends UIScreen {
 			},
 		});
 
-		this._auth = auth;
 		this._form = {
 			loginForm: document.getElementById('login-form') as HTMLFormElement,
 			loginInput: document.getElementById('login') as HTMLInputElement,
