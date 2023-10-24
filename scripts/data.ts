@@ -1,20 +1,20 @@
 import packageJSON from '../package.json';
 import { lightdm } from 'nody-greeter-types/index'
-import fs from 'fs';
 
 
 export class Wallpaper {
 	private _path: string;
 	private _exists: boolean;
-	private _fileType: string;
 
 	public constructor(path: string) {
 		this._path = path;
-		this._exists = fs.existsSync(this._path);
-		this._fileType = 'image/' + this._path.split('.').pop() ?? 'jpeg';
-		if (this._fileType === 'image/jpg') this._fileType = 'image/jpeg';
+
+		// Check if file exists
+		const dir = this._path.split('/').slice(0, -1).join('/');
+		const dirFiles = window.theme_utils?.dirlist_sync(dir, false);
+		this._exists = (dirFiles !== undefined && dirFiles.includes(this._path));
 		if (!this._exists) {
-			console.warn('Wallpaper file at ' + this._path + ' does not exist!');
+			console.warn('Wallpaper file does not exist: ' + this._path);
 		}
 	}
 

@@ -1,6 +1,4 @@
-import { Data } from "../data";
 import { Wallpaper } from "../data";
-import fs from 'fs';
 
 export class WallpaperUI {
 	private _element: HTMLElement;
@@ -17,18 +15,9 @@ export class WallpaperUI {
 		const wallpaper: Wallpaper = (this._isLockScreen ? window.data.lockScreenWallpaper : window.data.loginScreenWallpaper);
 
 		if (wallpaper.exists) {
-			// Read wallpaper file
-			fs.readFile(wallpaper.path, (err, data) => {
-				if (err) {
-					console.error(err);
-					return false;
-				}
-
-				// Set wallpaper by creating a blob URL
-				const blob = new Blob([data], { type: 'image/jpeg' });
-				const url = URL.createObjectURL(blob);
-				this._element.style.backgroundImage = 'url(' + url + ')';
-			});
+			// Set wallpaper (yes for some reason the file path just works without file://)
+			// Actually, file:// will even cause the image to not load.
+			this._element.style.backgroundImage = 'url("' + wallpaper.path + '")';
 		}
 
 		return true;
