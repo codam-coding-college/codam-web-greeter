@@ -3,12 +3,14 @@ import { InfoBarsUI } from "./infobars";
 import { LockScreenUI } from "./lockscreen";
 import { LoginScreenUI } from "./loginscreen";
 import { LightDMUser, lightdm } from "nody-greeter-types";
+import { WallpaperUI } from "./wallpaper";
 
 export class UI {
 	private _infoBars: InfoBarsUI;
 	private _lockScreen: LockScreenUI | null = null;
 	private _loginScreen: LoginScreenUI | null = null;
 	private _isLockScreen: boolean = false;
+	private _wallpaper: WallpaperUI;
 
 	public constructor(auth: Authenticator) {
 		this._infoBars = new InfoBarsUI();
@@ -25,6 +27,8 @@ export class UI {
 			// No active session found, show login form
 			this._loginScreen = new LoginScreenUI(auth);
 		}
+
+		this._wallpaper = new WallpaperUI(this._isLockScreen);
 	}
 
 	public get isLockScreen(): boolean {
