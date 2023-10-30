@@ -6,7 +6,7 @@ export class Event42 {
 	description: string;
 	location: string;
 	kind: string;
-	max_people: number;
+	max_people: number | null;
 	nbr_subscriptions: number;
 	begin_at: Date;
 	end_at: Date;
@@ -16,19 +16,19 @@ export class Event42 {
 	updated_at: Date;
 
 	constructor(data: any) {
-		this.id = data['id'];
-		this.name = data['name'];
-		this.description = data['description'];
-		this.location = data['location'];
-		this.kind = data['kind'];
-		this.max_people = data['max_people'];
-		this.nbr_subscriptions = data['nbr_subscriptions'];
-		this.begin_at = new Date(data['begin_at']);
-		this.end_at = new Date(data['end_at']);
-		this.campus_ids = data['campus_ids'];
-		this.cursus_ids = data['cursus_ids'];
-		this.created_at = new Date(data['created_at']);
-		this.updated_at = new Date(data['updated_at']);
+		this.id = data['id'] ?? 0;
+		this.name = data['name'] ?? 'Event';
+		this.description = data['description'] ?? 'No description';
+		this.location = data['location'] ?? 'Unknown location';
+		this.kind = data['kind'] ?? 'unknown';
+		this.max_people = data['max_people'] ?? null;
+		this.nbr_subscriptions = data['nbr_subscriptions'] ?? 0;
+		this.begin_at = new Date(data['begin_at']) ?? new Date();
+		this.end_at = new Date(data['end_at']) ?? this.begin_at ?? new Date();
+		this.campus_ids = data['campus_ids'] ?? [];
+		this.cursus_ids = data['cursus_ids'] ?? [];
+		this.created_at = new Date(data['created_at']) ?? new Date();
+		this.updated_at = new Date(data['updated_at']) ?? new Date();
 	}
 }
 
@@ -38,9 +38,9 @@ export class Cursus42 {
 	slug: string;
 
 	constructor(data: any) {
-		this.id = data['id'];
-		this.name = data['name'];
-		this.slug = data['slug'];
+		this.id = data['id'] ?? 0;
+		this.name = data['name'] ?? 'Cursus';
+		this.slug = data['slug'] ?? 'unknown-cursus';
 	}
 }
 
@@ -50,9 +50,9 @@ export class Project42 {
 	slug: string;
 
 	constructor(data: any) {
-		this.id = data['id'];
-		this.name = data['name'];
-		this.slug = data['slug'];
+		this.id = data['id'] ?? 0;
+		this.name = data['name'] ?? 'Project';
+		this.slug = data['slug'] ?? 'unknown-project';
 	}
 }
 
@@ -62,7 +62,7 @@ export class Exam42 {
 	begin_at: Date;
 	end_at: Date;
 	location: string;
-	max_people: number;
+	max_people: number | null;
 	nbr_subscribers: number;
 	name: string;
 	created_at: Date;
@@ -71,16 +71,16 @@ export class Exam42 {
 	projects: Project42[] = [];
 
 	constructor(data: any) {
-		this.id = data['id'];
-		this.ip_range = parseIpRanges(data['ip_range']);
-		this.begin_at = new Date(data['begin_at']);
-		this.end_at = new Date(data['end_at']);
-		this.location = data['location'];
-		this.max_people = data['max_people'];
-		this.nbr_subscribers = data['nbr_subscribers'];
-		this.name = data['name'];
-		this.created_at = new Date(data['created_at']);
-		this.updated_at = new Date(data['updated_at']);
+		this.id = data['id'] ?? 0;
+		this.ip_range = parseIpRanges(data['ip_range']) ?? [];
+		this.begin_at = new Date(data['begin_at']) ?? new Date();
+		this.end_at = new Date(data['end_at']) ?? this.begin_at ?? new Date();
+		this.location = data['location'] ?? 'Unknown location';
+		this.max_people = data['max_people'] ?? null;
+		this.nbr_subscribers = data['nbr_subscribers'] ?? 0;
+		this.name = data['name'] ?? 'Exam';
+		this.created_at = new Date(data['created_at']) ?? new Date();
+		this.updated_at = new Date(data['updated_at']) ?? new Date();
 		if (data['cursus'].length > 0) {
 			this.cursus = data['cursus'].map((cursus: any) => {
 				return new Cursus42(cursus);
