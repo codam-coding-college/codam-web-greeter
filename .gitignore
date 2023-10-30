@@ -132,3 +132,5 @@ dist
 # Codam specific
 dist/*
 build/*
+server/.env
+server/build/*

@@ -1,0 +1,23 @@
+version: "3.7"
+
+services:
+  codam-web-greeter-server:
+    container_name: codam-web-greeter-server
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    # exposes port 3000 on the container from the Dockerfile
+
+  nginx:
+    container_name: codam-web-greeter-proxy
+    image: nginx:latest
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./configs/nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - codam-web-greeter-server
