@@ -3,7 +3,7 @@ import { Config, Event42, Exam42 } from './interfaces.js';
 import dotenv from 'dotenv';
 dotenv.config({ path: '.env', debug: true }); // Load .env file
 
-import { getHostNameFromRequest } from './utils.js';
+import { getExamForHostName, getHostNameFromRequest } from './utils.js';
 import express from 'express';
 import { fetchEvents, fetchExams } from './intra.js';
 import Fast42 from '@codam/fast42';
@@ -45,10 +45,11 @@ app.get('/api/config/:hostname?', async (req, res) => {
 		cache.set(`exams`, exams);
 	}
 
-	const config = {
+	const config: Config = {
 		hostname: hostname,
 		events: events,
 		exams: exams,
+		exams_for_host: getExamForHostName(exams, hostname),
 	};
 	res.send(config);
 });

@@ -101,9 +101,10 @@ export class Exam42 {
 }
 
 export interface ExamForHost {
+	id: number;
 	name: string;
-	start: string;
-	end: string;
+	begin_at: Date;
+	end_at: Date;
 	session: {
 		username: string;
 		password: string;
@@ -113,5 +114,6 @@ export interface ExamForHost {
 export interface Config {
 	hostname: string;
 	events: Event42[];
-	exams: ExamForHost[];
+	exams: Exam42[];
+	exams_for_host: ExamForHost[];
 }
