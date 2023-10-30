@@ -1,5 +1,12 @@
 import express from 'express';
 
+export const parseIpRanges = function(ipRanges: string): string[] {
+	const ranges = ipRanges.split(',');
+	const trimmedRanges = ranges.map((range) => range.trim()); // trim whitespace
+	const filteredRanges = trimmedRanges.filter((range) => range.length > 0); // remove empty strings
+	return filteredRanges;
+}
+
 export const ipToHostName = function(ip: string): string | null {
 	// do not parse ipv6
 	if (ip.includes(':')) {

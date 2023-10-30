@@ -41,9 +41,11 @@ export const fetchEvents = async function(api: Fast42): Promise<Event42[]> {
 			return [];
 		}
 
-		const events: Event42[] = items;
+		const events: Event42[] = items.map((item) => {
+			return new Event42(item);
+		});
 		events.sort((a, b) => {
-			return Date.parse(a.begin_at) - Date.parse(b.begin_at);
+			return a.begin_at.getTime() - b.begin_at.getTime();
 		});
 		console.log(`Fetched ${events.length} events`);
 		return events;
@@ -62,9 +64,11 @@ export const fetchExams = async function(api: Fast42): Promise<Exam42[]> {
 			return [];
 		}
 
-		const exams: Exam42[] = items;
+		const exams: Exam42[] = items.map((item) => {
+			return new Exam42(item);
+		});
 		exams.sort((a, b) => {
-			return Date.parse(a.begin_at) - Date.parse(b.begin_at);
+			return a.begin_at.getTime() - b.begin_at.getTime();
 		});
 		console.log(`Fetched ${exams.length} exams`);
 		return exams;
