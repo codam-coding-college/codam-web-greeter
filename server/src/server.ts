@@ -31,18 +31,19 @@ app.get('/api/config/:hostname?', async (req, res) => {
 	let events = cache.get<Event42[]>(`events`);
 	let exams = cache.get<Exam42[]>(`exams`);
 
-	if (!api) {
-		res.status(503).send({ error: 'Intra API not initialized yet, try again in a moment' });
-		return;
-	}
-
-	if (!events) {
+	if (!events && api) {
 		events = await fetchEvents(api);
 		cache.set(`events`, events);
 	}
-	if (!exams) {
+	if (!exams && api) {
 		exams = await fetchExams(api);
 		cache.set(`exams`, exams);
+	}
+
+	if (events === undefined || exams === undefined) {
+		console.log('No data to return for config request');
+		res.status(503).send({ error: 'No data to return, try again later' });
+		return;
 	}
 
 	const config: Config = {
@@ -58,16 +59,28 @@ app.get('/api/config/:hostname?', async (req, res) => {
 app.listen(3000, async () => {
 	console.log('Server is running on port 3000');
 
-	api = await new Fast42([{
-		client_id: process.env.INTRA_API_UID!,
-		client_secret: process.env.INTRA_API_SECRET!,
-	}]).init();
+	try {
+		api = await new Fast42([{
+			client_id: process.env.INTRA_API_UID!,
+			client_secret: process.env.INTRA_API_SECRET!,
+		}]).init();
 
-	const events = await fetchEvents(api);
-	console.log('Fetched future events');
-	cache.set(`events`, events);
+		// Fetch initial data
+		if (!cache.has('events')) {
+			const events = await fetchEvents(api);
+			console.log('Fetched future events');
+			cache.set('events', events);
+		}
 
-	const exams = await fetchExams(api);
-	console.log('Fetched future exams');
-	cache.set(`exams`, exams);
+		if (!cache.has('exams')) {
+			const exams = await fetchExams(api);
+			console.log('Fetched future exams');
+			cache.set('exams', exams);
+		}
+	}
+	catch(err) {
+		console.warn("[WARNING] Could not initialize Intra API, some features might not work");
+		console.error(err);
+		api = undefined; // unset api
+	}
 });
