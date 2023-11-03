@@ -29,9 +29,20 @@ uninstall:
 	rm -r $(THEME_DIR)/$(THEME_NAME)
 	@echo "Update your /etc/lightdm/web-greeter.yml config file manually to disable the Codam theme if needed"
 
+update_server_version:
+	bash $(ROOT_DIR)/server/match_versions.sh
+
+server: update_server_version
+	cd $(ROOT_DIR)/server
+	docker compose -f $(ROOT_DIR)/server/docker-compose.yaml up -d
+
+server-stop:
+	cd $(ROOT_DIR)/server
+	docker compose -f $(ROOT_DIR)/server/docker-compose.yaml down
+
 re:
 	rm -rf $(ROOT_DIR)/build
 	rm -rf $(ROOT_DIR)/dist
 	make build
 
-.PHONY: all npm-install build copy-files install uninstall re
+.PHONY: all npm-install build copy-files install uninstall server update_server_version re
