@@ -134,3 +134,4 @@ dist/*
 build/*
 server/.env
 server/build/*
+public/data.json
