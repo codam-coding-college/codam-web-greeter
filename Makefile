@@ -34,11 +34,11 @@ update_server_version:
 
 server: update_server_version
 	cd $(ROOT_DIR)/server
-	docker-compose -f $(ROOT_DIR)/server/docker-compose.yaml up -d
+	docker compose -f $(ROOT_DIR)/server/docker-compose.yaml up -d
 
 server-stop:
 	cd $(ROOT_DIR)/server
-	docker-compose -f $(ROOT_DIR)/server/docker-compose.yaml down
+	docker compose -f $(ROOT_DIR)/server/docker-compose.yaml down
 
 re:
 	rm -rf $(ROOT_DIR)/build

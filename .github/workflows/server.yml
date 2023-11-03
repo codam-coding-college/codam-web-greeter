@@ -1,0 +1,57 @@
+name: Build and run back-end server
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_call:
+  workflow_dispatch:
+
+jobs:
+  run:
+    runs-on: ubuntu-22.04
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Install npm dependencies
+      working-directory: server
+      run: |
+        npm install
+
+    - name: Build codam-web-greeter server
+      working-directory: server
+      run: |
+        npm run build
+
+    - name: Install testing dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y \
+          curl \
+          net-tools \
+          netcat
+
+    - name: Copy .env.example file to .env
+      working-directory: server
+      run: |
+        cp .env.example .env
+
+    - name: Start codam-web-greeter server
+      working-directory: server
+      shell: bash
+      run: |
+        npm run start &
+        timeout 3m bash -c 'until nc -w 10 127.0.0.1 3000; do sleep 1; done'
+        netstat -tulpn
+        curl -L http://localhost:3000/ --insecure --verbose --fail
