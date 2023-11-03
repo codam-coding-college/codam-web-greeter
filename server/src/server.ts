@@ -1,4 +1,4 @@
-import { Config, Event42, Exam42 } from './interfaces.js';
+import { Config, ConfigError, Event42, Exam42 } from './interfaces.js';
 
 import dotenv from 'dotenv';
 dotenv.config({ path: '.env', debug: true }); // Load .env file
@@ -28,21 +28,25 @@ app.get('/', (req, res) => {
 app.get('/api/config/:hostname?', async (req, res) => {
 	const hostname = getHostNameFromRequest(req);
 
-	let events = cache.get<Event42[]>(`events`);
-	let exams = cache.get<Exam42[]>(`exams`);
+	let events = cache.get<Event42[]>('events');
+	let exams = cache.get<Exam42[]>('exams');
+	let lastCacheChange = cache.get<Date>('last-cache-change');
 
 	if (!events && api) {
 		events = await fetchEvents(api);
-		cache.set(`events`, events);
+		cache.set('events', events);
+		cache.set('last-cache-change', new Date());
 	}
 	if (!exams && api) {
 		exams = await fetchExams(api);
-		cache.set(`exams`, exams);
+		cache.set('exams', exams);
+		cache.set('last-cache-change', new Date());
 	}
 
 	if (events === undefined || exams === undefined) {
 		console.log('No data to return for config request');
-		res.status(503).send({ error: 'No data to return, try again later' });
+		const cError: ConfigError = { error: 'No data to return, try again later' };
+		res.status(503).send(cError);
 		return;
 	}
 
@@ -51,6 +55,7 @@ app.get('/api/config/:hostname?', async (req, res) => {
 		events: events,
 		exams: exams,
 		exams_for_host: getExamForHostName(exams, hostname),
+		fetch_time: lastCacheChange ?? new Date(),
 	};
 	res.send(config);
 });
@@ -70,12 +75,14 @@ app.listen(3000, async () => {
 			const events = await fetchEvents(api);
 			console.log('Fetched future events');
 			cache.set('events', events);
+			cache.set('last-cache-change', new Date());
 		}
 
 		if (!cache.has('exams')) {
 			const exams = await fetchExams(api);
 			console.log('Fetched future exams');
 			cache.set('exams', exams);
+			cache.set('last-cache-change', new Date());
 		}
 	}
 	catch(err) {

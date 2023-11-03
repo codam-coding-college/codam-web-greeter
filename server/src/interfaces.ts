@@ -116,4 +116,9 @@ export interface Config {
 	events: Event42[];
 	exams: Exam42[];
 	exams_for_host: ExamForHost[];
+	fetch_time: Date;
+}
+
+export interface ConfigError {
+	error: string;
 }

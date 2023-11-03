@@ -105,9 +105,13 @@ export const getExamForHost = function(exams: Exam42[], hostIp: string): ExamFor
 };
 
 export const getExamForHostName = function(exams: Exam42[], hostName: string): ExamForHost[] {
+	if (hostName === 'unknown') {
+		console.warn('Hostname is unknown, unable to find exams for host');
+		return [];
+	}
 	const hostIp = hostNameToIp(hostName);
 	if (!hostIp) {
-		console.warn(`Could not parse IP address from hostname ${hostName}, unable to find exams for host`);
+		console.warn(`Could not parse IP address from hostname "${hostName}", unable to find exams for host`);
 		return [];
 	}
 	return getExamForHost(exams, hostIp);
