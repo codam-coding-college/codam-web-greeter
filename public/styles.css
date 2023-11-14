@@ -304,6 +304,15 @@ aside {
 	border-radius: var(--border-radius);
 }
 
+.calendar-event:hover {
+	background-color: var(--bg-color-darken-strong);
+}
+
+.calendar-event:hover .calendar-event-date {
+	color: var(--color-text-primary);
+	transition: none;
+}
+
 .calendar-event:first-child {
 	margin-top: 0;
 }
@@ -335,6 +344,7 @@ aside {
 	display: block;
 	font-size: x-large;
 	font-family: monospace;
+	margin-top: 1px;
 }
 
 .calendar-event-date .calendar-event-date-month {
@@ -365,16 +375,18 @@ aside {
 .calendar-event-title {
 	font-weight: bold;
 	color: var(--color-text-primary);
+	margin-bottom: calc(var(--padding) / 4);
 }
 
 .calendar-event-description {
 	line-clamp: 2;
 	-webkit-line-clamp: 2;
 	color: var(--color-text-secondary);
+	margin-bottom: calc(var(--padding) / 2);
 }
 
 .calendar-event-details {
-	color: var(--color-text-tertiary);
+	color: var(--color-text-secondary);
 	font-size: x-small;
 }
 
