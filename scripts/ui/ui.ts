@@ -3,7 +3,8 @@ import { InfoBarsUI } from "./infobars";
 import { LockScreenUI } from "./lockscreen";
 import { LoginScreenUI } from "./loginscreen";
 import { LightDMUser, lightdm } from "nody-greeter-types";
-import { WallpaperUI } from "./wallpaper";
+import { WallpaperUI } from "./wallpaper"
+import { CalendarUI } from "./calendar";
 
 export class UI {
 	private _infoBars: InfoBarsUI;
