@@ -129,8 +129,12 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
+# Garbage
+.DS_Store
+
 # Codam specific
 dist/*
 build/*
 server/.env
 server/build/*
+public/data.json
