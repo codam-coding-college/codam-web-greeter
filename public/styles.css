@@ -25,9 +25,18 @@
 	--bg-color-lighten: rgba(255, 255, 255, 0.2);
 	--text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 
+	/* Events */
+	--event-color-default: #00BABC;
+	--event-color-exam: #ED8179;
+	--event-color-association: #7E93D4;
+	--event-color-workshop: #39D88F;
+	--event-color-rush: #F2911A;
+	--event-color-conference:
+
 	/* Others */
 	--border-radius: 4px;
 	--padding: 8px;
+	--header-footer-height: 31px;
 }
 
 /* ***************************************** */
@@ -89,6 +98,7 @@ header,
 footer {
 	box-sizing: border-box;
 	width: 100vw;
+	height: var(--header-footer-height);
 	padding: var(--padding) var(--padding);
 	backdrop-filter: var(--blur-bg-filter);
 	background-color: var(--bg-color-darken);
@@ -264,4 +274,127 @@ form h4 {
 	25%, 50%, 75% {
 		transform: translateX(6px);
 	}
+}
+
+/* ***************************************** */
+/* Aside (Intra calendar)                    */
+/* ***************************************** */
+
+aside {
+	position: absolute;
+	top: var(--header-footer-height);
+	right: 0;
+	width: 30vw;
+	max-width: 400px;
+	padding: var(--padding);
+}
+
+.calendar-event {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	align-content: center;
+	justify-content: flex-start;
+	align-items: center;
+	width: 100%;
+
+	background-color: var(--bg-color-darken);
+	text-shadow: var(--text-shadow);
+	backdrop-filter: var(--blur-bg-filter);
+	margin: var(--padding) 0;
+	border-radius: var(--border-radius);
+}
+
+.calendar-event:first-child {
+	margin-top: 0;
+}
+
+.calendar-event:last-child {
+	margin-bottom: 0;
+}
+
+.calendar-event-date {
+	display: inline-block;
+	text-align: center;
+	color: var(--color-text-secondary);
+	padding: var(--padding);
+	width: 78px;
+	flex-grow: 0;
+	flex-shrink: 0;
+	border-radius: var(--border-radius);
+	border-left: 4px solid transparent;
+}
+
+.calendar-event-date .calendar-event-date-day {
+	display: block;
+	font-size: small;
+}
+
+.calendar-event-date .calendar-event-date-date {
+	display: block;
+	font-size: x-large;
+	font-family: monospace;
+}
+
+.calendar-event-date .calendar-event-date-month {
+	display: block;
+	font-size: small;
+}
+
+.calendar-event-wrapper {
+	display: flex;
+	flex-direction: column;
+	flex-grow: 1;
+	flex-shrink: 1;
+	min-width: 0;
+	padding: var(--padding) var(--padding) var(--padding) 0;
+	font-size: small;
+}
+
+.calendar-event-wrapper > * {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.calendar-event-title {
+	display: block;
+	font-weight: bold;
+	color: var(--color-text-primary);
+}
+
+.calendar-event-description {
+	display: block;
+	color: var(--color-text-secondary);
+}
+
+.calendar-event-details {
+	color: var(--color-text-tertiary);
+	font-size: x-small;
+}
+
+/* colors for event kinds */
+.calendar-event .calendar-event-date {
+	border-color: var(--event-color-default);
+}
+
+.calendar-event[data-event-kind="exam"] .calendar-event-date {
+	border-color: var(--event-color-exam);
+}
+
+.calendar-event[data-event-kind="rush"] .calendar-event-date,
+.calendar-event[data-event-kind="piscine"] .calendar-event-date,
+.calendar-event[data-event-kind="partership"] .calendar-event-date {
+	border-color: var(--event-color-rush);
+}
+
+.calendar-event[data-event-kind="association"] .calendar-event-date,
+.calendar-event[data-event-kind="conference"] .calendar-event-date {
+	border-color: var(--event-color-association);
+}
+
+.calendar-event[data-event-kind="workshop"] .calendar-event-date,
+.calendar-event[data-event-kind="challenge"] .calendar-event-date,
+.calendar-event[data-event-kind="hackathon"] .calendar-event-date {
+	border-color: var(--event-color-workshop);
 }
