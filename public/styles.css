@@ -31,7 +31,6 @@
 	--event-color-association: #7E93D4;
 	--event-color-workshop: #39D88F;
 	--event-color-rush: #F2911A;
-	--event-color-conference:
 
 	/* Others */
 	--border-radius: 4px;
@@ -295,7 +294,7 @@ aside {
 	flex-wrap: nowrap;
 	align-content: center;
 	justify-content: flex-start;
-	align-items: center;
+	align-items: stretch;
 	width: 100%;
 
 	background-color: var(--bg-color-darken);
@@ -314,7 +313,9 @@ aside {
 }
 
 .calendar-event-date {
-	display: inline-block;
+	display: inline-flex;
+	flex-direction: column;
+	justify-content: center;
 	text-align: center;
 	color: var(--color-text-secondary);
 	padding: var(--padding);
@@ -342,8 +343,9 @@ aside {
 }
 
 .calendar-event-wrapper {
-	display: flex;
+	display: inline-flex;
 	flex-direction: column;
+	justify-content: center;
 	flex-grow: 1;
 	flex-shrink: 1;
 	min-width: 0;
