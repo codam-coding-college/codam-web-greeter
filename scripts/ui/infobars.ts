@@ -2,6 +2,7 @@ export interface UIInfoElements {
 	hostname: HTMLSpanElement;
 	version: HTMLSpanElement;
 	clock: HTMLSpanElement;
+	date: HTMLSpanElement;
 	networkIcon: HTMLSpanElement;
 	debug: HTMLSpanElement;
 }
@@ -14,6 +15,7 @@ export class InfoBarsUI {
 			hostname: document.getElementById('info-hostname') as HTMLSpanElement,
 			version: document.getElementById('info-version') as HTMLSpanElement,
 			clock: document.getElementById('info-clock') as HTMLSpanElement,
+			date: document.getElementById('info-date') as HTMLSpanElement,
 			networkIcon: document.getElementById('info-network-icon') as HTMLSpanElement,
 			debug: document.getElementById('info-debug') as HTMLSpanElement,
 		};
@@ -44,12 +46,9 @@ export class InfoBarsUI {
 		window.addEventListener('offline', () => this._infoElements.networkIcon.innerHTML = 'Offline');
 	}
 
-	public formatNumber(n: number, digits: number): string {
-		return n.toLocaleString('en-US', { minimumIntegerDigits: digits, useGrouping: false });
-	}
-
 	private _updateClock(): void {
 		const now: Date = new Date();
-		this._infoElements.clock.innerText = now.getHours() + ":" + this.formatNumber(now.getMinutes(), 2) + ":" + this.formatNumber(now.getSeconds(), 2);
+		this._infoElements.date.innerText = now.toLocaleString('en-NL', { day: 'numeric', month: 'short' });
+		this._infoElements.clock.innerText = now.toLocaleString('en-NL', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
 	}
 }
