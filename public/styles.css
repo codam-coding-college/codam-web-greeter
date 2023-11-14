@@ -352,25 +352,32 @@ aside {
 }
 
 .calendar-event-wrapper > * {
-	white-space: nowrap;
-	overflow: hidden;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
 	text-overflow: ellipsis;
+	line-clamp: 1;
+	-webkit-line-clamp: 1;
+	overflow: hidden;
 }
 
 .calendar-event-title {
-	display: block;
 	font-weight: bold;
 	color: var(--color-text-primary);
 }
 
 .calendar-event-description {
-	display: block;
+	line-clamp: 2;
+	-webkit-line-clamp: 2;
 	color: var(--color-text-secondary);
 }
 
 .calendar-event-details {
 	color: var(--color-text-tertiary);
 	font-size: x-small;
+}
+
+.calendar-event-details > span:not(:last-child)::after {
+	content: ' · ';
 }
 
 /* colors for event kinds */
