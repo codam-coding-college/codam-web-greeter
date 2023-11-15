@@ -21,7 +21,7 @@ fi
 /usr/bin/systemctl daemon-reload
 
 # Remove system user
-/usr/bin/deluser codam-web-greeter
+/usr/sbin/deluser codam-web-greeter
 
 # Remove data fetching script
 /usr/bin/rm /usr/share/codam/fetch-codam-web-greeter-data.sh

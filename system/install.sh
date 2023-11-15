@@ -23,7 +23,7 @@ ROOT_DIR="$(/usr/bin/dirname "$(/usr/bin/readlink -f "$0")")"
 if id codam-web-greeter >/dev/null 2>&1; then
 	/usr/bin/echo "codam-web-greeter user already exists"
 else
-	/usr/bin/adduser --system --group --shell /usr/sbin/nologin --disabled-password --home /dev/null codam-web-greeter
+	/usr/sbin/adduser --system --group --shell /usr/sbin/nologin --disabled-password --home /dev/null codam-web-greeter
 fi
 
 # Install systemd service and timer
