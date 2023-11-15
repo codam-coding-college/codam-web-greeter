@@ -65,6 +65,8 @@ app.listen(3000, async () => {
 	console.log('Server is running on port 3000');
 
 	try {
+		console.log(`Using Intra API UID: ${process.env.INTRA_API_UID}`);
+
 		api = await new Fast42([{
 			client_id: process.env.INTRA_API_UID!,
 			client_secret: process.env.INTRA_API_SECRET!,
