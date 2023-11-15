@@ -20,7 +20,7 @@ copy-files:
 	cp README.md LICENSE $(ROOT_DIR)/dist
 	cp -r $(ROOT_DIR)/public/* $(ROOT_DIR)/dist
 
-install:
+install: build
 	install -dm755 $(THEME_DIR)/$(THEME_NAME)
 	cp -r $(ROOT_DIR)/dist/* $(THEME_DIR)/$(THEME_NAME)
 	@echo "Update your /etc/lightdm/web-greeter.yml config file manually to enable the Codam theme"
