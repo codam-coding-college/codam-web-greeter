@@ -29,6 +29,34 @@ export class CalendarUI {
 		return "";
 	}
 
+	private _getEventHeight(eventElement: HTMLDivElement): number {
+		// add event to the DOM quickly to get its height
+		eventElement.style.visibility = 'hidden';
+		this._calendar.appendChild(eventElement);
+		const eventHeight = eventElement.clientHeight;
+		eventElement.remove();
+		return eventHeight;
+	}
+
+	/**
+	 * This function checks if there is still enough space on the screen to fit one more event.
+	 */
+	private _eventFitsOnScreen(eventElement: HTMLDivElement | undefined = undefined): boolean {
+		// Get required input
+		const windowHeight = window.innerHeight;
+		const calendarHeight = this._calendar.clientHeight;
+		const eventHeight = eventElement ? this._getEventHeight(eventElement) : 78;
+		const eventMargin = parseInt(getComputedStyle(this._calendar).getPropertyValue('--padding'));
+
+		// Calculate how much space is needed for the event
+		const requiredSpace = eventHeight + eventMargin;
+
+		// Calculate how much space is left on the screen
+		const spaceLeft = windowHeight - calendarHeight;
+
+		return requiredSpace < spaceLeft;
+	}
+
 	private populateCalendar(dataJSON: DataJson | undefined = window.data.dataJson): void {
 		if (dataJSON === undefined) {
 			this._destroyAllEvents();
@@ -48,6 +76,9 @@ export class CalendarUI {
 		});
 		this._destroyAllEvents();
 		for (const event of eventsForCalendar) {
+			if (!this._eventFitsOnScreen(event)) {
+				break; // don't add any more events if one doesn't fit
+			}
 			this._calendar.appendChild(event);
 		}
 	}
