@@ -2,7 +2,7 @@ import packageJSON from '../package.json';
 import { lightdm } from 'nody-greeter-types/index'
 
 
-const PATH_DATA_JSON: string = '/usr/share/codam/data.json';
+const PATH_DATA_JSON: string = 'data.json';
 const PATH_WALLPAPER_LOGIN: string = '/usr/share/codam/wallpapers/login-screen.jpg';
 const PATH_WALLPAPER_LOCK: string = '/usr/share/codam/wallpapers/ft_lock_bkg.jpg';
 
