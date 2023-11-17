@@ -118,7 +118,7 @@ export class Data {
 		this.lockScreenWallpaper = new Wallpaper(PATH_WALLPAPER_LOCK);
 
 		// Fetch data.json every 5 minutes and fetch it now
-		setInterval(this._refetchDataJson, this._dataJsonFetchInterval);
+		setInterval(() => this._refetchDataJson(), this._dataJsonFetchInterval);
 		this._refetchDataJson();
 	}
 
