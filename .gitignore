@@ -133,4 +133,5 @@ dist
 dist/*
 build/*
 server/.env
+server/configs/certs/*
 server/build/*
