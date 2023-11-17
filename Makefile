@@ -23,10 +23,12 @@ copy-files:
 install: build
 	install -dm755 $(THEME_DIR)/$(THEME_NAME)
 	cp -r $(ROOT_DIR)/dist/* $(THEME_DIR)/$(THEME_NAME)
+	bash $(ROOT_DIR)/system/install.sh
 	@echo "Update your /etc/lightdm/web-greeter.yml config file manually to enable the Codam theme"
 
 uninstall:
 	rm -r $(THEME_DIR)/$(THEME_NAME)
+	[ -f /usr/share/codam/uninstall-codam-web-greeter-service.sh ] && bash /usr/share/codam/uninstall-codam-web-greeter-service.sh
 	@echo "Update your /etc/lightdm/web-greeter.yml config file manually to disable the Codam theme if needed"
 
 update_server_version:

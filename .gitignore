@@ -135,3 +135,4 @@ build/*
 server/.env
 server/configs/certs/*
 server/build/*
+public/data.json

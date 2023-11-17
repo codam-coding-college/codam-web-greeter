@@ -1,0 +1,14 @@
+[Unit]
+Description=Data fetcher for codam-web-greeter
+After=network.target
+
+[Service]
+Type=simple
+User=codam-web-greeter
+Group=codam-web-greeter
+ExecStart=/usr/bin/bash /usr/share/codam/fetch-codam-web-greeter-data.sh
+Restart=always
+RestartSec=120
+
+[Install]
+WantedBy=multi-user.target
