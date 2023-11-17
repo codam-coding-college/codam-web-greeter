@@ -455,6 +455,10 @@ dialog.calendar-event-dialog .calendar-event-date {
 	padding: var(--padding) var(--padding) 0 var(--padding);
 }
 
+dialog.calendar-event-dialog .calendar-event-date > span::after {
+	content: ' ';
+}
+
 dialog.calendar-event-dialog .calendar-event-title {
 	background-color: var(--event-color);
 	font-weight: bold;
