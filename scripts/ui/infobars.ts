@@ -48,7 +48,7 @@ export class InfoBarsUI {
 
 	private _updateClock(): void {
 		const now: Date = new Date();
-		this._infoElements.date.innerText = now.toLocaleString('en-NL', { day: 'numeric', month: 'short' });
-		this._infoElements.clock.innerText = now.toLocaleString('en-NL', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+		this._infoElements.date.innerText = now.toLocaleString('en-NL', { dateStyle: 'medium' });
+		this._infoElements.clock.innerText = now.toLocaleString('en-NL', { timeStyle: 'medium' });
 	}
 }
