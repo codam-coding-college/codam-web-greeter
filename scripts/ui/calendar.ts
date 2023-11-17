@@ -29,6 +29,20 @@ export class CalendarUI {
 		return "";
 	}
 
+	private _removeMarkdownSyntax(text: string): string {
+		// Parse bold text
+		text = text.replace(/\*\*(.*?)\*\*/g, '$1');
+
+		// Parse italic text
+		text = text.replace(/\*(.*?)\*/g, '$1');
+		text = text.replace(/\_(.*?)\_/g, '$1');
+
+		// Parse links
+		text = text.replace(/\[(.*?)\]\((.*?)\)/g, '$1 ($2)');
+
+		return text;
+	}
+
 	/**
 	 * This function checks if there is still enough space on the screen to fit one more event.
 	 */
@@ -136,7 +150,7 @@ export class CalendarUI {
 
 		const calendarEventDesc = document.createElement('div');
 		calendarEventDesc.classList.add('calendar-event-description');
-		calendarEventDesc.innerText = event.description;
+		calendarEventDesc.innerText = this._removeMarkdownSyntax(event.description);
 		calendarEventWrapper.appendChild(calendarEventDesc);
 
 		// Event details
