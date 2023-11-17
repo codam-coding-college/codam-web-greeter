@@ -101,6 +101,7 @@ export class Data {
 	public hostname: string;
 	public loginScreenWallpaper: Wallpaper;
 	public lockScreenWallpaper: Wallpaper;
+	private _dataJsonFetchInterval: number = 60 * 1000; // 1 minute
 	private _dataJson: DataJson | undefined;
 	private _dataChangeListeners: ((dataJson: DataJson) => void)[] = [];
 
@@ -116,16 +117,41 @@ export class Data {
 		this.loginScreenWallpaper = new Wallpaper(PATH_WALLPAPER_LOGIN);
 		this.lockScreenWallpaper = new Wallpaper(PATH_WALLPAPER_LOCK);
 
-		// Fetch data.json
+		// Fetch data.json every 5 minutes and fetch it now
+		setInterval(this._refetchDataJson, this._dataJsonFetchInterval);
 		this._refetchDataJson();
 	}
 
-	public addDataChangeListener(listener: (dataJson: DataJson) => void): void {
+	public static examToEvent(exam: Exam42): Event42 {
+		const desc = `For ${exam.projects.map(c => c.name).join(', ')}`;
+
+		return {
+			id: exam.id,
+			name: exam.name,
+			description: desc,
+			location: exam.location,
+			kind: 'exam',
+			max_people: exam.max_people,
+			nbr_subscriptions: exam.nbr_subscribers,
+			begin_at: exam.begin_at,
+			end_at: exam.end_at,
+			campus_ids: [], // TODO: populate this? Maybe unnecessary though...
+			cursus_ids: exam.cursus.map(c => c.id),
+			created_at: exam.created_at,
+			updated_at: exam.updated_at,
+		}
+	}
+
+	public addDataChangeListener(listener: (dataJson: DataJson | undefined) => void): void {
 		this._dataChangeListeners.push(listener);
 	}
 
-	public removeDataChangeListener(listener: (dataJson: DataJson) => void): void {
+	public removeDataChangeListener(listener: (dataJson: DataJson | undefined) => void): void {
 		this._dataChangeListeners = this._dataChangeListeners.filter(l => l !== listener);
+	}
+
+	public get dataJson(): DataJson | undefined {
+		return this._dataJson;
 	}
 
 	private _refetchDataJson(): void {
@@ -138,6 +164,9 @@ export class Data {
 				for (const listener of this._dataChangeListeners) {
 					listener(data);
 				}
+			})
+			.catch(error => {
+				console.error("Failed to fetch data.json", error);
 			});
 	}
 }

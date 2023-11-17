@@ -330,7 +330,7 @@ aside {
 	text-align: center;
 	color: var(--color-text-secondary);
 	padding: var(--padding);
-	width: 78px;
+	width: 48px;
 	flex-grow: 0;
 	flex-shrink: 0;
 	border-radius: var(--border-radius);

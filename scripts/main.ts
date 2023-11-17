@@ -25,7 +25,7 @@ async function initGreeter(): Promise<void> {
 	// Initialize local classes
 	window.data = new Data();
 	window.auth = new Authenticator();
-	window.ui = new UI(window.auth);
+	window.ui = new UI(window.data, window.auth);
 }
 
 window.addEventListener("GreeterReady", () => {

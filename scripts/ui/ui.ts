@@ -1,4 +1,5 @@
 import { Authenticator } from "../auth";
+import { Data } from "../data";
 import { InfoBarsUI } from "./infobars";
 import { LockScreenUI } from "./lockscreen";
 import { LoginScreenUI } from "./loginscreen";
@@ -12,8 +13,9 @@ export class UI {
 	private _loginScreen: LoginScreenUI | null = null;
 	private _isLockScreen: boolean = false;
 	private _wallpaper: WallpaperUI;
+	private _calendar: CalendarUI;
 
-	public constructor(auth: Authenticator) {
+	public constructor(data: Data, auth: Authenticator) {
 		this._infoBars = new InfoBarsUI();
 
 		// Check for active sessions
@@ -30,6 +32,7 @@ export class UI {
 		}
 
 		this._wallpaper = new WallpaperUI(this._isLockScreen);
+		this._calendar = new CalendarUI(data);
 	}
 
 	public get isLockScreen(): boolean {
