@@ -54,6 +54,15 @@ export class CalendarUI {
 		// Calculate how much space is left on the screen
 		const spaceLeft = windowHeight - calendarHeight;
 
+		console.debug("Calculated if event fits on screen",
+			"windowHeight", windowHeight,
+			"calendarHeight", calendarHeight,
+			"eventHeight", eventHeight,
+			"eventMargin", eventMargin,
+			"requiredSpace", requiredSpace,
+			"spaceLeft", spaceLeft
+		);
+
 		return requiredSpace < spaceLeft;
 	}
 
@@ -77,6 +86,7 @@ export class CalendarUI {
 		this._destroyAllEvents();
 		for (const event of eventsForCalendar) {
 			if (!this._eventFitsOnScreen(event)) {
+				console.log("Event doesn't fit on screen");
 				break; // don't add any more events if one doesn't fit
 			}
 			this._calendar.appendChild(event);
