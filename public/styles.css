@@ -204,7 +204,7 @@ form button {
 	text-align: center;
 	border: solid 1px var(--color-primary);
 	border-radius: var(--border-radius);
-	background: var(--color-text-tertiary);
+	background: var(--color-text-primary);
 	padding: var(--padding) calc(var(--padding) * 2);
 	color: var(--color-primary);
 	cursor: pointer;
