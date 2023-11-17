@@ -148,9 +148,12 @@ export class CalendarUI {
 			dialog.appendChild(dialogCloseButton);
 
 			// Create wrapper for contents (clone event element for data)
-			const dialogContents = eventElement.cloneNode(true) as HTMLDivElement;
+			const dialogContents = document.createElement('div');
 			dialogContents.classList.add('event-dialog-contents');
 			dialog.appendChild(dialogContents);
+			for (const child of eventElement.children) {
+				dialogContents.appendChild(child.cloneNode(true));
+			}
 
 			// Close and destroy dialog when clicked outside of it
 			dialogContents.addEventListener('click', (ev) => {
