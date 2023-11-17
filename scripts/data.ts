@@ -103,7 +103,7 @@ export class Data {
 	public lockScreenWallpaper: Wallpaper;
 	private _dataJsonFetchInterval: number = 60 * 1000; // 1 minute
 	private _dataJson: DataJson | undefined;
-	private _dataChangeListeners: ((dataJson: DataJson) => void)[] = [];
+	private _dataChangeListeners: ((dataJson: DataJson | undefined) => void)[] = [];
 
 	constructor() {
 		// Get version from package.json
@@ -162,7 +162,7 @@ export class Data {
 				this._dataJson = data;
 				// Emit data change event to all listeners
 				for (const listener of this._dataChangeListeners) {
-					listener(data);
+					listener(this._dataJson);
 				}
 			})
 			.catch(error => {
