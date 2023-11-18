@@ -40,8 +40,8 @@ jobs:
       with:
         files: ./artifacts/codam-web-greeter.zip
         tag_name: ${{ github.ref }}
-        name: ${{ github.ref_name }}
+        name: codam-web-greeter ${{ github.ref_name }}
         generate_release_notes: true
-        draft: false
+        draft: true
         prerelease: true
         token: ${{ secrets.GITHUB_TOKEN }}
