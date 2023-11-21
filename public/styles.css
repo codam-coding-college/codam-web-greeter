@@ -120,11 +120,13 @@ footer br::after {
 .horibar-left {
 	float: left;
 	text-align: left;
+	line-height: 1rem;
 }
 
 .horibar-right {
 	float: right;
 	text-align: right;
+	line-height: 1rem;
 }
 
 header span,

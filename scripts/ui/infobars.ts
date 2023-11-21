@@ -46,9 +46,9 @@ export class InfoBarsUI {
 		setInterval(() => this._updateClock(), 1000);
 
 		// Populate network icon
-		this._infoElements.networkIcon.innerHTML = (navigator.onLine ? 'Online' : 'Offline');
-		window.addEventListener('online', () => this._infoElements.networkIcon.innerHTML = 'Online');
-		window.addEventListener('offline', () => this._infoElements.networkIcon.innerHTML = 'Offline');
+		this._infoElements.networkIcon.innerHTML = (navigator.onLine ? '&#128423;' : ''); // Either "three-networked-computers" unicode symbol or nothing
+		window.addEventListener('online', () => this._infoElements.networkIcon.innerHTML = '&#128423;');
+		window.addEventListener('offline', () => this._infoElements.networkIcon.innerHTML = '');
 	}
 
 	private _updateClock(): void {
