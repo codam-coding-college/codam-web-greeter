@@ -26,6 +26,12 @@ fi
 # Remove data fetching script
 /usr/bin/rm /usr/share/codam/fetch-codam-web-greeter-data.sh
 
+# Remove data.json
+DATA_JSON_FILE="/usr/share/web-greeter/themes/codam/data.json"
+if [ -f "$DATA_JSON_FILE" ]; then
+	/usr/bin/rm "$DATA_JSON_FILE"
+fi
+
 # Remove uninstall script
 /usr/bin/rm /usr/share/codam/uninstall-codam-web-greeter-service.sh
 

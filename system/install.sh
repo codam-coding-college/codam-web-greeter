@@ -26,6 +26,15 @@ else
 	/usr/sbin/adduser --system --group --shell /usr/sbin/nologin --disabled-password --home /dev/null codam-web-greeter
 fi
 
+# Create data.json file if it doesn't exist yet
+WEB_GREETER_DIR="/usr/share/web-greeter/themes/codam"
+DATA_FILE="$WEB_GREETER_DIR/data.json"
+/usr/bin/mkdir -p "$WEB_GREETER_DIR"
+/usr/bin/touch "$DATA_FILE"
+/usr/bin/chmod 644 "$DATA_FILE"
+/usr/bin/chown codam-web-greeter:codam-web-greeter "$DATA_FILE"
+/usr/bin/echo '{"error": "No data fetched yet"}' > "$DATA_FILE"
+
 # Install systemd service and timer
 /usr/bin/cp "$ROOT_DIR/systemd/codam-web-greeter.service" /etc/systemd/system/codam-web-greeter.service
 /usr/bin/cp "$ROOT_DIR/systemd/codam-web-greeter.timer" /etc/systemd/system/codam-web-greeter.timer
