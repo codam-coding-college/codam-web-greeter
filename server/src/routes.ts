@@ -2,12 +2,23 @@ import { Express } from 'express';
 import { Config, ConfigError, Event42, Exam42 } from './interfaces';
 import { getCurrentExams, getExamForHostName, getHostNameFromRequest, hostNameToIp, examAvailableForHost } from './utils';
 import { fetchEvents, fetchExams } from './intra';
-import Api42 from '@codam/fast42';
+
+// Intra API
+import Fast42 from '@codam/fast42';
+let api: Fast42 | undefined = undefined;
+
+// Set up caching
 import NodeCache from 'node-cache';
+const cacheTTL = 900; // 15 minutes
+const cache = new NodeCache({ stdTTL: cacheTTL });
 
 const FOUND_HOSTS: string[] = [];
 
-export default (app: Express, cache: NodeCache, api: Api42 | undefined) => {
+export default (app: Express) => {
+	// Initialize
+	setUpIntraAPI();
+
+	// Define routes
 	app.get('/', (req, res) => {
 		res.send({ status: 'ok' });
 	});
@@ -91,4 +102,35 @@ export default (app: Express, cache: NodeCache, api: Api42 | undefined) => {
 		cache.set('examModeHosts', examModeHosts, 10); // 10 second cache
 		return res.send({ examModeHosts: examModeHosts, status: 'ok' });
 	});
+};
+
+const setUpIntraAPI = async function() {
+	try {
+		console.log(`Using Intra API UID: ${process.env.INTRA_API_UID}`);
+
+		api = await new Fast42([{
+			client_id: process.env.INTRA_API_UID!,
+			client_secret: process.env.INTRA_API_SECRET!,
+		}]).init();
+
+		// Fetch initial data
+		if (!cache.has('events')) {
+			const events = await fetchEvents(api);
+			console.log('Fetched future events');
+			cache.set('events', events);
+			cache.set('last-cache-change', new Date());
+		}
+
+		if (!cache.has('exams')) {
+			const exams = await fetchExams(api);
+			console.log('Fetched future exams');
+			cache.set('exams', exams);
+			cache.set('last-cache-change', new Date());
+		}
+	}
+	catch(err) {
+		console.warn("[WARNING] Could not initialize Intra API, some features might not work");
+		console.error(err);
+		api = undefined; // unset api
+	}
 };
