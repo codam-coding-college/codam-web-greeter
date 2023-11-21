@@ -20,6 +20,7 @@ export class LockScreenUI extends UIScreen {
 			},
 			errorMessage: (message: string) => {
 				alert(message);
+				window.ui.setDebugInfo(message);
 			},
 			infoMessage: (message: string) => {
 				alert(message);

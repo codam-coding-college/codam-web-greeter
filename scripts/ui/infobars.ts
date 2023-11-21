@@ -23,6 +23,11 @@ export class InfoBarsUI {
 		this._populateInfoElements();
 	}
 
+	public setDebugInfo(info: string): void {
+		this._infoElements.debug.innerText = info;
+		console.debug("Changed text in debug info: ", info);
+	}
+
 	private _populateInfoElements(): void {
 		// Populate debug info
 		this._infoElements.debug.innerText = '';

@@ -19,6 +19,7 @@ export class Wallpaper {
 		this._exists = (dirFiles !== undefined && dirFiles.includes(this._path));
 		if (!this._exists) {
 			console.warn('Wallpaper file does not exist: ' + this._path);
+			window.ui.setDebugInfo(`Wallpaper file does not exist: ${this._path}`);
 		}
 	}
 
@@ -159,6 +160,11 @@ export class Data {
 			.then(response => response.json())
 			.then(data => {
 				console.log("Fetched data.json", data);
+				if ("error" in data) {
+					console.warn("data.json response contains an error", data);
+					window.ui.setDebugInfo(`data.json response contains an error: ${data.error}`);
+					return;
+				}
 				this._dataJson = data;
 				// Emit data change event to all listeners
 				for (const listener of this._dataChangeListeners) {
@@ -167,6 +173,7 @@ export class Data {
 			})
 			.catch(error => {
 				console.error("Failed to fetch data.json", error);
+				window.ui.setDebugInfo(`Error fetching data.json: ${error}`);
 			});
 	}
 }

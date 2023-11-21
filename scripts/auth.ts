@@ -67,6 +67,9 @@ export class Authenticator {
 			}
 			catch (err) {
 				console.error(err);
+				if (this._authEvents) {
+					this._authEvents.errorMessage(String(err));
+				}
 			}
 		});
 
@@ -93,6 +96,9 @@ export class Authenticator {
 			}
 			catch (err) {
 				console.error(err);
+				if (this._authEvents) {
+					this._authEvents.errorMessage(String(err));
+				}
 			}
 		});
 
@@ -180,6 +186,9 @@ export class Authenticator {
 		}
 		catch (err) {
 			console.error(err);
+			if (this._authEvents) {
+				this._authEvents.errorMessage(String(err));
+			}
 		}
 	}
 

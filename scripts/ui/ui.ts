@@ -38,4 +38,8 @@ export class UI {
 	public get isLockScreen(): boolean {
 		return this._isLockScreen;
 	}
+
+	public setDebugInfo(info: string): void {
+		this._infoBars.setDebugInfo(info);
+	}
 }
