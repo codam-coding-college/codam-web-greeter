@@ -5,6 +5,11 @@ import express from 'express';
 import { fetchEvents, fetchExams } from './intra.js';
 import Fast42 from '@codam/fast42';
 let api: Fast42 | undefined = undefined;
+import NodeCache from 'node-cache';
+
+// Set up cache
+const cacheTTL = 900; // 15 minutes
+const cache = new NodeCache({ stdTTL: cacheTTL });
 
 // Set up express app
 const app = express();
@@ -15,7 +20,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Set up express routes
 import routes from './routes.js';
-routes(app, api);
+routes(app, cache, api);
 
 // Start server
 app.listen(3000, async () => {

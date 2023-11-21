@@ -5,13 +5,9 @@ import { fetchEvents, fetchExams } from './intra';
 import Api42 from '@codam/fast42';
 import NodeCache from 'node-cache';
 
-// Set up cache
-const cacheTTL = 900; // 15 minutes
-const cache = new NodeCache({ stdTTL: cacheTTL });
-
 const FOUND_HOSTS: string[] = [];
 
-export default (app: Express, api: Api42 | undefined) => {
+export default (app: Express, cache: NodeCache, api: Api42 | undefined) => {
 	app.get('/', (req, res) => {
 		res.send({ status: 'ok' });
 	});
