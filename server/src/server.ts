@@ -1,18 +1,10 @@
-import { Config, ConfigError, Event42, Exam42 } from './interfaces.js';
-
 import dotenv from 'dotenv';
 dotenv.config({ path: '.env', debug: true }); // Load .env file
 
-import { getExamForHostName, getHostNameFromRequest } from './utils.js';
 import express from 'express';
 import { fetchEvents, fetchExams } from './intra.js';
 import Fast42 from '@codam/fast42';
 let api: Fast42 | undefined = undefined;
-import NodeCache from 'node-cache';
-
-// Set up cache
-const cacheTTL = 900; // 15 minutes
-const cache = new NodeCache({ stdTTL: cacheTTL });
 
 // Set up express app
 const app = express();
@@ -22,43 +14,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Set up express routes
-app.get('/', (req, res) => {
-	res.send({ status: 'ok' });
-});
-app.get('/api/config/:hostname?', async (req, res) => {
-	const hostname = getHostNameFromRequest(req);
-
-	let events = cache.get<Event42[]>('events');
-	let exams = cache.get<Exam42[]>('exams');
-	let lastCacheChange = cache.get<Date>('last-cache-change');
-
-	if (!events && api) {
-		events = await fetchEvents(api);
-		cache.set('events', events);
-		cache.set('last-cache-change', new Date());
-	}
-	if (!exams && api) {
-		exams = await fetchExams(api);
-		cache.set('exams', exams);
-		cache.set('last-cache-change', new Date());
-	}
-
-	if (events === undefined || exams === undefined) {
-		console.log('No data to return for config request');
-		const cError: ConfigError = { error: 'No data to return, try again later' };
-		res.status(503).send(cError);
-		return;
-	}
-
-	const config: Config = {
-		hostname: hostname,
-		events: events,
-		exams: exams,
-		exams_for_host: getExamForHostName(exams, hostname),
-		fetch_time: lastCacheChange ?? new Date(),
-	};
-	res.send(config);
-});
+import routes from './routes.js';
+routes(app, api);
 
 // Start server
 app.listen(3000, async () => {

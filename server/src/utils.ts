@@ -86,22 +86,40 @@ export const getHostNameFromRequest = function(req: express.Request): string {
 export const getExamForHost = function(exams: Exam42[], hostIp: string): ExamForHost[] {
 	const examForHost: ExamForHost[] = [];
 	exams.forEach((exam) => {
-		exam.ip_range.forEach((ipRange) => {
-			if (ipRangeCheck(hostIp, ipRange)) {
-				examForHost.push({
-					id: exam.id,
-					name: exam.name,
-					begin_at: exam.begin_at,
-					end_at: exam.end_at,
-					session: {
-						username: EXAM_SESSION_USERNAME,
-						password: EXAM_SESSION_PASSWORD,
-					},
-				});
-			}
-		});
+		if (examAvailableForHost(exam, hostIp)) {
+			examForHost.push({
+				id: exam.id,
+				name: exam.name,
+				begin_at: exam.begin_at,
+				end_at: exam.end_at,
+				session: {
+					username: EXAM_SESSION_USERNAME,
+					password: EXAM_SESSION_PASSWORD,
+				},
+			});
+		}
 	});
 	return examForHost;
+};
+
+export const examAvailableForHost = function(exam: Exam42, hostIp: string): boolean {
+	exam.ip_range.forEach((ipRange) => {
+		if (ipRangeCheck(hostIp, ipRange)) {
+			return true;
+		}
+	});
+	return false;
+};
+
+export const getCurrentExams = function(exams: Exam42[]): Exam42[] {
+	const currentExams: Exam42[] = [];
+	const now = new Date();
+	for (const exam of exams) {
+		if (exam.begin_at < now && exam.end_at > now) {
+			currentExams.push(exam);
+		}
+	}
+	return currentExams;
 };
 
 export const getExamForHostName = function(exams: Exam42[], hostName: string): ExamForHost[] {
