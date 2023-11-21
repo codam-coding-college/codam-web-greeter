@@ -43,33 +43,45 @@ const fetchAll42 = async function(api: Fast42, path: string, params: { [key: str
 
 const getEventDateRange = function(): string {
 	const currentDate = new Date();
-	const maxFetchDate = new Date(currentDate.getTime() + 1000 * 60 * 60 * 24 * FETCH_EVENTS_UPCOMING_DAYS);
+	const maxFetchDate = new Date(currentDate.getTime() + 1000 * 60 * 60 * 24 * 365); // 1 year into the future
 	return `${currentDate.toISOString()},${maxFetchDate.toISOString()}`;
 };
+
+const filterExamOrEventOnDate = function(items: Exam42[] | Event42[]) {
+	// Delete events that are over the limit specified in the global variable
+	const currentDate = new Date();
+	const maxFetchDate = new Date(currentDate.getTime() + 1000 * 60 * 60 * 24 * FETCH_EVENTS_UPCOMING_DAYS);
+	const filteredItems = items.filter((item: Exam42 | Event42) => {
+		const eventDate = new Date(item.begin_at);
+		return eventDate.getTime() <= maxFetchDate.getTime();
+	});
+	return filteredItems;
+}
+
 
 export const fetchEvents = async function(api: Fast42): Promise<Event42[]> {
 	try {
 		const range = getEventDateRange();
-		const ongoingEvents = await fetchAll42(api, `/campus/${CAMPUS_ID}/events`, { 'range[end_at]': range, 'filter[kind]': EVENT_KINDS_FILTER.join(','), 'filter[future]': 'false' });
-		const futureEvents = await fetchAll42(api, `/campus/${CAMPUS_ID}/events`, { 'range[begin_at]': range, 'filter[kind]': EVENT_KINDS_FILTER.join(',') });
+		const intraEvents = await fetchAll42(api, `/campus/${CAMPUS_ID}/events`, { 'range[end_at]': range, 'filter[kind]': EVENT_KINDS_FILTER.join(',') });
 
-		// Combine ongoing and future events
-		const items = ongoingEvents.concat(futureEvents);
+		// Convert to Event42 objects
+		const events42: Event42[] = intraEvents.map((item) => {
+			return new Event42(item);
+		});
 
-		if (items.length == 0) {
+		// Remove events too far into the future
+		const filteredEvents = filterExamOrEventOnDate(events42) as Event42[];
+
+		if (filteredEvents.length == 0) {
 			console.log("No events found");
 			return [];
 		}
 
-		// Convert to Event42 objects
-		const events42: Event42[] = items.map((item) => {
-			return new Event42(item);
-		});
-		events42.sort((a, b) => {
+		filteredEvents.sort((a, b) => {
 			return a.begin_at.getTime() - b.begin_at.getTime();
 		});
-		console.log(`Fetched ${events42.length} events`);
-		return events42;
+		console.log(`Fetched ${filteredEvents.length} events`);
+		return filteredEvents;
 	}
 	catch(err) {
 		console.log(err);
@@ -80,26 +92,26 @@ export const fetchEvents = async function(api: Fast42): Promise<Event42[]> {
 export const fetchExams = async function(api: Fast42): Promise<Exam42[]> {
 	try {
 		const range = getEventDateRange();
-		const ongoingExams = await fetchAll42(api, `/campus/${CAMPUS_ID}/exams`, { 'range[end_at]': range, 'filter[future]': 'false' });
-		const futureExams = await fetchAll42(api, `/campus/${CAMPUS_ID}/exams`, { 'range[begin_at]': range });
+		const intraExams = await fetchAll42(api, `/campus/${CAMPUS_ID}/exams`, { 'range[end_at]': range });
 
-		// Combine ongoing and future exams
-		const items = ongoingExams.concat(futureExams);
+		// Convert to Exam42 objects
+		const exams42: Exam42[] = intraExams.map((item) => {
+			return new Exam42(item);
+		});
 
-		if (items.length == 0) {
+		// Remove exams too far into the future
+		const filteredExams = filterExamOrEventOnDate(exams42) as Exam42[];
+
+		if (filteredExams.length == 0) {
 			console.log("No exams found");
 			return [];
 		}
 
-		// Convert to Exam42 objects
-		const exams42: Exam42[] = items.map((item) => {
-			return new Exam42(item);
-		});
-		exams42.sort((a, b) => {
+		filteredExams.sort((a, b) => {
 			return a.begin_at.getTime() - b.begin_at.getTime();
 		});
-		console.log(`Fetched ${exams42.length} exams`);
-		return exams42;
+		console.log(`Fetched ${filteredExams.length} exams`);
+		return filteredExams;
 	}
 	catch(err) {
 		console.log(err);
