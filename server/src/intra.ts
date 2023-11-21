@@ -50,20 +50,26 @@ const getEventDateRange = function(): string {
 export const fetchEvents = async function(api: Fast42): Promise<Event42[]> {
 	try {
 		const range = getEventDateRange();
-		const items = await fetchAll42(api, `/campus/${CAMPUS_ID}/events`, { 'range[begin_at]': range, 'range[end_at]': range, 'filter[kind]': EVENT_KINDS_FILTER.join(',') });
+		const ongoingEvents = await fetchAll42(api, `/campus/${CAMPUS_ID}/events`, { 'range[end_at]': range, 'filter[kind]': EVENT_KINDS_FILTER.join(','), 'filter[future]': 'false' });
+		const futureEvents = await fetchAll42(api, `/campus/${CAMPUS_ID}/events`, { 'range[begin_at]': range, 'filter[kind]': EVENT_KINDS_FILTER.join(',') });
+
+		// Combine ongoing and future events
+		const items = ongoingEvents.concat(futureEvents);
+
 		if (items.length == 0) {
 			console.log("No events found");
 			return [];
 		}
 
-		const events: Event42[] = items.map((item) => {
+		// Convert to Event42 objects
+		const events42: Event42[] = items.map((item) => {
 			return new Event42(item);
 		});
-		events.sort((a, b) => {
+		events42.sort((a, b) => {
 			return a.begin_at.getTime() - b.begin_at.getTime();
 		});
-		console.log(`Fetched ${events.length} events`);
-		return events;
+		console.log(`Fetched ${events42.length} events`);
+		return events42;
 	}
 	catch(err) {
 		console.log(err);
@@ -74,20 +80,26 @@ export const fetchEvents = async function(api: Fast42): Promise<Event42[]> {
 export const fetchExams = async function(api: Fast42): Promise<Exam42[]> {
 	try {
 		const range = getEventDateRange();
-		const items = await fetchAll42(api, `/campus/${CAMPUS_ID}/exams`, { 'range[begin_at]': range, 'range[end_at]': range });
+		const ongoingExams = await fetchAll42(api, `/campus/${CAMPUS_ID}/exams`, { 'range[end_at]': range, 'filter[future]': 'false' });
+		const futureExams = await fetchAll42(api, `/campus/${CAMPUS_ID}/exams`, { 'range[begin_at]': range });
+
+		// Combine ongoing and future exams
+		const items = ongoingExams.concat(futureExams);
+
 		if (items.length == 0) {
 			console.log("No exams found");
 			return [];
 		}
 
-		const exams: Exam42[] = items.map((item) => {
+		// Convert to Exam42 objects
+		const exams42: Exam42[] = items.map((item) => {
 			return new Exam42(item);
 		});
-		exams.sort((a, b) => {
+		exams42.sort((a, b) => {
 			return a.begin_at.getTime() - b.begin_at.getTime();
 		});
-		console.log(`Fetched ${exams.length} exams`);
-		return exams;
+		console.log(`Fetched ${exams42.length} exams`);
+		return exams42;
 	}
 	catch(err) {
 		console.log(err);
