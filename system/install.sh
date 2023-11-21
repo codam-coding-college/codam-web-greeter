@@ -45,3 +45,6 @@ DATA_FILE="$WEB_GREETER_DIR/data.json"
 # Enable and start systemd timer
 /usr/bin/systemctl enable codam-web-greeter.timer
 /usr/bin/systemctl start codam-web-greeter.timer
+
+# Fetch data for the first time (in the background)
+/usr/bin/systemctl start codam-web-greeter.service &
