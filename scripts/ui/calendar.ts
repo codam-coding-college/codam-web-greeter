@@ -58,7 +58,7 @@ export class CalendarUI {
 		const requiredSpace = eventHeight + eventMargin;
 
 		// Calculate how much space is left on the screen
-		const spaceLeft = windowHeight - calendarHeight - (infoBarHeight * 2);
+		const spaceLeft = windowHeight - calendarHeight - (infoBarHeight * 2) - (eventMargin * 2);
 
 		console.debug("Calculated if event fits on screen",
 			"windowHeight", windowHeight,
