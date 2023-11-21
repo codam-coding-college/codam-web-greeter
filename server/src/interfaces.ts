@@ -4,7 +4,7 @@ export class Event42 {
 	id: number;
 	name: string;
 	description: string;
-	location: string;
+	location: string | null;
 	kind: string;
 	max_people: number | null;
 	nbr_subscriptions: number;
@@ -19,7 +19,7 @@ export class Event42 {
 		this.id = data['id'] ?? 0;
 		this.name = data['name'] ?? 'Event';
 		this.description = data['description'] ?? 'No description';
-		this.location = data['location'] ?? 'Unknown location';
+		this.location = data['location'] ?? null;
 		this.kind = data['kind'] ?? 'unknown';
 		this.max_people = data['max_people'] ?? null;
 		this.nbr_subscriptions = data['nbr_subscriptions'] ?? 0;

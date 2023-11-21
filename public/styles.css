@@ -393,7 +393,7 @@ aside {
 	font-size: x-small;
 }
 
-.calendar-event-details > span:not(:last-child)::after {
+.calendar-event-details > span:not(:first-child):not(:empty)::before {
 	content: ' · ';
 }
 

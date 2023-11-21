@@ -170,7 +170,7 @@ export class CalendarUI {
 
 		const calendarEventLocation = document.createElement('span');
 		calendarEventLocation.classList.add('calendar-event-location');
-		calendarEventLocation.innerText = event.location;
+		calendarEventLocation.innerText = event.location ?? '';
 		calendarEventDetails.appendChild(calendarEventLocation);
 
 		// Add dialog to event

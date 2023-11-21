@@ -37,7 +37,7 @@ export interface Event42 {
 	id: number;
 	name: string;
 	description: string;
-	location: string;
+	location: string | null;
 	kind: string;
 	max_people: number | null;
 	nbr_subscriptions: number;
@@ -68,7 +68,7 @@ export interface Exam42 {
 	ip_range: string[];
 	begin_at: string;
 	end_at: string;
-	location: string;
+	location: string | null;
 	max_people: number;
 	nbr_subscribers: number;
 	name: string;
