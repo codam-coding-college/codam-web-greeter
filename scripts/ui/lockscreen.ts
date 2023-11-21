@@ -54,7 +54,7 @@ export class LockScreenUI extends UIScreen {
 
 		// Only enable the login button when both the login and password fields are filled in
 		form.passwordInput.addEventListener('input', () => {
-			form.unlockButton.disabled = form.passwordInput.value === "";
+			this._enableOrDisableSubmitButton();
 		});
 
 		// Display the lock screen form
@@ -82,10 +82,20 @@ export class LockScreenUI extends UIScreen {
 			}
 		}
 
+		this._enableOrDisableSubmitButton();
+
 		if (!focusElement) {
 			focusElement = this._getInputToFocusOn();
 		}
 		focusElement.focus();
+	}
+
+	// Returns true if the login button is disabled, false otherwise
+	protected _enableOrDisableSubmitButton(): boolean {
+		const form = this._form as UILockScreenElements;
+		const buttonDisabled = form.passwordInput.value === "";
+		form.unlockButton.disabled = buttonDisabled;
+		return buttonDisabled;
 	}
 
 	protected _wigglePasswordInput(clearInput: boolean = true): void {
@@ -98,6 +108,7 @@ export class LockScreenUI extends UIScreen {
 		if (clearInput) {
 			passwordInput.value = "";
 			passwordInput.focus();
+			this._enableOrDisableSubmitButton();
 		}
 	}
 

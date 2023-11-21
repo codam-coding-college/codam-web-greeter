@@ -31,6 +31,7 @@ export abstract class UIScreen {
 	protected abstract _enableForm(): void;
 	protected abstract _wigglePasswordInput(): void;
 	protected abstract _getInputToFocusOn(): HTMLInputElement;
+	protected abstract _enableOrDisableSubmitButton(): boolean;
 
 	public set authEvents(events: AuthenticatorEvents) {
 		this._events = events;

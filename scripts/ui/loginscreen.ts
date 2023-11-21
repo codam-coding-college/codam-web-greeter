@@ -46,10 +46,10 @@ export class LoginScreenUI extends UIScreen {
 
 		// Only enable the login button when both the login and password fields are filled in
 		form.loginInput.addEventListener('input', () => {
-			form.loginButton.disabled = form.loginInput.value.trim() === "" || form.passwordInput.value === "";
+			this._enableOrDisableSubmitButton();
 		});
 		form.passwordInput.addEventListener('input', () => {
-			form.loginButton.disabled = form.loginInput.value.trim() === "" || form.passwordInput.value === "";
+			this._enableOrDisableSubmitButton();
 		});
 
 		// Display the login form
@@ -77,10 +77,20 @@ export class LoginScreenUI extends UIScreen {
 			}
 		}
 
+		this._enableOrDisableSubmitButton();
+
 		if (!focusElement) {
 			focusElement = this._getInputToFocusOn();
 		}
 		focusElement.focus();
+	}
+
+	// Returns true if the login button is disabled, false otherwise
+	protected _enableOrDisableSubmitButton(): boolean {
+		const form = this._form as UILoginElements;
+		const buttonDisabled = form.loginInput.value.trim() === "" || form.passwordInput.value === "";
+		form.loginButton.disabled = buttonDisabled;
+		return buttonDisabled;
 	}
 
 	protected _wigglePasswordInput(clearInput: boolean = true): void {
@@ -93,6 +103,7 @@ export class LoginScreenUI extends UIScreen {
 		if (clearInput) {
 			passwordInput.value = "";
 			passwordInput.focus();
+			this._enableOrDisableSubmitButton();
 		}
 	}
 
