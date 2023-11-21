@@ -17,8 +17,8 @@ export class CalendarUI {
 		const hours = Math.floor(duration / 1000 / 60 / 60);
 		const minutes = Math.floor(duration / 1000 / 60);
 
-		if (days > 0) {
-			return `About ${days} day${days === 1 ? '' : 's'}`;
+		if (days > 1) {
+			return `${days} days`;
 		}
 		else if (hours > 0) {
 			return `About ${hours} hour${hours === 1 ? '' : 's'}`;
