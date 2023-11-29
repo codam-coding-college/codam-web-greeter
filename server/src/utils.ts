@@ -5,6 +5,11 @@ import ipRangeCheck from 'ip-range-check';
 export const EXAM_SESSION_USERNAME = process.env.EXAM_SESSION_USERNAME ?? 'exam';
 export const EXAM_SESSION_PASSWORD = process.env.EXAM_SESSION_PASSWORD ?? 'exam';
 
+export const HOSTNAME_CLUSTER_LETTER = process.env.HOSTNAME_CLUSTER_LETTER ?? 'f'; // in most campuses, it'd be 'c'
+export const HOSTNAME_ROW_LETTER = process.env.HOSTNAME_ROW_LETTER ?? 'r';
+export const HOSTNAME_SEAT_LETTER = process.env.HOSTNAME_SEAT_LETTER ?? 's';
+export const HOSTNAME_SUFFIX = process.env.HOSTNAME_SUFFIX ?? '.codam.nl'; // in most campuses, it'd be empty
+
 export const parseIpRanges = function(ipRanges: string): string[] {
 	const ranges = ipRanges.split(',');
 	const trimmedRanges = ranges.map((range) => range.trim()); // trim whitespace
@@ -34,11 +39,12 @@ export const ipToHostName = function(ip: string): string | null {
 	const f = parsedParts[1] - 10;
 	const r = parsedParts[2];
 	const s = parsedParts[3];
-	return `f${f}r${r}s${s}.codam.nl`;
+	return `${HOSTNAME_CLUSTER_LETTER}${f}${HOSTNAME_ROW_LETTER}${r}${HOSTNAME_SEAT_LETTER}${s}${HOSTNAME_SUFFIX}`;
 };
 
 export const hostNameToIp = function(hostName: string): string | null {
-	const match = hostName.match(/f(\d+)r(\d+)s(\d+)\.codam\.nl/);
+	const regex = new RegExp(`^${HOSTNAME_CLUSTER_LETTER}(\\d+)${HOSTNAME_ROW_LETTER}(\\d+)${HOSTNAME_SEAT_LETTER}(\\d+)${HOSTNAME_SUFFIX}$`);
+	const match = hostName.match(regex);
 	if (!match) {
 		return null;
 	}
