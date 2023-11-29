@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/codam-internal/codam-web-greeter.git"
+    "url": "git+https://github.com/codam-coding-college/codam-web-greeter.git"
   },
   "keywords": [
     "codam",
@@ -24,9 +24,9 @@
   "author": "Codam Coding College",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/codam-internal/codam-web-greeter/issues"
+    "url": "https://github.com/codam-coding-college/codam-web-greeter/issues"
   },
-  "homepage": "https://github.com/codam-internal/codam-web-greeter#readme",
+  "homepage": "https://github.com/codam-coding-college/codam-web-greeter#readme",
   "devDependencies": {
     "nody-greeter-types": "^1.1.0",
     "ts-loader": "^9.5.0",
