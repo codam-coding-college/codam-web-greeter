@@ -31,31 +31,26 @@ Alternatively, you can install it by compiling from source from the [nody-greete
 git clone https://github.com/codam-coding-college/codam-web-greeter
 ```
 
-3. Run make to build the greeter
-```bash
+3. Build & install the greeter theme:
+```
 cd codam-web-greeter
-make
-```
-
-4. Install the greeter theme:
-```
 sudo make install
 ```
 
-5. Enable the nody-greeter greeter in LightDM by editing *nano /etc/lightdm/lightdm.conf*:
+4. Enable the nody-greeter greeter in LightDM by editing */etc/lightdm/lightdm.conf*:
 ```conf
 # Add the following line to the file under [SeatDefaults]:
 greeter-session=nody-greeter
 ```
 
-6. Enable the greeter theme in nody-greeter by editing */etc/lightdm/web-greeter.yml*:
+5. Enable the greeter theme in nody-greeter by editing */etc/lightdm/web-greeter.yml*:
 ```yml
 # Replace the theme name with codam-web-greeter:
 greeter:
     theme: codam
 ```
 
-7. Restart LightDM:
+6. Restart LightDM:
 ```bash
 sudo systemctl restart lightdm
 ```
