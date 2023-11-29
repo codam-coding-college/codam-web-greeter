@@ -3,6 +3,19 @@ A greeter theme for [nody-greeter](https://github.com/JezerM/nody-greeter)/web-g
 
 ---
 
+## Features
+
+- Responsive design
+- Display upcoming events and exams from the Intranet
+- Prevent students from signing in with their regular account during exams
+- Greeter can be used as a lock screen when someone is already logged in (replacement for ft_lock)
+- Customizable background images
+
+## Screenshots
+
+*Coming soon*
+
+
 ## Installation
 
 > Caution: make sure you know how to restore your system if something goes wrong. This theme is made specifically for Codam and if it doesn't work elsewhere, you're on your own.
