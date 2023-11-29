@@ -1,6 +1,7 @@
 import { Authenticator } from "../auth";
 import { LightDMUser } from "nody-greeter-types";
 import { UIScreen, UILockScreenElements } from "./screen";
+import { UI } from "./ui";
 
 export class LockScreenUI extends UIScreen {
 	public readonly _form: UILockScreenElements;
@@ -43,8 +44,18 @@ export class LockScreenUI extends UIScreen {
 		const form = this._form as UILockScreenElements;
 
 		// Populate lock screen data
-		form.displayName.innerText = this._activeSession.display_name ?? this._activeSession.username;
-		form.loginName.innerText = this._activeSession.username;
+		if (this._activeSession.username === "exam") {
+			// The exam user is a special case, we don't want to show the password input field. Just use the default password "exam"
+			form.displayName.innerText = "Exam in progress";
+			form.loginName.innerText = "Click the arrow below to resume your exam.";
+			form.loginName.style.marginTop = UI.getPadding(); // Add some padding for readability
+			form.passwordInput.value = "exam";
+			form.passwordInput.style.display = "none";
+		}
+		else {
+			form.displayName.innerText = this._activeSession.display_name ?? this._activeSession.username;
+			form.loginName.innerText = this._activeSession.username;
+		}
 
 		// This event gets called when the user clicks the unlock button or submits the lock screen form in any other way
 		form.form.addEventListener('submit', (event: Event) => {

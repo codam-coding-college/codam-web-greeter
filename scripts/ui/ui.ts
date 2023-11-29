@@ -103,4 +103,11 @@ export class UI {
 			return false;
 		}
 	}
+
+	/**
+	 * Get the padding specified in the CSS variable --padding.
+	 */
+	public static getPadding(element: HTMLElement = document.body): string {
+		return getComputedStyle(element).getPropertyValue('--padding');
+	}
 }
