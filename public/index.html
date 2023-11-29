@@ -24,7 +24,7 @@
 			<form action="POST" id="login-form" spellcheck="false" autocomplete="off" autocapitalize="off" style="display: none;">
 				<input type="text" name="login" id="login" placeholder="Enter your login" maxlength="32" />
 				<input type="password" name="password" id="password" placeholder="Enter your password" maxlength="128" />
-				<button type="submit" id="login-button" disabled>&#10149;</button>
+				<button type="submit" id="login-button" disabled title="Log in">&#10149;</button>
 			</form>
 
 			<!-- Lock screen form (used when one or more sessions are active) -->
@@ -32,7 +32,16 @@
 				<h3 id="active-user-session-display-name">John Doe</h3>
 				<h4 id="active-user-session-login-name">jdoe</h4>
 				<input type="password" name="active-user-session-password" id="active-user-session-password" placeholder="Enter your password" maxlength="128" />
-				<button type="submit" id="unlock-button" disabled>&#10149;</button>
+				<button type="submit" id="unlock-button" disabled title="Unlock">&#10149;</button>
+			</form>
+
+			<!-- Exam mode form -->
+			<form action="POST" id="exam-form" spellcheck="false" autocomplete="off" autocapitalize="off" style="display: none;">
+				<h3>This computer is reserved for an exam.</h3>
+				<p><span id="exam-mode-projects"></span></p>
+				<br>
+				<p>Click the arrow below to start your exam.</p>
+				<button type="submit" id="exam-start-button" title="Start your exam">&#10149;</button>
 			</form>
 		</main>
 

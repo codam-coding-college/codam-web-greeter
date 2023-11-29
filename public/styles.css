@@ -159,6 +159,11 @@ form {
 	padding: var(--padding) calc(var(--padding) * 2);
 }
 
+form#exam-form {
+	width: 100%;
+	max-width: 528px; /* 2x 264px */
+}
+
 form input {
 	display: block;
 	box-sizing: border-box;
@@ -230,7 +235,7 @@ form button:not(:disabled):active {
 	transform: scale(0.95);
 }
 
-/* user display name */
+/* user display name, "reserved for exam" text */
 form h3 {
 	font-weight: bold;
 	margin: var(--padding) 0 0 0;
@@ -244,6 +249,19 @@ form h4 {
 	margin: 0 0 var(--padding) 0;
 	color: var(--color-text-secondary);
 	text-shadow: var(--text-shadow);
+}
+
+/* other text */
+form p {
+	margin: var(--padding) 0 0 0;
+	color: var(--color-text-primary);
+	text-shadow: var(--text-shadow);
+}
+
+#exam-mode-projects {
+	font-size: small;
+	font-style: italic;
+	color: var(--color-text-secondary);
 }
 
 @keyframes wiggle {
