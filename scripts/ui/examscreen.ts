@@ -4,8 +4,8 @@ import { LoginScreenUI } from "./loginscreen";
 import { ExamForHost } from "../data";
 
 export class ExamModeUI extends UIScreen {
-	public static readonly EXAM_DEFAULT_USERNAME: string = 'exam';
-	public static readonly EXAM_DEFAULT_PASSWORD: string = 'exam';
+	public static readonly EXAM_USERNAME: string = 'exam';
+	public static readonly EXAM_PASSWORD: string = 'exam';
 
 	public readonly _form: UIExamModeElements;
 	private _exam: ExamForHost | null = null;
@@ -82,7 +82,7 @@ export class ExamModeUI extends UIScreen {
 			if (this._exam !== null) {
 				// Always log in with the username and password given by the back-end server.
 				// If no username and password are given, use the default username and password.
-				this._auth.login(this._exam?.session.username ?? ExamModeUI.EXAM_DEFAULT_USERNAME, this._exam?.session.password ?? ExamModeUI.EXAM_DEFAULT_PASSWORD);
+				this._auth.login(ExamModeUI.EXAM_USERNAME, ExamModeUI.EXAM_PASSWORD);
 			}
 			else {
 				console.error('Exam is null');
@@ -121,9 +121,7 @@ export class ExamModeUI extends UIScreen {
 
 	protected _wigglePasswordInput(clearInput: boolean = true): void {
 		// This should never happen. Display an error in the debug info bar.
-		const username = this._exam ? this._exam.session.username ?? ExamModeUI.EXAM_DEFAULT_USERNAME : ExamModeUI.EXAM_DEFAULT_USERNAME;
-		const password = this._exam ? this._exam.session.password ?? ExamModeUI.EXAM_DEFAULT_PASSWORD : ExamModeUI.EXAM_DEFAULT_PASSWORD;
-		const message = `Failed to login with username "${username}" and password "${password}" to start an exam session`;
+		const message = `Failed to login with username "${ExamModeUI.EXAM_USERNAME}" and password "${ExamModeUI.EXAM_PASSWORD}" to start an exam session`;
 
 		window.ui.setDebugInfo(message);
 		console.error(message);

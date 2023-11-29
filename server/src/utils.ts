@@ -2,9 +2,6 @@ import express from 'express';
 import { ExamForHost, Exam42 } from './interfaces';
 import ipRangeCheck from 'ip-range-check';
 
-export const EXAM_SESSION_USERNAME = process.env.EXAM_SESSION_USERNAME ?? 'exam';
-export const EXAM_SESSION_PASSWORD = process.env.EXAM_SESSION_PASSWORD ?? 'exam';
-
 export const parseIpRanges = function(ipRanges: string): string[] {
 	const ranges = ipRanges.split(',');
 	const trimmedRanges = ranges.map((range) => range.trim()); // trim whitespace
@@ -92,10 +89,6 @@ export const getExamForHost = function(exams: Exam42[], hostIp: string): ExamFor
 				name: exam.name,
 				begin_at: exam.begin_at,
 				end_at: exam.end_at,
-				session: {
-					username: EXAM_SESSION_USERNAME,
-					password: EXAM_SESSION_PASSWORD,
-				},
 			});
 		}
 	});
