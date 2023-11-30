@@ -7,18 +7,18 @@ set -e
 DATA_SERVER_URL=$(/usr/bin/grep -Po '(?<=data-server-url=).*' /usr/share/web-greeter/themes/codam/settings.ini | /usr/bin/sed 's/^"\(.*\)"$/\1/')
 DATA_SERVER_URL="$DATA_SERVER_URL$(/usr/bin/hostname)"
 
-/usr/bin/echo "Starting run at $(/usr/bin/date)" | /usr/bin/systemd-cat -p info
-/usr/bin/echo "Fetching data from $DATA_SERVER_URL..." | /usr/bin/systemd-cat -p info
+/usr/bin/echo "Starting run at $(/usr/bin/date)" | /usr/bin/systemd-cat -t "codam-web-greeter" -p info
+/usr/bin/echo "Fetching data from $DATA_SERVER_URL..." | /usr/bin/systemd-cat -t "codam-web-greeter" -p info
 
 # Get the data from the data server
 DATA=$(/usr/bin/curl -s "$DATA_SERVER_URL")
 
 # Check if the data is valid JSON
 if ! /usr/bin/jq -e . >/dev/null 2>&1 <<<"$DATA"; then
-	/usr/bin/echo "Invalid JSON data received from data server" | /usr/bin/systemd-cat -p err
+	/usr/bin/echo "Invalid JSON data received from data server" | /usr/bin/systemd-cat -t "codam-web-greeter" -p err
 	/usr/bin/exit 1
 else
-	/usr/bin/echo "Valid JSON data received from data server" | /usr/bin/systemd-cat -p info
+	/usr/bin/echo "Valid JSON data received from data server" | /usr/bin/systemd-cat -t "codam-web-greeter" -p info
 fi
 
 # Create a file for the data with the correct permissions and store the data in it
@@ -28,4 +28,4 @@ DATA_FILE="/usr/share/web-greeter/themes/codam/data.json"
 /usr/bin/chown codam-web-greeter:codam-web-greeter "$DATA_FILE"
 /usr/bin/echo "$DATA" > "$DATA_FILE"
 
-/usr/bin/echo "Data fetched successfully and saved to $DATA_FILE" | /usr/bin/systemd-cat -p info
+/usr/bin/echo "Data fetched successfully and saved to $DATA_FILE" | /usr/bin/systemd-cat -t "codam-web-greeter" -p info
