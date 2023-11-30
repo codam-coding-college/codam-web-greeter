@@ -81,10 +81,6 @@ export interface ExamForHost {
 	name: string;
 	begin_at: string;
 	end_at: string;
-	session: {
-		username: string;
-		password: string;
-	}
 }
 
 export interface DataJson {

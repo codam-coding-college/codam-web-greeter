@@ -98,10 +98,6 @@ export const getExamForHost = function(exams: Exam42[], hostIp: string): ExamFor
 				name: exam.name,
 				begin_at: exam.begin_at,
 				end_at: exam.end_at,
-				session: {
-					username: EXAM_SESSION_USERNAME,
-					password: EXAM_SESSION_PASSWORD,
-				},
 			});
 		}
 	});

@@ -105,10 +105,6 @@ export interface ExamForHost {
 	name: string;
 	begin_at: Date;
 	end_at: Date;
-	session: {
-		username: string;
-		password: string;
-	};
 }
 
 export interface Config {

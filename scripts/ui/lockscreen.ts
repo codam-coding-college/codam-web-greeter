@@ -1,6 +1,7 @@
 import { Authenticator } from "../auth";
 import { LightDMUser } from "nody-greeter-types";
 import { UIScreen, UILockScreenElements } from "./screen";
+import { UI } from "./ui";
 
 export class LockScreenUI extends UIScreen {
 	public readonly _form: UILockScreenElements;
@@ -29,7 +30,7 @@ export class LockScreenUI extends UIScreen {
 
 		this._activeSession = activeSession;
 		this._form = {
-			lockForm: document.getElementById('lock-form') as HTMLFormElement,
+			form: document.getElementById('lock-form') as HTMLFormElement,
 			displayName: document.getElementById('active-user-session-display-name') as HTMLHeadingElement,
 			loginName: document.getElementById('active-user-session-login-name') as HTMLHeadingElement,
 			passwordInput: document.getElementById('active-user-session-password') as HTMLInputElement,
@@ -43,11 +44,21 @@ export class LockScreenUI extends UIScreen {
 		const form = this._form as UILockScreenElements;
 
 		// Populate lock screen data
-		form.displayName.innerText = this._activeSession.display_name ?? this._activeSession.username;
-		form.loginName.innerText = this._activeSession.username;
+		if (this._activeSession.username === "exam") {
+			// The exam user is a special case, we don't want to show the password input field. Just use the default password "exam"
+			form.displayName.innerText = "Exam in progress";
+			form.loginName.innerText = "Click the arrow below to resume your exam.";
+			form.loginName.style.marginTop = UI.getPadding(); // Add some padding for readability
+			form.passwordInput.value = "exam";
+			form.passwordInput.style.display = "none";
+		}
+		else {
+			form.displayName.innerText = this._activeSession.display_name ?? this._activeSession.username;
+			form.loginName.innerText = this._activeSession.username;
+		}
 
 		// This event gets called when the user clicks the unlock button or submits the lock screen form in any other way
-		form.lockForm.addEventListener('submit', (event: Event) => {
+		form.form.addEventListener('submit', (event: Event) => {
 			event.preventDefault();
 			this._auth.login(this._activeSession.username, form.passwordInput.value);
 		});
@@ -56,38 +67,6 @@ export class LockScreenUI extends UIScreen {
 		form.passwordInput.addEventListener('input', () => {
 			this._enableOrDisableSubmitButton();
 		});
-
-		// Display the lock screen form
-		form.lockForm.style.display = "block";
-		form.passwordInput.focus();
-	}
-
-	protected _disableForm(): void {
-		for (const element of Object.values(this._form as UILockScreenElements)) {
-			if ("disabled" in element && typeof element.disabled === "boolean") { // check if element has disabled property and disable every element that has it
-				element.disabled = true;
-			}
-		}
-
-		// Unfocus the focused element
-		if (document.activeElement) {
-			(document.activeElement as HTMLElement).blur();
-		}
-	}
-
-	protected _enableForm(focusElement: HTMLInputElement | null = null): void {
-		for (const element of Object.values(this._form as UILockScreenElements)) {
-			if ("disabled" in element && typeof element.disabled === "boolean") { // check if element has disabled property and enable every element that has it
-				element.disabled = false;
-			}
-		}
-
-		this._enableOrDisableSubmitButton();
-
-		if (!focusElement) {
-			focusElement = this._getInputToFocusOn();
-		}
-		focusElement.focus();
 	}
 
 	// Returns true if the login button is disabled, false otherwise

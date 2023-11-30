@@ -110,11 +110,7 @@ Request data to be displayed by the greeter for the given hostname. If no hostna
 			"id": 15191,
 			"name": "Codam Exam",
 			"begin_at": "2023-11-24T12:00:00.000Z",
-			"end_at": "2023-11-24T15:00:00.000Z",
-			"session": {
-				"username": "exam",
-				"password": "exam"
-			}
+			"end_at": "2023-11-24T15:00:00.000Z"
 		},
 		...
 	],

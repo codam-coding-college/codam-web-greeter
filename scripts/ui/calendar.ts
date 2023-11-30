@@ -1,5 +1,6 @@
 import { DataJson, Event42 } from "../data";
 import { Data } from "../data";
+import { UI } from "./ui";
 
 export class CalendarUI {
 	private _calendar: HTMLDivElement;
@@ -52,7 +53,7 @@ export class CalendarUI {
 		const infoBarHeight = parseInt(getComputedStyle(this._calendar).getPropertyValue('--header-footer-height'));
 		const calendarHeight = this._calendar.clientHeight;
 		const eventHeight = 78; // Assume every event takes up 78 pixels
-		const eventMargin = parseInt(getComputedStyle(this._calendar).getPropertyValue('--padding'));
+		const eventMargin = parseInt(UI.getPadding(this._calendar));
 
 		// Calculate how much space is needed for the event
 		const requiredSpace = eventHeight + eventMargin;
