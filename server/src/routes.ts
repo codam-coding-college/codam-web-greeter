@@ -65,7 +65,8 @@ export default (app: Express) => {
 	app.get('/api/exam_mode_hosts', async (req, res) => {
 		// Check cache first
 		if (cache.has('examModeHosts')) {
-			return res.send({ exam_mode_hosts: cache.get<string[]>('examModeHosts'), status: 'ok' });
+			const ret = cache.get<any>('examModeHosts')
+			return res.send(ret);
 		}
 
 		// Get the current exams
@@ -99,9 +100,10 @@ export default (app: Express) => {
 		}
 
 		// Save to cache and return data
-		cache.set('examModeHosts', examModeHosts, 5); // 5 second cache
 		const examsInProgressIds = currentExams.map((exam) => exam.id);
-		return res.send({ exam_mode_hosts: examModeHosts, message: `Exams in progress: ${examsInProgressIds.join(', ')}`, status: 'ok' });
+		const ret = { exam_mode_hosts: examModeHosts, message: `Exams in progress: ${examsInProgressIds.join(', ')}`, status: 'ok' }
+		cache.set('examModeHosts', ret, 5); // 5 second cache
+		return res.send(ret);
 	});
 };
 
