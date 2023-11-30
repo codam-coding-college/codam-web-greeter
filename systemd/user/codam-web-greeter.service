@@ -1,0 +1,12 @@
+[Unit]
+Description=Initializer for codam-web-greeter in the user environment
+
+[Service]
+Type=oneshot
+Restart=no
+RemainAfterExit=yes
+ExecStart=/usr/bin/bash /usr/share/codam/init-codam-web-greeter.sh
+ExecStopPost=/usr/bin/bash /usr/share/codam/cleanup-codam-web-greeter.sh
+
+[Install]
+WantedBy=default.target
