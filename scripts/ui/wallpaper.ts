@@ -12,12 +12,25 @@ export class WallpaperUI {
 	}
 
 	public displayWallpaper(): boolean {
-		const wallpaper: Wallpaper = (this._isLockScreen ? window.data.lockScreenWallpaper : window.data.loginScreenWallpaper);
+		let wallpaper: Wallpaper = window.data.loginScreenWallpaper;
+		if (this._isLockScreen) {
+			if (window.data.userLockScreenWallpaper.exists) {
+				wallpaper = window.data.userLockScreenWallpaper;
+			}
+			else {
+				wallpaper = window.data.lockScreenWallpaper;
+			}
+		}
 
 		if (wallpaper.exists) {
 			// Set wallpaper (yes for some reason the file path just works without file://)
 			// Actually, file:// will even cause the image to not load.
 			this._element.style.backgroundImage = 'url("' + wallpaper.path + '")';
+		}
+		else {
+			// Fall back to black color
+			this._element.style.backgroundColor = 'black';
+			this._element.style.backgroundImage = 'none';
 		}
 
 		return true;
