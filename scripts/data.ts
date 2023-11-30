@@ -5,12 +5,13 @@ import { lightdm } from 'nody-greeter-types/index'
 const PATH_DATA_JSON: string = 'data.json';
 const PATH_WALLPAPER_LOGIN: string = '/usr/share/codam/wallpapers/login-screen.jpg';
 const PATH_WALLPAPER_LOCK: string = '/usr/share/codam/wallpapers/ft_lock_bkg.jpg';
+const PATH_WALLPAPER_LOCK_USER: string = '/tmp/codam-web-greeter-user-wallpaper';
 
 export class Wallpaper {
 	private _path: string;
 	private _exists: boolean;
 
-	public constructor(path: string) {
+	public constructor(path: string, quiet: boolean = false) {
 		this._path = path;
 
 		// Check if file exists
@@ -19,7 +20,9 @@ export class Wallpaper {
 		this._exists = (dirFiles !== undefined && dirFiles.includes(this._path));
 		if (!this._exists) {
 			console.warn('Wallpaper file does not exist: ' + this._path);
-			window.ui.setDebugInfo(`Wallpaper file does not exist: ${this._path}`);
+			if (!quiet) {
+				window.ui.setDebugInfo(`Wallpaper file does not exist: ${this._path}`);
+			}
 		}
 	}
 
@@ -98,6 +101,7 @@ export class Data {
 	public hostname: string;
 	public loginScreenWallpaper: Wallpaper;
 	public lockScreenWallpaper: Wallpaper;
+	public userLockScreenWallpaper: Wallpaper;
 	private _dataJsonFetchInterval: number = 60 * 1000; // 1 minute
 	private _dataJson: DataJson | undefined;
 	private _dataChangeListeners: ((dataJson: DataJson | undefined) => void)[] = [];
@@ -113,6 +117,7 @@ export class Data {
 		// Set up the wallpapers
 		this.loginScreenWallpaper = new Wallpaper(PATH_WALLPAPER_LOGIN);
 		this.lockScreenWallpaper = new Wallpaper(PATH_WALLPAPER_LOCK);
+		this.userLockScreenWallpaper = new Wallpaper(PATH_WALLPAPER_LOCK_USER, true);
 
 		// Fetch data.json every 5 minutes and fetch it now
 		setInterval(() => this._refetchDataJson(), this._dataJsonFetchInterval);
