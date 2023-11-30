@@ -3,6 +3,12 @@
 # Exit on error
 set -e
 
+# Only run for users in the student or piscine group
+if ! /usr/bin/groups | /usr/bin/grep -qE '(student|piscine)'; then
+	/usr/bin/echo "Not running for user $(/usr/bin/whoami)"
+	/usr/bin/exit 0
+fi
+
 TMP_WALLPAPER_PATH="/tmp/codam-web-greeter-user-wallpaper"
 
 # Remove existing wallpaper in /tmp
