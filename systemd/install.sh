@@ -46,6 +46,7 @@ DATA_FILE="$WEB_GREETER_DIR/data.json"
 
 # Reload systemd daemon
 /usr/bin/systemctl daemon-reload
+/usr/bin/systemctl --global daemon-reload
 
 # Enable and start systemd system timer
 /usr/bin/systemctl enable codam-web-greeter.timer
