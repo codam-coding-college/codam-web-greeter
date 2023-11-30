@@ -1,6 +1,6 @@
 {
   "name": "codam-web-greeter-server",
-  "version": "0.4.2",
+  "version": "0.5.0",
   "description": "Back-end server for the codam-web-greeter",
   "main": "src/server.js",
   "scripts": {
