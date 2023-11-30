@@ -109,11 +109,11 @@ export const getExamForHost = function(exams: Exam42[], hostIp: string): ExamFor
 };
 
 export const examAvailableForHost = function(exam: Exam42, hostIp: string): boolean {
-	exam.ip_range.forEach((ipRange) => {
+	for (const ipRange of exam.ip_range) {
 		if (ipRangeCheck(hostIp, ipRange)) {
 			return true;
 		}
-	});
+	}
 	return false;
 };
 
