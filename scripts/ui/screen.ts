@@ -50,7 +50,7 @@ export abstract class UIScreen {
 	 * Does nothing if the form is already hidden.
 	 */
 	public hideForm(): void {
-		if (!this._formShown) {
+		if (this._formShown) {
 			this._formShown = false;
 			this._form.form.style.display = "none";
 		}
