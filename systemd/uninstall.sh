@@ -25,7 +25,7 @@ fi
 
 # Reload systemd daemon
 /usr/bin/systemctl daemon-reload
-/usr/bin/systemctl --global daemon-reload
+# /usr/bin/systemctl --global daemon-reload
 
 # Remove system user
 /usr/sbin/deluser codam-web-greeter
