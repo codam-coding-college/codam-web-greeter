@@ -1,9 +1,12 @@
 [Unit]
 Description=Initializer for codam-web-greeter in the user environment
+StartLimitInterval=200
+StartLimitBurst=5
 
 [Service]
 Type=oneshot
-Restart=no
+Restart=on-failure
+RestartSec=30
 RemainAfterExit=yes
 ExecStart=/usr/bin/bash /usr/share/codam/init-codam-web-greeter.sh
 ExecStopPost=/usr/bin/bash /usr/share/codam/cleanup-codam-web-greeter.sh
