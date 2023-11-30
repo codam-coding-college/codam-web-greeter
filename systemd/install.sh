@@ -14,7 +14,7 @@ ROOT_DIR="$(/usr/bin/dirname "$(/usr/bin/readlink -f "$0")")"
 
 # Install data fetching script to /usr/share/codam
 /usr/bin/mkdir -p /usr/share/codam
-/usr/bin/cp "$ROOT_DIR/systemd/fetch-codam-web-greeter-data.sh" /usr/share/codam/fetch-codam-web-greeter-data.sh
+/usr/bin/cp "$ROOT_DIR/system/fetch-codam-web-greeter-data.sh" /usr/share/codam/fetch-codam-web-greeter-data.sh
 
 # Copy uninstall script to /usr/share/codam
 /usr/bin/cp "$ROOT_DIR/uninstall.sh" /usr/share/codam/uninstall-codam-web-greeter-service.sh
@@ -36,8 +36,8 @@ DATA_FILE="$WEB_GREETER_DIR/data.json"
 /usr/bin/echo '{"error": "No data fetched yet"}' > "$DATA_FILE"
 
 # Install systemd service and timer
-/usr/bin/cp "$ROOT_DIR/systemd/codam-web-greeter.service" /etc/systemd/system/codam-web-greeter.service
-/usr/bin/cp "$ROOT_DIR/systemd/codam-web-greeter.timer" /etc/systemd/system/codam-web-greeter.timer
+/usr/bin/cp "$ROOT_DIR/system/codam-web-greeter.service" /etc/systemd/system/codam-web-greeter.service
+/usr/bin/cp "$ROOT_DIR/system/codam-web-greeter.timer" /etc/systemd/system/codam-web-greeter.timer
 
 # Reload systemd daemon
 /usr/bin/systemctl daemon-reload
