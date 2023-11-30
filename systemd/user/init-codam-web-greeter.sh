@@ -29,6 +29,7 @@ if [[ "$WALLPAPER" == file://* ]]; then
 	if [ -f "$WALLPAPER_PATH" ]; then
 		# Copy the wallpaper to /tmp (without extension)
 		/usr/bin/cp "$WALLPAPER_PATH" "$TMP_WALLPAPER_PATH"
+		/usr/bin/chmod 666 "$TMP_WALLPAPER_PATH" # Allow all users to delete the file
 		/usr/bin/echo "Copied wallpaper $WALLPAPER_PATH to $TMP_WALLPAPER_PATH"
 	else
 		/usr/bin/echo "Wallpaper $WALLPAPER_PATH does not exist"
