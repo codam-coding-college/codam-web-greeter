@@ -85,7 +85,7 @@ export default (app: Express) => {
 
 		// Calculate which hosts are in exam mode
 		const examModeHosts: string[] = [];
-		for (const hostname in FOUND_HOSTS) {
+		for (const hostname of FOUND_HOSTS) {
 			const ipAddress = hostNameToIp(hostname);
 			if (!ipAddress) {
 				continue;
@@ -99,8 +99,9 @@ export default (app: Express) => {
 		}
 
 		// Save to cache and return data
-		cache.set('examModeHosts', examModeHosts, 10); // 10 second cache
-		return res.send({ examModeHosts: examModeHosts, status: 'ok' });
+		cache.set('examModeHosts', examModeHosts, 5); // 5 second cache
+		const examsInProgressIds = currentExams.map((exam) => exam.id);
+		return res.send({ examModeHosts: examModeHosts, message: `Exams in progress: ${examsInProgressIds.join(', ')}`, status: 'ok' });
 	});
 };
 
