@@ -65,7 +65,7 @@ export default (app: Express) => {
 	app.get('/api/exam_mode_hosts', async (req, res) => {
 		// Check cache first
 		if (cache.has('examModeHosts')) {
-			return res.send({ examModeHosts: cache.get<string[]>('examModeHosts'), status: 'ok' });
+			return res.send({ exam_mode_hosts: cache.get<string[]>('examModeHosts'), status: 'ok' });
 		}
 
 		// Get the current exams
@@ -80,7 +80,7 @@ export default (app: Express) => {
 		}
 		const currentExams = getCurrentExams(exams);
 		if (currentExams.length === 0) {
-			return res.send({ examModeHosts: [], message: 'No exams are currently running', status: 'ok' });
+			return res.send({ exam_mode_hosts: [], message: 'No exams are currently running', status: 'ok' });
 		}
 
 		// Calculate which hosts are in exam mode
@@ -101,7 +101,7 @@ export default (app: Express) => {
 		// Save to cache and return data
 		cache.set('examModeHosts', examModeHosts, 5); // 5 second cache
 		const examsInProgressIds = currentExams.map((exam) => exam.id);
-		return res.send({ examModeHosts: examModeHosts, message: `Exams in progress: ${examsInProgressIds.join(', ')}`, status: 'ok' });
+		return res.send({ exam_mode_hosts: examModeHosts, message: `Exams in progress: ${examsInProgressIds.join(', ')}`, status: 'ok' });
 	});
 };
 
