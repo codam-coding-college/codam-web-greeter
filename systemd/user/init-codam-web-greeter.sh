@@ -14,11 +14,11 @@ TMP_WALLPAPER_PATH="/tmp/codam-web-greeter-user-wallpaper"
 WALLPAPER=$(/usr/bin/gsettings get org.gnome.desktop.screensaver picture-uri | /usr/bin/sed "s/^['\"]\(.*\)['\"]$/\1/")
 
 if [ -z "$WALLPAPER" ]; then
-	/usr/bin/echo "No Gnome screensaver wallpaper found" | /usr/bin/systemd-cat -t "codam-web-greeter" -p warning
+	/usr/bin/echo "No Gnome screensaver wallpaper found"
 	/usr/bin/exit 1
 fi
 
-/usr/bin/echo "Found Gnome screensaver wallpaper $WALLPAPER" | /usr/bin/systemd-cat -t "codam-web-greeter" -p info
+/usr/bin/echo "Found Gnome screensaver wallpaper $WALLPAPER"
 
 # Check if the wallpaper starts with file://
 if [[ "$WALLPAPER" == file://* ]]; then
@@ -29,10 +29,10 @@ if [[ "$WALLPAPER" == file://* ]]; then
 	if [ -f "$WALLPAPER_PATH" ]; then
 		# Copy the wallpaper to /tmp (without extension)
 		/usr/bin/cp "$WALLPAPER_PATH" "$TMP_WALLPAPER_PATH"
-		/usr/bin/echo "Copied wallpaper $WALLPAPER_PATH to $TMP_WALLPAPER_PATH" | /usr/bin/systemd-cat -t "codam-web-greeter" -p info
+		/usr/bin/echo "Copied wallpaper $WALLPAPER_PATH to $TMP_WALLPAPER_PATH"
 	else
-		/usr/bin/echo "Wallpaper $WALLPAPER_PATH does not exist" | /usr/bin/systemd-cat -t "codam-web-greeter" -p warning
+		/usr/bin/echo "Wallpaper $WALLPAPER_PATH does not exist"
 	fi
 else
-	/usr/bin/echo "Wallpaper $WALLPAPER is not a local file" | /usr/bin/systemd-cat -t "codam-web-greeter" -p warning
+	/usr/bin/echo "Wallpaper $WALLPAPER is not a local file"
 fi
