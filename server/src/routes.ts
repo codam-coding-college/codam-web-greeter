@@ -47,7 +47,7 @@ export default (app: Express) => {
 			return res.status(503).send(cError);
 		}
 
-		if (!(hostname in FOUND_HOSTS)) {
+		if (FOUND_HOSTS.includes(hostname) === false) {
 			console.log(`Found new hostname: ${hostname}`);
 			FOUND_HOSTS.push(hostname);
 		}
