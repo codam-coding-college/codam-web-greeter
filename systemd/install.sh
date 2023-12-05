@@ -21,7 +21,7 @@ fi
 # Install service scripts to /usr/share/codam
 /usr/bin/mkdir -p /usr/share/codam
 /usr/bin/cp "$ROOT_DIR/system/codam-web-greeter-fetcher.sh" /usr/share/codam/codam-web-greeter-fetcher.sh
-/usr/bin/cp "$ROOT_DIR/user/codam-web-greeter-init.sh" /usr/share/codam/odam-web-greeter-init.sh
+/usr/bin/cp "$ROOT_DIR/user/codam-web-greeter-init.sh" /usr/share/codam/codam-web-greeter-init.sh
 /usr/bin/cp "$ROOT_DIR/user/codam-web-greeter-cleanup.sh" /usr/share/codam/codam-web-greeter-cleanup.sh
 /usr/bin/cp "$ROOT_DIR/user/codam-web-greeter-activator.sh" /usr/share/codam/codam-web-greeter-activator.sh
 
