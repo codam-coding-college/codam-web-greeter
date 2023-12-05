@@ -1,5 +1,5 @@
-import { Authenticator } from "../auth";
-import { UILoginElements, UIScreen } from "./screen";
+import { Authenticator } from "../../auth";
+import { UILoginElements, UIScreen } from "../screen";
 
 export class LoginScreenUI extends UIScreen {
 	public readonly _form: UILoginElements;

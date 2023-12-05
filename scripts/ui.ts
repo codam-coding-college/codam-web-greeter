@@ -1,12 +1,12 @@
-import { Authenticator } from "../auth";
-import { Data, ExamForHost, DataJson } from "../data";
-import { InfoBarsUI } from "./infobars";
-import { LockScreenUI } from "./lockscreen";
-import { LoginScreenUI } from "./loginscreen";
+import { Authenticator } from "./auth";
+import { Data, ExamForHost, DataJson } from "./data";
+import { InfoBarsUI } from "./uis/infobars";
+import { LockScreenUI } from "./uis/screens/lockscreen";
+import { LoginScreenUI } from "./uis/screens/loginscreen";
 import { LightDMUser, lightdm } from "nody-greeter-types";
-import { WallpaperUI } from "./wallpaper"
-import { CalendarUI } from "./calendar";
-import { ExamModeUI } from "./examscreen";
+import { WallpaperUI } from "./uis/wallpaper"
+import { CalendarUI } from "./uis/calendar";
+import { ExamModeUI } from "./uis/screens/examscreen";
 
 export class UI {
 	public static readonly EXAM_MODE_CHECK_INTERVAL: number = 5 * 1000; // 5 seconds
