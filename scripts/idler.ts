@@ -31,13 +31,7 @@ export class Idler {
 	}
 
 	private _action(): void {
-		// If we're in a lock screen, reboot the computer
-		if (this._isLockScreen) {
-			window.ui.setDebugInfo("Rebooting...");
-			if (window.lightdm?.can_restart) {
-				window.lightdm?.restart();
-			}
-		}
+		// TODO: start screensaver?
 	}
 
 	private _checkIfActionNeeded(): boolean {
