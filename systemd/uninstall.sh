@@ -15,6 +15,7 @@ fi
 
 # Disable systemd user service
 /usr/bin/systemctl --global disable codam-web-greeter.service
+/usr/bin/systemctl --global disable codam-web-greeter-activator.timer
 
 # Remove systemd system service and timer
 /usr/bin/rm /etc/systemd/system/codam-web-greeter.service
@@ -22,6 +23,8 @@ fi
 
 # Remove systemd user service
 /usr/bin/rm /etc/systemd/user/codam-web-greeter.service
+/usr/bin/rm /etc/systemd/user/codam-web-greeter-activator.service
+/usr/bin/rm /etc/systemd/user/codam-web-greeter-activator.timer
 
 # Reload systemd daemon
 /usr/bin/systemctl daemon-reload
@@ -30,10 +33,8 @@ fi
 # Remove system user
 /usr/sbin/deluser codam-web-greeter
 
-# Remove data service scripts
-/usr/bin/rm /usr/share/codam/fetch-codam-web-greeter-data.sh
-/usr/bin/rm /usr/share/codam/init-codam-web-greeter.sh
-/usr/bin/rm /usr/share/codam/cleanup-codam-web-greeter.sh
+# Remove service scripts
+/usr/bin/rm /usr/share/codam/codam-web-greeter-*.sh
 
 # Remove data.json
 DATA_JSON_FILE="/usr/share/web-greeter/themes/codam/data.json"

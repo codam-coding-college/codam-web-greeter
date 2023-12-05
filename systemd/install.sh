@@ -12,11 +12,18 @@ fi
 # Get path to the directory this script resides in
 ROOT_DIR="$(/usr/bin/dirname "$(/usr/bin/readlink -f "$0")")"
 
+# Make sure xprintidle is installed
+if ! /usr/bin/dpkg -s xprintidle >/dev/null 2>&1; then
+	/usr/bin/echo "xprintidle is not installed, installing it now"
+	/usr/bin/apt-get install -y xprintidle
+fi
+
 # Install service scripts to /usr/share/codam
 /usr/bin/mkdir -p /usr/share/codam
-/usr/bin/cp "$ROOT_DIR/system/fetch-codam-web-greeter-data.sh" /usr/share/codam/fetch-codam-web-greeter-data.sh
-/usr/bin/cp "$ROOT_DIR/user/init-codam-web-greeter.sh" /usr/share/codam/init-codam-web-greeter.sh
-/usr/bin/cp "$ROOT_DIR/user/cleanup-codam-web-greeter.sh" /usr/share/codam/cleanup-codam-web-greeter.sh
+/usr/bin/cp "$ROOT_DIR/system/codam-web-greeter-fetcher.sh" /usr/share/codam/codam-web-greeter-fetcher.sh
+/usr/bin/cp "$ROOT_DIR/user/codam-web-greeter-init.sh" /usr/share/codam/odam-web-greeter-init.sh
+/usr/bin/cp "$ROOT_DIR/user/codam-web-greeter-cleanup.sh" /usr/share/codam/codam-web-greeter-cleanup.sh
+/usr/bin/cp "$ROOT_DIR/user/codam-web-greeter-activator.sh" /usr/share/codam/codam-web-greeter-activator.sh
 
 # Copy uninstall script to /usr/share/codam
 /usr/bin/cp "$ROOT_DIR/uninstall.sh" /usr/share/codam/uninstall-codam-web-greeter-service.sh
@@ -41,8 +48,10 @@ DATA_FILE="$WEB_GREETER_DIR/data.json"
 /usr/bin/cp "$ROOT_DIR/system/codam-web-greeter.service" /etc/systemd/system/codam-web-greeter.service
 /usr/bin/cp "$ROOT_DIR/system/codam-web-greeter.timer" /etc/systemd/system/codam-web-greeter.timer
 
-# Install systemd user service
+# Install systemd user services
 /usr/bin/cp "$ROOT_DIR/user/codam-web-greeter.service" /etc/systemd/user/codam-web-greeter.service
+/usr/bin/cp "$ROOT_DIR/user/codam-web-greeter-activator.service" /etc/systemd/user/codam-web-greeter-activator.service
+/usr/bin/cp "$ROOT_DIR/user/codam-web-greeter-activator.timer" /etc/systemd/user/codam-web-greeter-activator.timer
 
 # Reload systemd daemon
 /usr/bin/systemctl daemon-reload
@@ -57,3 +66,4 @@ DATA_FILE="$WEB_GREETER_DIR/data.json"
 
 # Enable and start systemd user service for all users
 /usr/bin/systemctl --global enable codam-web-greeter.service
+/usr/bin/systemctl --global enable codam-web-greeter-activator.timer
