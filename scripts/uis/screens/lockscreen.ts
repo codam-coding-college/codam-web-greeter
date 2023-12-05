@@ -1,7 +1,7 @@
-import { Authenticator } from "../auth";
+import { Authenticator } from "../../auth";
 import { LightDMUser } from "nody-greeter-types";
-import { UIScreen, UILockScreenElements } from "./screen";
-import { UI } from "./ui";
+import { UIScreen, UILockScreenElements } from "../screen";
+import { UI } from "../../ui";
 
 export class LockScreenUI extends UIScreen {
 	public readonly _form: UILockScreenElements;

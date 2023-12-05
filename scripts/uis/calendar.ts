@@ -1,6 +1,6 @@
 import { DataJson, Event42 } from "../data";
 import { Data } from "../data";
-import { UI } from "./ui";
+import { UI } from "../ui";
 
 export class CalendarUI {
 	private _calendar: HTMLDivElement;

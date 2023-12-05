@@ -1,7 +1,7 @@
-import { Authenticator } from "../auth";
-import { UIScreen, UIExamModeElements } from "./screen";
+import { Authenticator } from "../../auth";
+import { UIScreen, UIExamModeElements } from "../screen";
 import { LoginScreenUI } from "./loginscreen";
-import { ExamForHost } from "../data";
+import { ExamForHost } from "../../data";
 
 export class ExamModeUI extends UIScreen {
 	public static readonly EXAM_USERNAME: string = 'exam';
