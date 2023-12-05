@@ -16,7 +16,6 @@ fi
 # Disable systemd user service
 /usr/bin/systemctl --global disable codam-web-greeter.service
 /usr/bin/systemctl --global disable codam-web-greeter-activator.timer
-/usr/bin/systemctl --global stop codam-web-greeter-activator.timer
 
 # Remove systemd system service and timer
 /usr/bin/rm /etc/systemd/system/codam-web-greeter.service

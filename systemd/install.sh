@@ -67,4 +67,3 @@ DATA_FILE="$WEB_GREETER_DIR/data.json"
 # Enable and start systemd user service for all users
 /usr/bin/systemctl --global enable codam-web-greeter.service
 /usr/bin/systemctl --global enable codam-web-greeter-activator.timer
-/usr/bin/systemctl --global start codam-web-greeter-activator.timer
