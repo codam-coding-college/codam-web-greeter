@@ -6,6 +6,7 @@ import { UI } from "../../ui";
 export class LockScreenUI extends UIScreen {
 	public readonly _form: UILockScreenElements;
 	private readonly _activeSession: LightDMUser;
+	private _isExamMode: boolean = false;
 
 	public constructor(auth: Authenticator, activeSession: LightDMUser) {
 		super(auth, {
@@ -46,11 +47,13 @@ export class LockScreenUI extends UIScreen {
 		// Populate lock screen data
 		if (this._activeSession.username === "exam") {
 			// The exam user is a special case, we don't want to show the password input field. Just use the default password "exam"
+			this._isExamMode = true;
 			form.displayName.innerText = "Exam in progress";
 			form.loginName.innerText = "Click the arrow below to resume your exam.";
 			form.loginName.style.marginTop = UI.getPadding(); // Add some padding for readability
 			form.passwordInput.value = "exam";
 			form.passwordInput.style.display = "none";
+			this._enableOrDisableSubmitButton();
 		}
 		else {
 			form.displayName.innerText = this._activeSession.display_name ?? this._activeSession.username;
@@ -72,7 +75,7 @@ export class LockScreenUI extends UIScreen {
 	// Returns true if the login button is disabled, false otherwise
 	protected _enableOrDisableSubmitButton(): boolean {
 		const form = this._form as UILockScreenElements;
-		const buttonDisabled = form.passwordInput.value === "";
+		const buttonDisabled = form.passwordInput.value === "" && this._isExamMode === false; // Always enable in exam mode
 		form.unlockButton.disabled = buttonDisabled;
 		return buttonDisabled;
 	}
