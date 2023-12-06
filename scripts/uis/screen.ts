@@ -24,35 +24,51 @@ export interface UIExamModeElements {
 export abstract class UIScreen {
 	protected _auth: Authenticator;
 	abstract _form: UILockScreenElements | UILoginElements | UIExamModeElements;
-	private _events: AuthenticatorEvents;
+	protected abstract _events: AuthenticatorEvents;
 	private _formShown: boolean = false;
 
-	public constructor(auth: Authenticator, events: AuthenticatorEvents) {
+	public constructor(auth: Authenticator) {
 		this._auth = auth;
-		this._events = events;
-		this._auth.authEvents = this._events;
 	};
 
 	/**
-	 * Show this screen's form / UI.
+	 * Connect the events of this screen's form / UI to the authenticator.
+	 */
+	protected _connectEvents(): void {
+		this._auth.authEvents = this._events;
+	}
+
+	/**
+	 * Disconnect the events of this screen's form / UI from the authenticator.
+	 */
+	protected _disconnectEvents(): void {
+		this._auth.authEvents = null;
+	}
+
+	/**
+	 * Show this screen's form / UI and connects its events to the authenticator.
 	 * Does nothing if the form is already shown.
+	 * WARNING: Make sure to call hideForm() on another currently shown form (if there is one) before calling this method,
+	 * otherwise the form will be hidden but the events will still be connected.
 	 */
 	public showForm(): void {
 		if (!this._formShown) {
 			this._formShown = true;
 			this._form.form.style.display = "block";
 			this._getInputToFocusOn().focus();
+			this._connectEvents();
 		}
 	}
 
 	/**
-	 * Hide this screen's form / UI.
+	 * Hide this screen's form / UI and disconnects its events from the authenticator.
 	 * Does nothing if the form is already hidden.
 	 */
 	public hideForm(): void {
 		if (this._formShown) {
 			this._formShown = false;
 			this._form.form.style.display = "none";
+			this._disconnectEvents();
 		}
 	}
 
@@ -99,10 +115,5 @@ export abstract class UIScreen {
 		if (focusElement !== null) {
 			focusElement.focus();
 		}
-	}
-
-	public set authEvents(events: AuthenticatorEvents) {
-		this._events = events;
-		this._auth.authEvents = this._events;
 	}
 }

@@ -161,7 +161,7 @@ export class Authenticator {
 	 * @param authEvents The callback functions that are called on certain events.
 	 * @returns void
 	 */
-	public set authEvents(authEvents: AuthenticatorEvents) {
+	public set authEvents(authEvents: AuthenticatorEvents | null) {
 		this._authEvents = authEvents;
 	}
 

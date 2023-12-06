@@ -1,29 +1,30 @@
-import { Authenticator } from "../../auth";
+import { Authenticator, AuthenticatorEvents } from "../../auth";
 import { UILoginElements, UIScreen } from "../screen";
 
 export class LoginScreenUI extends UIScreen {
 	public readonly _form: UILoginElements;
+	protected _events: AuthenticatorEvents = {
+		authenticationStart: () => {
+			this._disableForm();
+		},
+		authenticationComplete: () => {
+			// TODO: Add a loading animation here
+		},
+		authenticationFailure: () => {
+			this._enableForm();
+			this._wigglePasswordInput();
+		},
+		errorMessage: (message: string) => {
+			alert(message);
+			window.ui.setDebugInfo(message);
+		},
+		infoMessage: (message: string) => {
+			alert(message);
+		},
+	};
 
 	public constructor(auth: Authenticator) {
-		super(auth, {
-			authenticationStart: () => {
-				this._disableForm();
-			},
-			authenticationComplete: () => {
-				// TODO: Add a loading animation here
-			},
-			authenticationFailure: () => {
-				this._enableForm();
-				this._wigglePasswordInput();
-			},
-			errorMessage: (message: string) => {
-				alert(message);
-				window.ui.setDebugInfo(message);
-			},
-			infoMessage: (message: string) => {
-				alert(message);
-			},
-		});
+		super(auth);
 
 		this._form = {
 			form: document.getElementById('login-form') as HTMLFormElement,

@@ -1,4 +1,4 @@
-import { Authenticator } from "../../auth";
+import { Authenticator, AuthenticatorEvents } from "../../auth";
 import { LightDMUser } from "nody-greeter-types";
 import { UIScreen, UILockScreenElements } from "../screen";
 import { UI } from "../../ui";
@@ -7,27 +7,28 @@ export class LockScreenUI extends UIScreen {
 	public readonly _form: UILockScreenElements;
 	private readonly _activeSession: LightDMUser;
 	private _isExamMode: boolean = false;
+	protected _events: AuthenticatorEvents = {
+		authenticationStart: () => {
+			this._disableForm();
+		},
+		authenticationComplete: () => {
+			// TODO: Add a loading animation here
+		},
+		authenticationFailure: () => {
+			this._enableForm();
+			this._wigglePasswordInput();
+		},
+		errorMessage: (message: string) => {
+			alert(message);
+			window.ui.setDebugInfo(message);
+		},
+		infoMessage: (message: string) => {
+			alert(message);
+		},
+	};
 
 	public constructor(auth: Authenticator, activeSession: LightDMUser) {
-		super(auth, {
-			authenticationStart: () => {
-				this._disableForm();
-			},
-			authenticationComplete: () => {
-				// TODO: Add a loading animation here
-			},
-			authenticationFailure: () => {
-				this._enableForm();
-				this._wigglePasswordInput();
-			},
-			errorMessage: (message: string) => {
-				alert(message);
-				window.ui.setDebugInfo(message);
-			},
-			infoMessage: (message: string) => {
-				alert(message);
-			},
-		});
+		super(auth);
 
 		this._activeSession = activeSession;
 		this._form = {

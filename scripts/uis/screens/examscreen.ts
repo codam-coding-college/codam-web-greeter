@@ -1,4 +1,4 @@
-import { Authenticator } from "../../auth";
+import { Authenticator, AuthenticatorEvents } from "../../auth";
 import { UIScreen, UIExamModeElements } from "../screen";
 import { LoginScreenUI } from "./loginscreen";
 import { ExamForHost } from "../../data";
@@ -10,27 +10,28 @@ export class ExamModeUI extends UIScreen {
 	public readonly _form: UIExamModeElements;
 	private _exam: ExamForHost | null = null;
 	private _loginScreen: LoginScreenUI;
+	protected _events: AuthenticatorEvents = {
+		authenticationStart: () => {
+			this._disableForm();
+		},
+		authenticationComplete: () => {
+			// TODO: add loading animation here
+		},
+		authenticationFailure: () => {
+			this._enableForm();
+			this._wigglePasswordInput();
+		},
+		errorMessage: (message: string) => {
+			alert(message);
+			window.ui.setDebugInfo(message);
+		},
+		infoMessage: (message: string) => {
+			alert(message);
+		},
+	};
 
 	public constructor(auth: Authenticator, loginUI: LoginScreenUI, exam: ExamForHost | null = null) {
-		super(auth, {
-			authenticationStart: () => {
-				this._disableForm();
-			},
-			authenticationComplete: () => {
-				// TODO: add loading animation here
-			},
-			authenticationFailure: () => {
-				this._enableForm();
-				this._wigglePasswordInput();
-			},
-			errorMessage: (message: string) => {
-				alert(message);
-				window.ui.setDebugInfo(message);
-			},
-			infoMessage: (message: string) => {
-				alert(message);
-			},
-		});
+		super(auth);
 
 		// Keep a reference to the login screen so that we can show it when the exam is over
 		this._loginScreen = loginUI;
