@@ -39,8 +39,13 @@ jobs:
       run: |
         make build
 
-    - name: Create zip file from dist folder
+    - name: Add dist folder to artifact
       working-directory: dist
+      run: |
+        zip -r ../codam-web-greeter.zip *
+
+    - name: Add systemd folder to artifact
+      working-directory: systemd
       run: |
         zip -r ../codam-web-greeter.zip *
 
