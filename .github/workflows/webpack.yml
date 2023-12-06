@@ -46,7 +46,7 @@ jobs:
 
     - name: Add systemd folder to artifact as subfolder
       run: |
-        zip -r ../codam-web-greeter.zip systemd
+        zip -r codam-web-greeter.zip systemd
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v3
