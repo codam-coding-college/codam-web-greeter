@@ -129,6 +129,6 @@ export class UI {
 			root.style.setProperty('--zoom', `${pixelRatio}`);
 		}
 		// Set debug info
-		window.ui.setDebugInfo(`Pixel ratio: ${pixelRatio}`);
+		this.setDebugInfo(`Pixel ratio: ${pixelRatio}`);
 	}
 }
