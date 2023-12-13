@@ -439,8 +439,9 @@ dialog {
 }
 
 dialog::backdrop {
-	background: rgba(0, 0, 0, 0.2);
-	backdrop-filter: blur(5px);
+	background: rgba(0, 0, 0, 0.5);
+	/* disabled for performance reasons */
+	/* backdrop-filter: var(--blur-bg-filter); */
 }
 
 dialog.calendar-event-dialog {
