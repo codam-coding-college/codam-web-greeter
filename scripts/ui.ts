@@ -119,10 +119,10 @@ export class UI {
 	 */
 	public static applyHiDpiScaling(): void {
 		const pixelRatio = window.devicePixelRatio;
-		if (pixelRatio > 1) {
+		if (pixelRatio != 1) {
 			// Apply zoom to the whole page
 			//@ts-ignore (zoom is a non-standard property)
-			document.body.style.zoom = `${1 / pixelRatio}`;
+			document.body.style.zoom = `${pixelRatio}`;
 
 			// Apply zoom to CSS variables for scaling of vw and vh units
 			const root = document.documentElement;
