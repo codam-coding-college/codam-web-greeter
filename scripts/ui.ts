@@ -118,8 +118,11 @@ export class UI {
 	 * Apply scaling for HiDPI screens
 	 */
 	public applyHiDpiScaling(): void {
-		const pixelRatio = window.devicePixelRatio;
-		if (pixelRatio != 1) {
+		if (window.outerWidth > 2560 /* 1440p */ || window.devicePixelRatio != 1) {
+			// Set pixel ratio to 1.25 for HiDPI screens or to the specified DPI value
+			// 1.25 is the default here since there's a bug in nody-greeter that causes the value to be always 1 (when it should be 1.25 on iMacs)
+			const pixelRatio = window.devicePixelRatio > 1 ? window.devicePixelRatio : 1.25;
+
 			// Apply zoom to the whole page
 			//@ts-ignore (zoom is a non-standard property)
 			document.body.style.zoom = `${pixelRatio}`;
@@ -128,7 +131,5 @@ export class UI {
 			const root = document.documentElement;
 			root.style.setProperty('--zoom', `${pixelRatio}`);
 		}
-		// Set debug info
-		this.setDebugInfo(`Pixel ratio: ${pixelRatio}`);
 	}
 }
