@@ -110,4 +110,20 @@ export class UI {
 	public static getPadding(element: HTMLElement = document.body): string {
 		return getComputedStyle(element).getPropertyValue('--padding');
 	}
+
+	/**
+	 * Apply scaling for HiDPI screens
+	 */
+	public static applyHiDpiScaling(): void {
+		const pixelRatio = window.devicePixelRatio;
+		if (pixelRatio > 1) {
+			// Apply zoom to the whole page
+			//@ts-ignore (zoom is a non-standard property)
+			document.body.style.zoom = `${1 / pixelRatio}`;
+
+			// Apply zoom to CSS variables for scaling of vw and vh units
+			const root = document.documentElement;
+			root.style.setProperty('--zoom', `${pixelRatio}`);
+		}
+	}
 }

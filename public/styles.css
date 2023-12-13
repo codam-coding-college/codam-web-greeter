@@ -37,6 +37,7 @@
 	--border-radius: 4px;
 	--padding: 8px;
 	--header-footer-height: 31px;
+	--zoom: 1;
 }
 
 /* ***************************************** */
@@ -73,6 +74,7 @@ body {
 	font-size: 16px;
 	font-family: sans-serif;
 	overflow: hidden;
+	height: 100%;
 }
 
 body {
@@ -80,7 +82,6 @@ body {
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	height: 100vh;
 	background: var(--default-bg-img);
 	background-position: center center;
 	background-size: cover;
@@ -98,7 +99,7 @@ body {
 header,
 footer {
 	box-sizing: border-box;
-	width: 100vw;
+	width: 100%;
 	height: var(--header-footer-height);
 	padding: var(--padding) var(--padding);
 	backdrop-filter: var(--blur-bg-filter);
@@ -284,7 +285,7 @@ aside {
 	position: absolute;
 	top: var(--header-footer-height);
 	right: 0;
-	width: 30vw;
+	width: calc(30vw * var(--zoom));
 	max-width: 400px;
 	padding: var(--padding);
 }
@@ -427,7 +428,7 @@ dialog {
 	backdrop-filter: var(--blur-bg-filter);
 	border-radius: var(--border-radius);
 	color: var(--color-text-primary);
-	width: 50vw;
+	width: calc(50vw * var(--zoom));
 	max-width: 700px;
 	padding: var(--padding);
 	outline: 0;
@@ -467,7 +468,7 @@ dialog.calendar-event-dialog .calendar-event-title {
 dialog.calendar-event-dialog .calendar-event-description {
 	padding: var(--padding);
 	overflow: auto;
-	max-height: 50vh;
+	max-height: calc(50vh * var(--zoom));
 	user-select: text;
 }
 
