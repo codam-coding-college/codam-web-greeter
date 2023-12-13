@@ -23,9 +23,6 @@ export class UI {
 	public constructor(data: Data, auth: Authenticator) {
 		this._infoBars = new InfoBarsUI();
 
-		// Set up DPI scaling
-		UI.applyHiDpiScaling();
-
 		// Check for active sessions
 		const activeSession = lightdm.users.find((user: LightDMUser) => user.logged_in);
 
@@ -53,6 +50,9 @@ export class UI {
 
 		this._wallpaper = new WallpaperUI(this._isLockScreen);
 		this._calendar = new CalendarUI(data);
+
+		// Set up DPI scaling
+		UI.applyHiDpiScaling();
 	}
 
 	public get isLockScreen(): boolean {
