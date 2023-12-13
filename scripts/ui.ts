@@ -128,5 +128,7 @@ export class UI {
 			const root = document.documentElement;
 			root.style.setProperty('--zoom', `${pixelRatio}`);
 		}
+		// Set debug info
+		window.ui.setDebugInfo(`Pixel ratio: ${pixelRatio}`);
 	}
 }
