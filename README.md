@@ -153,3 +153,14 @@ ResultAny=yes
 ResultInactive=yes
 ResultActive=yes
 ```
+
+### The power button powers off the system when the greeter is active
+Modify the logind configuration on what to do when the power button is pressed. For example, add the following lines to */etc/systemd/logind.conf*:
+```conf
+[Login]
+...
+HandlePowerKey=ignore
+HandleSuspendKey=ignore
+HandleHibernateKey=ignore
+```
+Don't forget to restart logind after modifying: `sudo systemctl restart systemd-logind`
