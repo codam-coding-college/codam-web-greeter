@@ -29,6 +29,18 @@ async function initGreeter(): Promise<void> {
 	window.auth = new Authenticator();
 	window.ui = new UI(window.data, window.auth);
 	window.idler = new Idler(window.ui.isLockScreen);
+
+	// Add reboot keybind to reboot on ctrl+alt+del
+	document.addEventListener('keydown', (e) => {
+		if (e.ctrlKey && e.altKey && e.code === 'Delete') {
+			try {
+				window.lightdm?.restart();
+			}
+			catch (err) {
+				window.ui.setDebugInfo(`Rebooting failed: ${err}`);
+			}
+		}
+	});
 }
 
 window.addEventListener("GreeterReady", () => {
