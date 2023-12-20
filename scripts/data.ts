@@ -4,7 +4,6 @@ import { lightdm } from 'nody-greeter-types/index'
 
 const PATH_DATA_JSON: string = 'data.json';
 const PATH_WALLPAPER_LOGIN: string = '/usr/share/codam/web-greeter/login-screen.jpg';
-const PATH_WALLPAPER_LOCK: string = '/usr/share/codam/web-greeter/ft_lock_bkg.jpg';
 const PATH_WALLPAPER_LOCK_USER: string = '/tmp/codam-web-greeter-user-wallpaper';
 const PATH_LOGO: string = '/usr/share/codam/web-greeter/logo.png';
 const PATH_USER_DEFAULT_IMAGE: string = '/usr/share/codam/web-greeter/user.png';
@@ -120,7 +119,6 @@ export class Data {
 
 		// Set up images
 		this.loginScreenWallpaper = new GreeterImage(PATH_WALLPAPER_LOGIN);
-		this.lockScreenWallpaper = new GreeterImage(PATH_WALLPAPER_LOCK);
 		this.userLockScreenWallpaper = new GreeterImage(PATH_WALLPAPER_LOCK_USER);
 		this.logo = new GreeterImage(PATH_LOGO);
 		this.userDefaultImage = new GreeterImage(PATH_USER_DEFAULT_IMAGE);

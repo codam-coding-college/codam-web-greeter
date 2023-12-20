@@ -24,6 +24,7 @@
 	--bg-color-darken: rgba(0, 0, 0, 0.2);
 	--bg-color-darken-strong: rgba(0, 0, 0, 0.65);
 	--blur-bg-filter: blur(5px);
+	--blur-bg-filter-lock-screen: blur(25px);
 	--bg-color-lighten: rgba(255, 255, 255, 0.2);
 	--text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 
@@ -92,6 +93,16 @@ body {
 
 	/* only allow text selection when we specifically allow it */
 	user-select: none;
+}
+
+#blur-filter { /* for wallpapers */
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	backdrop-filter: var(--blur-bg-filter-lock-screen);
+	pointer-events: none !important;
 }
 
 /* ***************************************** */
