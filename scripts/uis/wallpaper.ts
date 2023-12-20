@@ -1,4 +1,4 @@
-import { Wallpaper } from "../data";
+import { GreeterImage } from "../data";
 
 export class WallpaperUI {
 	private _element: HTMLElement;
@@ -12,7 +12,7 @@ export class WallpaperUI {
 	}
 
 	public displayWallpaper(): boolean {
-		let wallpaper: Wallpaper = window.data.loginScreenWallpaper;
+		let wallpaper: GreeterImage = window.data.loginScreenWallpaper;
 		if (this._isLockScreen) {
 			if (window.data.userLockScreenWallpaper.exists) {
 				wallpaper = window.data.userLockScreenWallpaper;

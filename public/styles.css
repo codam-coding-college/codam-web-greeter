@@ -6,6 +6,8 @@
 	--color-purple: #B73188;
 	--color-blue: #3AA2DB;
 	--color-black: #000000;
+
+	/* Theme colors */
 	--color-primary: var(--color-blue);
 
 	/* Text colors */
@@ -18,7 +20,7 @@
 
 	/* Backgrounds */
 	--color-bg: var(--color-black);
-	--default-bg-img: url('assets/default-wallpaper.jpg');
+	--default-bg-img: url('assets/default-wallpaper.png');
 	--bg-color-darken: rgba(0, 0, 0, 0.2);
 	--bg-color-darken-strong: rgba(0, 0, 0, 0.65);
 	--blur-bg-filter: blur(5px);
@@ -137,6 +139,68 @@ footer span {
 
 #info-debug {
 	color: var(--color-text-error);
+}
+
+/* ***************************************** */
+/* Logo                                      */
+/* ***************************************** */
+
+#logo-wrapper {
+	position: absolute;
+	height: 25%;
+	display: flex;
+	flex-direction: column;
+}
+
+#logo-wrapper.logo-top-left {
+	top: calc(var(--header-footer-height) * 2);
+	left: var(--header-footer-height);
+	align-items: flex-start;
+	justify-content: flex-start;
+}
+
+#logo-wrapper.logo-top-center {
+	width: 100%;
+	top: 10%;
+	left: 0;
+	align-items: center;
+	justify-content: center;
+}
+
+/* below should not be used, will overlap with calendar */
+#logo-wrapper.logo-top-right {
+	top: calc(var(--header-footer-height) * 2);
+	right: var(--header-footer-height);
+	align-items: flex-end;
+	justify-content: flex-end;
+}
+
+#logo-wrapper.logo-bottom-left {
+	bottom: calc(var(--header-footer-height) * 2);
+	left: var(--header-footer-height);
+	align-items: flex-start;
+	justify-content: flex-start;
+}
+
+#logo-wrapper.logo-bottom-center {
+	width: 100%;
+	bottom: 10%;
+	left: 0;
+	align-items: center;
+	justify-content: center;
+}
+
+#logo-wrapper.logo-bottom-right {
+	bottom: calc(var(--header-footer-height) * 2);
+	right: var(--header-footer-height);
+	align-items: flex-end;
+	justify-content: flex-end;
+}
+
+#logo {
+	display: inline-block;
+	height: 100%;
+	max-height: 250px;
 }
 
 /* ***************************************** */

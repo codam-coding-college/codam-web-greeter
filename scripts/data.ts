@@ -6,8 +6,10 @@ const PATH_DATA_JSON: string = 'data.json';
 const PATH_WALLPAPER_LOGIN: string = '/usr/share/codam/wallpapers/login-screen.jpg';
 const PATH_WALLPAPER_LOCK: string = '/usr/share/codam/wallpapers/ft_lock_bkg.jpg';
 const PATH_WALLPAPER_LOCK_USER: string = '/tmp/codam-web-greeter-user-wallpaper';
+const PATH_LOGO: string = '/usr/share/codam/logo.png';
+const PATH_USER_DEFAULT_IMAGE: string = '/usr/share/codam/user.png';
 
-export class Wallpaper {
+export class GreeterImage {
 	private _path: string;
 	private _exists: boolean;
 
@@ -99,9 +101,11 @@ export class Data {
 	public pkgName: string;
 	public pkgVersion: string;
 	public hostname: string;
-	public loginScreenWallpaper: Wallpaper;
-	public lockScreenWallpaper: Wallpaper;
-	public userLockScreenWallpaper: Wallpaper;
+	public loginScreenWallpaper: GreeterImage;
+	public lockScreenWallpaper: GreeterImage;
+	public userLockScreenWallpaper: GreeterImage;
+	public logo: GreeterImage;
+	public userDefaultImage: GreeterImage;
 	private _dataJsonFetchInterval: number = 60 * 1000; // 1 minute
 	private _dataJson: DataJson | undefined;
 	private _dataChangeListeners: ((dataJson: DataJson | undefined) => void)[] = [];
@@ -114,10 +118,12 @@ export class Data {
 		// Get hostname from LightDM
 		this.hostname = lightdm.hostname;
 
-		// Set up the wallpapers
-		this.loginScreenWallpaper = new Wallpaper(PATH_WALLPAPER_LOGIN);
-		this.lockScreenWallpaper = new Wallpaper(PATH_WALLPAPER_LOCK);
-		this.userLockScreenWallpaper = new Wallpaper(PATH_WALLPAPER_LOCK_USER, true);
+		// Set up images
+		this.loginScreenWallpaper = new GreeterImage(PATH_WALLPAPER_LOGIN);
+		this.lockScreenWallpaper = new GreeterImage(PATH_WALLPAPER_LOCK);
+		this.userLockScreenWallpaper = new GreeterImage(PATH_WALLPAPER_LOCK_USER, true);
+		this.logo = new GreeterImage(PATH_LOGO, true);
+		this.userDefaultImage = new GreeterImage(PATH_USER_DEFAULT_IMAGE, true);
 
 		// Fetch data.json every 5 minutes and fetch it now
 		setInterval(() => this._refetchDataJson(), this._dataJsonFetchInterval);
