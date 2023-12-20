@@ -119,9 +119,9 @@ fi
 Make sure the folders mentioned for branding in */etc/lightdm/web-greeter.yml* exist and contain the correct files.
 ```yaml
 branding:
-    background_images_dir: /usr/share/codam/wallpapers
-    logo_image: /usr/share/codam/logo.png
-    user_image: /usr/share/codam/user.png
+    background_images_dir: /usr/share/codam/web-greeter
+    logo_image: /usr/share/codam/web-greeter/logo.png
+    user_image: /usr/share/codam/web-greeter/user.png
 ```
 For 42 schools, link the *ft_lock_bkg.jpg* and *login-screen.jpg* files from */usr/share/42/* to the `background_images_dir` folder. Place your campus's logo in */usr/share/42/logo.png* and a default user icon in */usr/share/42/user.png*.
 
