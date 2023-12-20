@@ -25,7 +25,10 @@ export class GreeterImage {
 			if (!quiet) {
 				window.ui.setDebugInfo(`Wallpaper file does not exist: ${this._path}`);
 			}
+			return;
 		}
+
+		console.log(`Found image at "${this._path}"`);
 	}
 
 	public get path(): string {
