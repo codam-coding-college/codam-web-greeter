@@ -20,9 +20,6 @@ export class WallpaperUI {
 			if (window.data.userLockScreenWallpaper.exists) {
 				wallpaper = window.data.userLockScreenWallpaper;
 			}
-			else {
-				wallpaper = window.data.lockScreenWallpaper;
-			}
 		}
 
 		if (wallpaper.exists) {

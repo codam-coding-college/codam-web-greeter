@@ -101,7 +101,6 @@ export class Data {
 	public pkgVersion: string;
 	public hostname: string;
 	public loginScreenWallpaper: GreeterImage;
-	public lockScreenWallpaper: GreeterImage;
 	public userLockScreenWallpaper: GreeterImage;
 	public logo: GreeterImage;
 	public userDefaultImage: GreeterImage;
