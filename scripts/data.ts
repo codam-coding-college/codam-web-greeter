@@ -13,7 +13,7 @@ export class GreeterImage {
 	private _path: string;
 	private _exists: boolean;
 
-	public constructor(path: string, quiet: boolean = false) {
+	public constructor(path: string) {
 		this._path = path;
 
 		// Check if file exists
@@ -22,9 +22,6 @@ export class GreeterImage {
 		this._exists = (dirFiles !== undefined && dirFiles.includes(this._path));
 		if (!this._exists) {
 			console.warn('Wallpaper file does not exist: ' + this._path);
-			if (!quiet) {
-				window.ui.setDebugInfo(`Wallpaper file does not exist: ${this._path}`);
-			}
 			return;
 		}
 
@@ -124,9 +121,9 @@ export class Data {
 		// Set up images
 		this.loginScreenWallpaper = new GreeterImage(PATH_WALLPAPER_LOGIN);
 		this.lockScreenWallpaper = new GreeterImage(PATH_WALLPAPER_LOCK);
-		this.userLockScreenWallpaper = new GreeterImage(PATH_WALLPAPER_LOCK_USER, true);
-		this.logo = new GreeterImage(PATH_LOGO, true);
-		this.userDefaultImage = new GreeterImage(PATH_USER_DEFAULT_IMAGE, true);
+		this.userLockScreenWallpaper = new GreeterImage(PATH_WALLPAPER_LOCK_USER);
+		this.logo = new GreeterImage(PATH_LOGO);
+		this.userDefaultImage = new GreeterImage(PATH_USER_DEFAULT_IMAGE);
 
 		// Fetch data.json every 5 minutes and fetch it now
 		setInterval(() => this._refetchDataJson(), this._dataJsonFetchInterval);
