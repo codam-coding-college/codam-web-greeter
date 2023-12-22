@@ -318,11 +318,9 @@ form button:not(:disabled):active {
 	margin: -50% auto calc(var(--padding) * 6) auto;
 	width: 100%;
 	aspect-ratio: 1 / 1;
+	object-fit: cover;
 	border-radius: 50%;
 	background-color: var(--bg-color-darken-strong);
-	background-size: cover;
-	background-position: center center;
-	background-repeat: no-repeat;
 }
 
 /* user display name, "reserved for exam" text */
