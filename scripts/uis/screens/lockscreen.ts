@@ -60,11 +60,21 @@ export class LockScreenUI extends UIScreen {
 		}
 		else {
 			form.avatar.addEventListener('error', () => {
-				console.error(`Failed to load avatar for user ${this._activeSession.username}`);
-				window.ui.setDebugInfo(`Failed to load avatar for user ${this._activeSession.username}`);
-				form.avatar.src = "images/default-avatar.png";
+				console.warn(`Failed to load avatar for user ${this._activeSession.username}`);
+				form.avatar.src = "assets/default-user.png"; // Load fallback image
 			});
-			form.avatar.src = this._activeSession.image;
+			if (window.data.userImage.exists) {
+				// Show the user's avatar from the /tmp folder
+				form.avatar.src = window.data.userImage.path;
+			}
+			else if (this._activeSession.image) {
+				// This image always fails to load due to permissions issues
+				// The greeter does not have access to the user's home folder...
+				form.avatar.src = this._activeSession.image;
+			}
+			else if (window.data.userDefaultImage.exists) {
+				form.avatar.src = window.data.userDefaultImage.path;
+			}
 			form.displayName.innerText = this._activeSession.display_name ?? this._activeSession.username;
 			form.loginName.innerText = this._activeSession.username;
 		}

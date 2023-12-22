@@ -3,9 +3,10 @@ import { lightdm } from 'nody-greeter-types/index'
 
 
 const PATH_DATA_JSON: string = 'data.json';
+const PATH_LOGO: string = '/usr/share/codam/web-greeter/logo.png';
 const PATH_WALLPAPER_LOGIN: string = '/usr/share/codam/web-greeter/login-screen.jpg';
 const PATH_WALLPAPER_LOCK_USER: string = '/tmp/codam-web-greeter-user-wallpaper';
-const PATH_LOGO: string = '/usr/share/codam/web-greeter/logo.png';
+const PATH_USER_IMAGE: string = '/tmp/codam-web-greeter-user-avatar';
 const PATH_USER_DEFAULT_IMAGE: string = '/usr/share/codam/web-greeter/user.png';
 
 export class GreeterImage {
@@ -103,6 +104,7 @@ export class Data {
 	public loginScreenWallpaper: GreeterImage;
 	public userLockScreenWallpaper: GreeterImage;
 	public logo: GreeterImage;
+	public userImage: GreeterImage;
 	public userDefaultImage: GreeterImage;
 	private _dataJsonFetchInterval: number = 60 * 1000; // 1 minute
 	private _dataJson: DataJson | undefined;
@@ -120,6 +122,7 @@ export class Data {
 		this.loginScreenWallpaper = new GreeterImage(PATH_WALLPAPER_LOGIN);
 		this.userLockScreenWallpaper = new GreeterImage(PATH_WALLPAPER_LOCK_USER);
 		this.logo = new GreeterImage(PATH_LOGO);
+		this.userImage = new GreeterImage(PATH_USER_IMAGE);
 		this.userDefaultImage = new GreeterImage(PATH_USER_DEFAULT_IMAGE);
 
 		// Fetch data.json every 5 minutes and fetch it now
