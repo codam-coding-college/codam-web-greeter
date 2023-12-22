@@ -9,6 +9,7 @@ export interface UILoginElements {
 
 export interface UILockScreenElements {
 	form: HTMLFormElement;
+	avatar: HTMLImageElement;
 	displayName: HTMLHeadingElement;
 	loginName: HTMLHeadingElement;
 	passwordInput: HTMLInputElement;

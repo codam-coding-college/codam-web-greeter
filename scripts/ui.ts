@@ -23,12 +23,12 @@ export class UI {
 
 	public constructor(data: Data, auth: Authenticator) {
 		this._infoBars = new InfoBarsUI();
+		this._logo = document.getElementById('logo') as HTMLImageElement;
 
 		// Set up DPI scaling
 		this.applyHiDpiScaling();
 
 		// Set up logo
-		this._logo = document.getElementById('logo') as HTMLImageElement;
 		if (data.logo.exists) {
 			this._logo.src = data.logo.path;
 		}
@@ -40,6 +40,7 @@ export class UI {
 			// Active session found, show lock screen form
 			this._lockScreen = new LockScreenUI(auth, activeSession);
 			this._isLockScreen = true;
+			this._logo.style.display = 'none';
 			this._lockScreen.showForm();
 		}
 		else {

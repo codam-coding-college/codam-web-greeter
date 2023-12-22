@@ -33,6 +33,7 @@ export class LockScreenUI extends UIScreen {
 		this._activeSession = activeSession;
 		this._form = {
 			form: document.getElementById('lock-form') as HTMLFormElement,
+			avatar: document.getElementById('active-user-session-avatar') as HTMLImageElement,
 			displayName: document.getElementById('active-user-session-display-name') as HTMLHeadingElement,
 			loginName: document.getElementById('active-user-session-login-name') as HTMLHeadingElement,
 			passwordInput: document.getElementById('active-user-session-password') as HTMLInputElement,
@@ -49,6 +50,7 @@ export class LockScreenUI extends UIScreen {
 		if (this._activeSession.username === "exam") {
 			// The exam user is a special case, we don't want to show the password input field. Just use the default password "exam"
 			this._isExamMode = true;
+			form.avatar.style.display = "none";
 			form.displayName.innerText = "Exam in progress";
 			form.loginName.innerText = "Click the arrow below to resume your exam.";
 			form.loginName.style.marginTop = UI.getPadding(); // Add some padding for readability
@@ -57,6 +59,7 @@ export class LockScreenUI extends UIScreen {
 			this._enableOrDisableSubmitButton();
 		}
 		else {
+			form.avatar.src = this._activeSession.image;
 			form.displayName.innerText = this._activeSession.display_name ?? this._activeSession.username;
 			form.loginName.innerText = this._activeSession.username;
 		}

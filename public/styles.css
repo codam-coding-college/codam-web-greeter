@@ -313,6 +313,18 @@ form button:not(:disabled):active {
 	transform: scale(0.95);
 }
 
+#active-user-session-avatar {
+	display: block;
+	margin: -50% auto calc(var(--padding) * 4) auto;
+	width: 100%;
+	aspect-ratio: 1 / 1;
+	border-radius: 50%;
+	background-color: var(--bg-color-darken-strong);
+	background-size: cover;
+	background-position: center center;
+	background-repeat: no-repeat;
+}
+
 /* user display name, "reserved for exam" text */
 form h3 {
 	font-weight: bold;
