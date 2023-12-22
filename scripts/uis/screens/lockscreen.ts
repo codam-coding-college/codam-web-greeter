@@ -59,6 +59,11 @@ export class LockScreenUI extends UIScreen {
 			this._enableOrDisableSubmitButton();
 		}
 		else {
+			form.avatar.addEventListener('error', () => {
+				console.error(`Failed to load avatar for user ${this._activeSession.username}`);
+				window.ui.setDebugInfo(`Failed to load avatar for user ${this._activeSession.username}`);
+				form.avatar.src = "images/default-avatar.png";
+			});
 			form.avatar.src = this._activeSession.image;
 			form.displayName.innerText = this._activeSession.display_name ?? this._activeSession.username;
 			form.loginName.innerText = this._activeSession.username;
