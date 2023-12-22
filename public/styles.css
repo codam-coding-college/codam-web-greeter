@@ -315,7 +315,7 @@ form button:not(:disabled):active {
 
 #active-user-session-avatar {
 	display: block;
-	margin: -50% auto calc(var(--padding) * 4) auto;
+	margin: -50% auto calc(var(--padding) * 6) auto;
 	width: 100%;
 	aspect-ratio: 1 / 1;
 	border-radius: 50%;
@@ -336,7 +336,7 @@ form h3 {
 /* user login name */
 form h4 {
 	font-weight: normal;
-	margin: 0 0 var(--padding) 0;
+	margin: 0 0 calc(var(--padding) * 2) 0;
 	color: var(--color-text-secondary);
 	text-shadow: var(--text-shadow);
 }
