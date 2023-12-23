@@ -43,5 +43,5 @@ jobs:
         name: codam-web-greeter ${{ github.ref_name }}
         generate_release_notes: true
         draft: true
-        prerelease: true
+        prerelease: false
         token: ${{ secrets.GITHUB_TOKEN }}
