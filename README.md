@@ -115,15 +115,15 @@ if [ "$DISPLAY" != ":0" ]; then
 fi
 ```
 
-### Wallpapers aren't showing
+### My custom wallpaper or logo doesn't show up
 Make sure the folders mentioned for branding in */etc/lightdm/web-greeter.yml* exist and contain the correct files.
 ```yaml
 branding:
-    background_images_dir: /usr/share/codam/wallpapers
-    logo_image: /usr/share/codam/logo.png
-    user_image: /usr/share/codam/user.png
+    background_images_dir: /usr/share/codam/web-greeter
+    logo_image: /usr/share/codam/web-greeter/logo.png
+    user_image: /usr/share/codam/web-greeter/user.png
 ```
-For 42 schools, link the *ft_lock_bkg.jpg* and *login-screen.jpg* files from */usr/share/42/* to the `background_images_dir` folder.
+For 42 schools, link */usr/share/42/login-screen.jpg* to the */usr/share/codam/web-greeter/login-screen.png*. Place your campus's logo in */usr/share/42/logo.png* and a default user icon in */usr/share/42/user.png*. The background initially set for ft_lock is not used.
 
 ### The screen blanks on the login screen
 This is a known issue with LightDM. To fix it, add the following line to */etc/lightdm/lightdm.conf*:

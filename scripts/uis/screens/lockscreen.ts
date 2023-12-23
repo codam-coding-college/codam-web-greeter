@@ -33,6 +33,7 @@ export class LockScreenUI extends UIScreen {
 		this._activeSession = activeSession;
 		this._form = {
 			form: document.getElementById('lock-form') as HTMLFormElement,
+			avatar: document.getElementById('active-user-session-avatar') as HTMLImageElement,
 			displayName: document.getElementById('active-user-session-display-name') as HTMLHeadingElement,
 			loginName: document.getElementById('active-user-session-login-name') as HTMLHeadingElement,
 			passwordInput: document.getElementById('active-user-session-password') as HTMLInputElement,
@@ -49,6 +50,7 @@ export class LockScreenUI extends UIScreen {
 		if (this._activeSession.username === "exam") {
 			// The exam user is a special case, we don't want to show the password input field. Just use the default password "exam"
 			this._isExamMode = true;
+			form.avatar.style.display = "none";
 			form.displayName.innerText = "Exam in progress";
 			form.loginName.innerText = "Click the arrow below to resume your exam.";
 			form.loginName.style.marginTop = UI.getPadding(); // Add some padding for readability
@@ -57,6 +59,22 @@ export class LockScreenUI extends UIScreen {
 			this._enableOrDisableSubmitButton();
 		}
 		else {
+			form.avatar.addEventListener('error', () => {
+				console.warn(`Failed to load avatar for user ${this._activeSession.username}`);
+				form.avatar.src = "assets/default-user.png"; // Load fallback image
+			});
+			if (window.data.userImage.exists) {
+				// Show the user's avatar from the /tmp folder
+				form.avatar.src = window.data.userImage.path;
+			}
+			else if (this._activeSession.image) {
+				// This image always fails to load due to permissions issues
+				// The greeter does not have access to the user's home folder...
+				form.avatar.src = this._activeSession.image;
+			}
+			else if (window.data.userDefaultImage.exists) {
+				form.avatar.src = window.data.userDefaultImage.path;
+			}
 			form.displayName.innerText = this._activeSession.display_name ?? this._activeSession.username;
 			form.loginName.innerText = this._activeSession.username;
 		}

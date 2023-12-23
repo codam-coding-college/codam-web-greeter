@@ -19,12 +19,19 @@ export class UI {
 	private _isLockScreen: boolean = false;
 	private _wallpaper: WallpaperUI;
 	private _calendar: CalendarUI;
+	private _logo: HTMLImageElement;
 
 	public constructor(data: Data, auth: Authenticator) {
 		this._infoBars = new InfoBarsUI();
+		this._logo = document.getElementById('logo') as HTMLImageElement;
 
 		// Set up DPI scaling
 		this.applyHiDpiScaling();
+
+		// Set up logo
+		if (data.logo.exists) {
+			this._logo.src = data.logo.path;
+		}
 
 		// Check for active sessions
 		const activeSession = lightdm.users.find((user: LightDMUser) => user.logged_in);
@@ -33,6 +40,7 @@ export class UI {
 			// Active session found, show lock screen form
 			this._lockScreen = new LockScreenUI(auth, activeSession);
 			this._isLockScreen = true;
+			this._logo.style.display = 'none';
 			this._lockScreen.showForm();
 		}
 		else {
@@ -112,6 +120,27 @@ export class UI {
 	 */
 	public static getPadding(element: HTMLElement = document.body): string {
 		return getComputedStyle(element).getPropertyValue('--padding');
+	}
+
+	/**
+	 * Set the primary theme color of the greeter.
+	 * @arg color The color to set, in a CSS color format. If set to null, the default color will be used.
+	 */
+	public setPrimaryThemeColor(color: string | null): void {
+		const root = document.documentElement;
+		if (color === null) {
+			root.style.setProperty('--color-primary', 'var(--color-blue)');
+		}
+		else {
+			root.style.setProperty('--color-primary', color);
+		}
+	}
+
+	/**
+	 * Get the current primary theme color of the greeter.
+	 */
+	public getPrimaryThemeColor(): string {
+		return getComputedStyle(document.documentElement).getPropertyValue('--color-primary');
 	}
 
 	/**

@@ -10,6 +10,7 @@ if ! /usr/bin/groups | /usr/bin/grep -qE '(student|piscine)'; then
 fi
 
 TMP_WALLPAPER_PATH="/tmp/codam-web-greeter-user-wallpaper"
+TMP_AVATAR_PATH="/tmp/codam-web-greeter-user-avatar"
 
 # Remove existing wallpaper in /tmp
 /usr/bin/rm -f "$TMP_WALLPAPER_PATH"
@@ -42,4 +43,14 @@ if [[ "$WALLPAPER" == file://* ]]; then
 	fi
 else
 	/usr/bin/echo "Wallpaper $WALLPAPER is not a local file"
+fi
+
+# Remove existing user image in /tmp
+/usr/bin/rm -f "$TMP_AVATAR_PATH"
+
+# Copy user's .face file to /tmp
+if [ -f "$HOME/.face" ]; then
+	/usr/bin/cp "$HOME/.face" "$TMP_AVATAR_PATH"
+	/usr/bin/chmod 666 "$TMP_AVATAR_PATH" # Allow all users to delete the file
+	/usr/bin/echo "Copied user image $HOME/.face to $TMP_AVATAR_PATH"
 fi

@@ -6,6 +6,8 @@
 	--color-purple: #B73188;
 	--color-blue: #3AA2DB;
 	--color-black: #000000;
+
+	/* Theme colors */
 	--color-primary: var(--color-blue);
 
 	/* Text colors */
@@ -18,10 +20,11 @@
 
 	/* Backgrounds */
 	--color-bg: var(--color-black);
-	--default-bg-img: url('assets/default-wallpaper.jpg');
+	--default-bg-img: url('assets/default-wallpaper.png');
 	--bg-color-darken: rgba(0, 0, 0, 0.2);
 	--bg-color-darken-strong: rgba(0, 0, 0, 0.65);
 	--blur-bg-filter: blur(5px);
+	--blur-bg-filter-lock-screen: blur(25px);
 	--bg-color-lighten: rgba(255, 255, 255, 0.2);
 	--text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 
@@ -92,6 +95,17 @@ body {
 	user-select: none;
 }
 
+#blur-filter { /* for wallpapers */
+	position: fixed;
+	z-index: 0;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	backdrop-filter: var(--blur-bg-filter-lock-screen);
+	pointer-events: none !important;
+}
+
 /* ***************************************** */
 /* Header and footer                         */
 /* ***************************************** */
@@ -140,6 +154,68 @@ footer span {
 }
 
 /* ***************************************** */
+/* Logo                                      */
+/* ***************************************** */
+
+#logo-wrapper {
+	position: absolute;
+	height: 25%;
+	display: flex;
+	flex-direction: column;
+}
+
+#logo-wrapper.logo-top-left {
+	top: calc(var(--header-footer-height) * 2);
+	left: var(--header-footer-height);
+	align-items: flex-start;
+	justify-content: flex-start;
+}
+
+#logo-wrapper.logo-top-center {
+	width: 100%;
+	top: 10%;
+	left: 0;
+	align-items: center;
+	justify-content: center;
+}
+
+/* below should not be used, will overlap with calendar */
+#logo-wrapper.logo-top-right {
+	top: calc(var(--header-footer-height) * 2);
+	right: var(--header-footer-height);
+	align-items: flex-end;
+	justify-content: flex-end;
+}
+
+#logo-wrapper.logo-bottom-left {
+	bottom: calc(var(--header-footer-height) * 2);
+	left: var(--header-footer-height);
+	align-items: flex-start;
+	justify-content: flex-start;
+}
+
+#logo-wrapper.logo-bottom-center {
+	width: 100%;
+	bottom: 10%;
+	left: 0;
+	align-items: center;
+	justify-content: center;
+}
+
+#logo-wrapper.logo-bottom-right {
+	bottom: calc(var(--header-footer-height) * 2);
+	right: var(--header-footer-height);
+	align-items: flex-end;
+	justify-content: flex-end;
+}
+
+#logo {
+	display: inline-block;
+	height: 100%;
+	max-height: 250px;
+}
+
+/* ***************************************** */
 /* Main (login and lock screen fields)       */
 /* ***************************************** */
 
@@ -150,6 +226,7 @@ main {
 	align-items: center;
 	justify-content: center;
 	text-align: center;
+	z-index: 1;
 }
 
 form {
@@ -236,6 +313,16 @@ form button:not(:disabled):active {
 	transform: scale(0.95);
 }
 
+#active-user-session-avatar {
+	display: block;
+	margin: -50% auto calc(var(--padding) * 6) auto;
+	width: 100%;
+	aspect-ratio: 1 / 1;
+	object-fit: cover;
+	border-radius: 50%;
+	background-color: var(--bg-color-darken-strong);
+}
+
 /* user display name, "reserved for exam" text */
 form h3 {
 	font-weight: bold;
@@ -247,7 +334,7 @@ form h3 {
 /* user login name */
 form h4 {
 	font-weight: normal;
-	margin: 0 0 var(--padding) 0;
+	margin: 0 0 calc(var(--padding) * 2) 0;
 	color: var(--color-text-secondary);
 	text-shadow: var(--text-shadow);
 }

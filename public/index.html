@@ -6,6 +6,8 @@
 		<title>Codam Theme for nody-greeter</title>
 	</head>
 	<body>
+		<div id="blur-filter" style="display: none;"></div>
+
 		<!-- Header for general info -->
 		<header>
 			<div class="horibar-left">
@@ -18,6 +20,11 @@
 			</div>
 		</header>
 
+		<!-- Logo (base64 string is an empty image) -->
+		<div id="logo-wrapper" class="logo-top-center">
+			<img id="logo" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />
+		</div>
+
 		<!-- Login box -->
 		<main>
 			<!-- Login form -->
@@ -29,8 +36,9 @@
 
 			<!-- Lock screen form (used when one or more sessions are active) -->
 			<form action="POST" id="lock-form" spellcheck="false" autocomplete="off" autocapitalize="off" style="display: none;">
-				<h3 id="active-user-session-display-name">John Doe</h3>
-				<h4 id="active-user-session-login-name">jdoe</h4>
+				<img id="active-user-session-avatar" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="" />
+				<h3 id="active-user-session-display-name">Display Name</h3>
+				<h4 id="active-user-session-login-name">username</h4>
 				<input type="password" name="active-user-session-password" id="active-user-session-password" placeholder="Enter your password" maxlength="128" />
 				<button type="submit" id="unlock-button" disabled title="Unlock">&#10149;</button>
 			</form>
