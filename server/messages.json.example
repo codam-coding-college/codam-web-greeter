@@ -1,0 +1,7 @@
+{
+	"hostname": "A custom message to display on the login screen for a client with a hostname that starts with \"hostname\"",
+	"f1": "A message for all computers with a hostname that starts with \"f1\"",
+	"f1r1": "A message for all computers with a hostname that starts with \"f1r1\"",
+	"f1r2": "A message for all computers with a hostname that starts with \"f1r2\"",
+	"f1r3s4": "A message for all computers with a hostname that starts with \"f1r3s4\""
+}

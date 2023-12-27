@@ -94,6 +94,7 @@ export interface DataJson {
 	exams: Exam42[];
 	exams_for_host: ExamForHost[];
 	fetch_time: string;
+	message: string;
 }
 
 
@@ -172,6 +173,10 @@ export class Data {
 					window.ui.setDebugInfo(`data.json response contains an error: ${data.error}`);
 					return;
 				}
+				// Fallback for missing message field in older versions of data.json
+				if (!("message" in data)) {
+					data.message = "";
+				}
 				this._dataJson = data;
 				// Emit data change event to all listeners
 				for (const listener of this._dataChangeListeners) {
@@ -180,7 +185,9 @@ export class Data {
 			})
 			.catch(error => {
 				console.error("Failed to fetch data.json", error);
-				window.ui.setDebugInfo(`Error fetching data.json: ${error}`);
+				if (window.ui) {
+					window.ui.setDebugInfo(`Error fetching data.json: ${error}`);
+				}
 			});
 	}
 }

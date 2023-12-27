@@ -352,6 +352,16 @@ form p {
 	color: var(--color-text-secondary);
 }
 
+#message-wrapper {
+	height: 0; /* do not include in height calculation for main */
+}
+
+#message {
+	padding-top: calc(var(--padding) * 12);
+	text-shadow: var(--text-shadow);
+	color: var(--color-text-primary);
+}
+
 @keyframes wiggle {
 	0%, 100% {
 		transform: translateX(0);

@@ -20,10 +20,12 @@ export class UI {
 	private _wallpaper: WallpaperUI;
 	private _calendar: CalendarUI;
 	private _logo: HTMLImageElement;
+	private _message: HTMLElement;
 
 	public constructor(data: Data, auth: Authenticator) {
 		this._infoBars = new InfoBarsUI();
 		this._logo = document.getElementById('logo') as HTMLImageElement;
+		this._message = document.getElementById('message') as HTMLElement;
 
 		// Set up DPI scaling
 		this.applyHiDpiScaling();
@@ -59,6 +61,17 @@ export class UI {
 			this.checkForExamMode(); // Check for exam mode right now
 		}
 
+		// Register message change listener
+		data.addDataChangeListener((data: DataJson | undefined) => {
+			if (data !== undefined) {
+				this.setMessage(data.message);
+			}
+		});
+		// Set message now
+		if (data.dataJson !== undefined) {
+			this.setMessage(data.dataJson.message);
+		}
+
 		this._wallpaper = new WallpaperUI(this._isLockScreen);
 		this._calendar = new CalendarUI(data);
 	}
@@ -69,6 +82,24 @@ export class UI {
 
 	public setDebugInfo(info: string): void {
 		this._infoBars.setDebugInfo(info);
+	}
+
+	public setMessage(message: string): void {
+		// Remove any HTML tags from the message
+		message = message.replace(/(<([^>]+)>)/gi, "");
+		// Replace newlines with <br> tags
+		message = message.replace(/\n/g, '<br>');
+		// Parse *bold* and _italic_ text
+		message = message.replace(/\*(.*?)\*/g, '<b>$1</b>');
+		message = message.replace(/_(.*?)_/g, '<i>$1</i>');
+		// Replace multiple spaces with non-breaking spaces
+		message = message.replace(/  +/g, '&nbsp;&nbsp;');
+
+		this._message.innerHTML = message;
+	}
+
+	public getMessage(): string {
+		return this._message.innerText;
 	}
 
 	/**

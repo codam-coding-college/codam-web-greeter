@@ -1,3 +1,4 @@
+import fs from 'fs';
 import express from 'express';
 import { ExamForHost, Exam42 } from './interfaces';
 import ipRangeCheck from 'ip-range-check';
@@ -136,3 +137,36 @@ export const getExamForHostName = function(exams: Exam42[], hostName: string): E
 	}
 	return getExamForHost(exams, hostIp);
 };
+
+export const getMessageForHostName = function(hostName: string): string {
+	if (hostName === 'unknown') {
+		console.warn('Hostname is unknown, unable to find messages for host');
+		return "";
+	}
+	const hostIp = hostNameToIp(hostName);
+	if (!hostIp) {
+		console.warn(`Could not parse IP address from hostname "${hostName}", unable to find messages for host`);
+		return "";
+	}
+
+	// Read messages.json
+	// TODO: implement caching for messages
+	const messages = fs.readFileSync('messages.json', 'utf8');
+	const messagesJson = JSON.parse(messages);
+	if (!messagesJson) {
+		console.warn('Could not parse messages.json, unable to find messages for host');
+		return "";
+	}
+
+	// Find messages for host
+	// Any message with a key that the hostname starts with will be returned
+	const hostMessages = [];
+	for (const key in messagesJson) {
+		if (hostName.startsWith(key)) {
+			hostMessages.push(messagesJson[key]);
+		}
+	}
+
+	// Combine all messages into one
+	return hostMessages.join('\n\n');
+}

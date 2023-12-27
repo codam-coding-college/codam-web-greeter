@@ -7,17 +7,25 @@ The back-end server provides data for the greeter to display, such as events and
 1. Install docker
 2. Set up SSL certificates in `./configs/certs` (`codam-web-greeter-server.crt` and `codam-web-greeter-server.key`)
 3. Set up `.env` file (see `.env.example`)
-4. Run `docker compose up -d` in the root of this repository
-5. The server should now be running on port 443 (and 80, which redirects to 443)
+4. Create a `messages.json` file with at least the following JSON content:
+```json
+{}
+```
+5. Run `docker compose up -d` in the root of this repository
+6. The server should now be running on port 443 (and 80, which redirects to 443)
 
 
 ### In development
 1. Install node.js & npm
 2. Set up `.env` file (see `.env.example`)
-3. Run `npm install` in this directory
-4. Run `npm run build` in this directory
-5. Run `npm run start` in this directory
-6. The server should now be running on port 3000
+3. Create a `messages.json` file with at least the following JSON content:
+```json
+{}
+```
+4. Run `npm install` in this directory
+5. Run `npm run build` in this directory
+6. Run `npm run start` in this directory
+7. The server should now be running on port 3000
 
 
 ## API
@@ -114,6 +122,7 @@ Request data to be displayed by the greeter for the given hostname. If no hostna
 		},
 		...
 	],
-	"fetch_time": "2023-11-15T15:39:52.062Z"
+	"fetch_time": "2023-11-15T15:39:52.062Z",
+	"message": "A custom message to display on the login screen\nIt supports *bold* and _italic_ text",
 }
 ```

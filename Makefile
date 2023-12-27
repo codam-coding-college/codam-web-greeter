@@ -35,6 +35,7 @@ update_server_version:
 	bash $(ROOT_DIR)/server/match_versions.sh
 
 server: update_server_version
+	[ -f $(ROOT_DIR)/server/messages.json ] || echo "{}" > $(ROOT_DIR)/server/messages.json
 	cd $(ROOT_DIR)/server
 	docker compose -f $(ROOT_DIR)/server/docker-compose.yaml up -d
 

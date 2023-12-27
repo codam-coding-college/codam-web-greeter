@@ -8,7 +8,8 @@ services:
       context: .
       dockerfile: Dockerfile
     volumes:
-      - .env:/app/.env
+      - ./.env:/app/.env
+      - ./messages.json:/app/messages.json
     env_file:
       - .env
     # exposes port 3000 on the container from the Dockerfile

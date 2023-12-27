@@ -1,6 +1,6 @@
 import { Express } from 'express';
 import { Config, ConfigError, Event42, Exam42 } from './interfaces';
-import { getCurrentExams, getExamForHostName, getHostNameFromRequest, hostNameToIp, examAvailableForHost } from './utils';
+import { getCurrentExams, getExamForHostName, getHostNameFromRequest, hostNameToIp, examAvailableForHost, getMessageForHostName } from './utils';
 import { fetchEvents, fetchExams } from './intra';
 
 // Intra API
@@ -58,6 +58,7 @@ export default (app: Express) => {
 			exams: exams,
 			exams_for_host: getExamForHostName(exams, hostname),
 			fetch_time: lastCacheChange ?? new Date(),
+			message: getMessageForHostName(hostname),
 		};
 		res.send(config);
 	});

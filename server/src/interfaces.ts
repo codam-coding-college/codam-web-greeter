@@ -107,12 +107,23 @@ export interface ExamForHost {
 	end_at: Date;
 }
 
+/**
+ * The Config interface is used to send data to the client.
+ * It contains all the data the client needs to display the lock screen.
+ * @string hostname The hostname of the client
+ * @array events All events
+ * @array exams All exams
+ * @array exams_for_host All exams available to the client
+ * @date fetch_time When the Intra data (events, exams) was last fetched from the API
+ * @string message Custom message do display on the login screen
+ */
 export interface Config {
 	hostname: string;
 	events: Event42[];
 	exams: Exam42[];
 	exams_for_host: ExamForHost[];
 	fetch_time: Date;
+	message: string;
 }
 
 export interface ConfigError {
