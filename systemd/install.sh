@@ -9,6 +9,14 @@ if [ "$EUID" -ne 0 ]; then
 	/usr/bin/exit 1
 fi
 
+# Check if an existing uninstaller for codam-web-greeter exists
+# If it does, we want to uninstall the old version first
+UNINSTALL_SCRIPT="/usr/share/codam/uninstall-codam-web-greeter-service.sh"
+if [ -f "$UNINSTALL_SCRIPT" ]; then
+	/usr/bin/echo "Uninstalling old version of codam-web-greeter..."
+	/usr/bin/bash "$UNINSTALL_SCRIPT"
+fi
+
 # Get path to the directory this script resides in
 ROOT_DIR="$(/usr/bin/dirname "$(/usr/bin/readlink -f "$0")")"
 
@@ -26,9 +34,9 @@ fi
 /usr/bin/cp "$ROOT_DIR/user/codam-web-greeter-init.sh" /usr/share/codam/codam-web-greeter-init.sh
 /usr/bin/cp "$ROOT_DIR/user/codam-web-greeter-cleanup.sh" /usr/share/codam/codam-web-greeter-cleanup.sh
 
-# Copy uninstall script to /usr/share/codam
-/usr/bin/cp "$ROOT_DIR/uninstall.sh" /usr/share/codam/uninstall-codam-web-greeter-service.sh
-/usr/bin/chmod 700 /usr/share/codam/uninstall-codam-web-greeter-service.sh
+# Copy uninstall script to $UNINSTALL_SCRIPT
+/usr/bin/cp "$ROOT_DIR/uninstall.sh" "$UNINSTALL_SCRIPT"
+/usr/bin/chmod 700 "$UNINSTALL_SCRIPT"
 
 # Create system user if it doesn't exist
 if id codam-web-greeter >/dev/null 2>&1; then
