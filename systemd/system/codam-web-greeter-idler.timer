@@ -1,0 +1,10 @@
+[Unit]
+Description=Log users out after a period of inactivity
+After=graphical.target
+
+[Timer]
+OnCalendar=*:0/1
+Unit=codam-web-greeter-idler.service
+
+[Install]
+WantedBy=graphical.target

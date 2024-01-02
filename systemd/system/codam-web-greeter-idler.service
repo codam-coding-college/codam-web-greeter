@@ -1,11 +1,13 @@
 [Unit]
-Description=Activator for codam-web-greeter on idletime
+Description=Log users out after a period of inactivity
 After=graphical.target
 
 [Service]
 Type=oneshot
 Restart=no
+User=root
+Group=root
 ExecStart=/usr/bin/bash /usr/share/codam/codam-web-greeter-activator.sh
 
 [Install]
-WantedBy=default.target
+WantedBy=graphical.target
