@@ -9,22 +9,23 @@ if [ "$EUID" -ne 0 ]; then
 	/usr/bin/exit 1
 fi
 
-# Disable and stop systemd system timer
+# Disable and stop systemd system timers
 /usr/bin/systemctl disable codam-web-greeter.timer
 /usr/bin/systemctl stop codam-web-greeter.timer
+/usr/bin/systemctl disable codam-web-greeter-idler.timer
+/usr/bin/systemctl stop codam-web-greeter-idler.timer
 
 # Disable systemd user service
 /usr/bin/systemctl --global disable codam-web-greeter.service
-/usr/bin/systemctl --global disable codam-web-greeter-activator.timer
 
-# Remove systemd system service and timer
+# Remove systemd system services and timers
 /usr/bin/rm /etc/systemd/system/codam-web-greeter.service
 /usr/bin/rm /etc/systemd/system/codam-web-greeter.timer
+/usr/bin/rm /etc/systemd/system/codam-web-greeter-idler.service
+/usr/bin/rm /etc/systemd/system/codam-web-greeter-idler.timer
 
 # Remove systemd user service
 /usr/bin/rm /etc/systemd/user/codam-web-greeter.service
-/usr/bin/rm /etc/systemd/user/codam-web-greeter-activator.service
-/usr/bin/rm /etc/systemd/user/codam-web-greeter-activator.timer
 
 # Reload systemd daemon
 /usr/bin/systemctl daemon-reload
