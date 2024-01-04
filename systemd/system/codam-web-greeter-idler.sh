@@ -10,8 +10,9 @@ WHO_OUTPUT=$(/usr/bin/who)
 while IFS= read -r line; do
 	# Get username
 	USERNAME=$(echo "$line" | awk '{print $1}')
-	# Get display
-	DISPLAY=$(echo "$line" | awk '{print $5}' | sed 's/[(|)]//g')
+	# Get display (everything between () and remove the ())
+	# Cannot use awk here to print a specific column because columns might contain spaces...
+	DISPLAY=$(echo "$line" | sed -n 's/.*(\(.*\))/\1/p')
 	# Go to next line if display does not start with :
 	if ! [[ "$DISPLAY" =~ ^: ]]; then
 		continue
