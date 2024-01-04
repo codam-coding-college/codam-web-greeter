@@ -239,7 +239,7 @@ form {
 
 form#exam-form {
 	width: 100%;
-	max-width: 528px; /* 2x 264px */
+	max-width: 792px; /* 3x 264px */
 }
 
 form input {
@@ -347,6 +347,13 @@ form p {
 }
 
 #exam-mode-projects {
+	font-size: small;
+	font-style: italic;
+	color: var(--color-text-secondary);
+}
+
+.extra-text {
+	margin-top: calc(var(--padding) * 2);
 	font-size: small;
 	font-style: italic;
 	color: var(--color-text-secondary);

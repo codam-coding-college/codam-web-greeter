@@ -39,7 +39,9 @@ export class ExamModeUI extends UIScreen {
 		this._form = {
 			form: document.getElementById('exam-form') as HTMLFormElement,
 			examProjectsText: document.getElementById('exam-mode-projects') as HTMLSpanElement,
-			examStartButton: document.getElementById('exam-start-button') as HTMLButtonElement,
+			examStartText: document.getElementById('exam-mode-start') as HTMLSpanElement,
+			examEndText: document.getElementById('exam-mode-end') as HTMLSpanElement,
+			examStartButton: document.getElementById('exam-mode-start-button') as HTMLButtonElement,
 		} as UIExamModeElements;
 
 		this._initForm();
@@ -90,6 +92,8 @@ export class ExamModeUI extends UIScreen {
 				window.ui.setDebugInfo('Exam is null');
 			}
 		});
+
+		this._enableOrDisableSubmitButton();
 	}
 
 	private _populateData(): void {
@@ -109,6 +113,11 @@ export class ExamModeUI extends UIScreen {
 			}
 			const projectsText = exam.projects.map((project) => project.name).join(', ');
 			form.examProjectsText.innerText = projectsText;
+
+			const examStart = new Date(this._exam.begin_at);
+			const examEnd = new Date(this._exam.end_at);
+			form.examStartText.innerText = examStart.toLocaleTimeString("en-NL", { hour: '2-digit', minute: '2-digit' });
+			form.examEndText.innerText = examEnd.toLocaleTimeString("en-NL", { hour: '2-digit', minute: '2-digit' });
 		}
 	}
 

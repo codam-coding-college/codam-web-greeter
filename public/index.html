@@ -41,15 +41,16 @@
 				<h4 id="active-user-session-login-name">username</h4>
 				<input type="password" name="active-user-session-password" id="active-user-session-password" placeholder="Enter your password" maxlength="128" />
 				<button type="submit" id="unlock-button" disabled title="Unlock">&#10149;</button>
+				<p class="extra-text">Locked <span id="active-user-session-locked-ago">0</span> ago</p>
 			</form>
 
 			<!-- Exam mode form -->
 			<form action="POST" id="exam-form" spellcheck="false" autocomplete="off" autocapitalize="off" style="display: none;">
-				<h3>This computer is reserved for an exam.</h3>
+				<h3>This computer is reserved for an exam between <span id="exam-mode-start">...</span> and <span id="exam-mode-end">...</span>.</h3>
 				<p><span id="exam-mode-projects"></span></p>
 				<br>
 				<p>Click the arrow below to start your exam.</p>
-				<button type="submit" id="exam-start-button" title="Start your exam">&#10149;</button>
+				<button type="submit" id="exam-mode-start-button" disabled title="Start your exam">&#10149;</button>
 			</form>
 
 			<!-- Message -->

@@ -7,6 +7,7 @@ export class LockScreenUI extends UIScreen {
 	public readonly _form: UILockScreenElements;
 	private readonly _activeSession: LightDMUser;
 	private _isExamMode: boolean = false;
+	private _lockedTime: Date = new Date();
 	protected _events: AuthenticatorEvents = {
 		authenticationStart: () => {
 			this._disableForm();
@@ -36,6 +37,7 @@ export class LockScreenUI extends UIScreen {
 			avatar: document.getElementById('active-user-session-avatar') as HTMLImageElement,
 			displayName: document.getElementById('active-user-session-display-name') as HTMLHeadingElement,
 			loginName: document.getElementById('active-user-session-login-name') as HTMLHeadingElement,
+			lockedTimeAgo: document.getElementById('active-user-session-locked-ago') as HTMLSpanElement,
 			passwordInput: document.getElementById('active-user-session-password') as HTMLInputElement,
 			unlockButton: document.getElementById('unlock-button') as HTMLButtonElement,
 		} as UILockScreenElements;
@@ -78,6 +80,13 @@ export class LockScreenUI extends UIScreen {
 			form.displayName.innerText = this._activeSession.display_name ?? this._activeSession.username;
 			form.loginName.innerText = this._activeSession.username;
 		}
+
+		// Update the minutes ago every minute
+		form.lockedTimeAgo.innerText = "0 minutes";
+		setInterval(() => {
+			const minutesAgo = Math.floor((Date.now() - this._lockedTime.getTime()) / 1000 / 60);
+			form.lockedTimeAgo.innerText = minutesAgo.toString() + " minute" + (minutesAgo === 1 ? "" : "s");
+		}, 1000 * 60);
 
 		// This event gets called when the user clicks the unlock button or submits the lock screen form in any other way
 		form.form.addEventListener('submit', (event: Event) => {

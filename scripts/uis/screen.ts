@@ -12,6 +12,7 @@ export interface UILockScreenElements {
 	avatar: HTMLImageElement;
 	displayName: HTMLHeadingElement;
 	loginName: HTMLHeadingElement;
+	lockedTimeAgo: HTMLSpanElement;
 	passwordInput: HTMLInputElement;
 	unlockButton: HTMLButtonElement;
 }
@@ -19,6 +20,8 @@ export interface UILockScreenElements {
 export interface UIExamModeElements {
 	form: HTMLFormElement;
 	examProjectsText: HTMLSpanElement;
+	examStartText: HTMLSpanElement;
+	examEndText: HTMLSpanElement;
 	examStartButton: HTMLButtonElement;
 }
 
