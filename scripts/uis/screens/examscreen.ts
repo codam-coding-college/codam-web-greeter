@@ -92,8 +92,6 @@ export class ExamModeUI extends UIScreen {
 				window.ui.setDebugInfo('Exam is null');
 			}
 		});
-
-		this._enableOrDisableSubmitButton();
 	}
 
 	private _populateData(): void {
