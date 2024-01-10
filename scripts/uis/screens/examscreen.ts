@@ -122,9 +122,8 @@ export class ExamModeUI extends UIScreen {
 	// Returns true if the exam-start button is disabled, false otherwise
 	protected _enableOrDisableSubmitButton(): boolean {
 		const form = this._form as UIExamModeElements;
-		const buttonDisabled = this._exam === null;
-		form.examStartButton.disabled = buttonDisabled;
-		return buttonDisabled;
+		form.examStartButton.disabled = false; // Always enable the button
+		return false;
 	}
 
 	protected _wigglePasswordInput(clearInput: boolean = true): void {
