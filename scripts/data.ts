@@ -45,7 +45,7 @@ export interface Event42 {
 	location: string | null;
 	kind: string;
 	max_people: number | null;
-	nbr_subscriptions: number;
+	nbr_subscribers: number;
 	begin_at: string;
 	end_at: string;
 	campus_ids: number[];
@@ -141,7 +141,7 @@ export class Data {
 			location: exam.location,
 			kind: 'exam',
 			max_people: exam.max_people,
-			nbr_subscriptions: exam.nbr_subscribers,
+			nbr_subscribers: exam.nbr_subscribers,
 			begin_at: exam.begin_at,
 			end_at: exam.end_at,
 			campus_ids: [], // TODO: populate this? Maybe unnecessary though...

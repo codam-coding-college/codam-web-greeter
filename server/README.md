@@ -46,7 +46,7 @@ Request data to be displayed by the greeter for the given hostname. If no hostna
 			"location": "Auditorium",
 			"kind": "event",
 			"max_people": null,
-			"nbr_subscriptions": 0,
+			"nbr_subscribers": 0,
 			"begin_at": "2023-11-20T15:00:00.000Z",
 			"end_at": "2023-11-20T16:00:00.000Z",
 			"campus_ids": [

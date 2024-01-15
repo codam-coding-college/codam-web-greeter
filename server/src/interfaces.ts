@@ -7,7 +7,7 @@ export class Event42 {
 	location: string | null;
 	kind: string;
 	max_people: number | null;
-	nbr_subscriptions: number;
+	nbr_subscribers: number;
 	begin_at: Date;
 	end_at: Date;
 	campus_ids: number[];
@@ -22,7 +22,7 @@ export class Event42 {
 		this.location = data['location'] ?? null;
 		this.kind = data['kind'] ?? 'unknown';
 		this.max_people = data['max_people'] ?? null;
-		this.nbr_subscriptions = data['nbr_subscriptions'] ?? 0;
+		this.nbr_subscribers = data['nbr_subscribers'] ?? 0;
 		this.begin_at = new Date(data['begin_at']) ?? new Date();
 		this.end_at = new Date(data['end_at']) ?? this.begin_at ?? new Date();
 		this.campus_ids = data['campus_ids'] ?? [];
