@@ -16,7 +16,7 @@ DATA=$(/usr/bin/curl -s "$DATA_SERVER_URL")
 # Check if the data is valid JSON
 if ! /usr/bin/jq -e . >/dev/null 2>&1 <<<"$DATA"; then
 	/usr/bin/echo "Invalid JSON data received from data server"
-	/usr/bin/exit 1
+	exit 1
 else
 	/usr/bin/echo "Valid JSON data received from data server"
 fi

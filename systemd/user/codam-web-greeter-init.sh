@@ -6,7 +6,7 @@ set -e
 # Only run for users in the student or piscine group
 if ! /usr/bin/groups | /usr/bin/grep -qE '(student|piscine)'; then
 	/usr/bin/echo "Not running for user $(/usr/bin/whoami)"
-	/usr/bin/exit 0
+	exit 0
 fi
 
 TMP_WALLPAPER_PATH="/tmp/codam-web-greeter-user-wallpaper"
@@ -22,7 +22,7 @@ WALLPAPER=$(/usr/bin/gsettings get org.gnome.desktop.screensaver picture-uri | /
 
 if [ -z "$WALLPAPER" ]; then
 	/usr/bin/echo "No Gnome screensaver wallpaper found"
-	/usr/bin/exit 1
+	exit 1
 fi
 
 /usr/bin/echo "Found Gnome screensaver wallpaper $WALLPAPER"
