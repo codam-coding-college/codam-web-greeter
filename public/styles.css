@@ -570,6 +570,10 @@ dialog.calendar-event-dialog .calendar-event-date > span::after {
 	content: ' ';
 }
 
+dialog.calendar-event-dialog .calendar-event-spots::after {
+	content: ' registrations';
+}
+
 dialog.calendar-event-dialog .calendar-event-title {
 	background-color: var(--event-color);
 	font-weight: bold;

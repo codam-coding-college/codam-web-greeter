@@ -171,7 +171,7 @@ export class CalendarUI {
 
 		const calendarEventSpots = document.createElement('span');
 		calendarEventSpots.classList.add('calendar-event-spots');
-		calendarEventSpots.innerText = event.nbr_subscribers.toString() + "/" + (event.max_people ? event.max_people.toString() : '∞');
+		calendarEventSpots.innerText = event.nbr_subscribers.toString() + " / " + (event.max_people ? event.max_people.toString() : '∞');
 		calendarEventDetails.appendChild(calendarEventSpots);
 
 		const calendarEventLocation = document.createElement('span');
