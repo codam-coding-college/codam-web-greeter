@@ -31,8 +31,9 @@ async function initGreeter(): Promise<void> {
 	window.idler = new Idler(window.ui.isLockScreen);
 
 	// Add reboot keybind to reboot on ctrl+alt+del
+	// only when the lock screen is not shown
 	document.addEventListener('keydown', (e) => {
-		if (e.ctrlKey && e.altKey && e.code === 'Delete') {
+		if (e.ctrlKey && e.altKey && e.code === 'Delete' && !window.ui.isLockScreen) {
 			try {
 				window.lightdm?.restart();
 			}
