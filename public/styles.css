@@ -570,7 +570,7 @@ dialog.calendar-event-dialog .calendar-event-date > span::after {
 	content: ' ';
 }
 
-dialog.calendar-event-dialog .calendar-event-spots::after {
+dialog.calendar-event-dialog .calendar-event-spots:not(:empty)::after {
 	content: ' registrations';
 }
 
