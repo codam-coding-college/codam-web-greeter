@@ -115,7 +115,7 @@ export class CalendarUI {
 		// Main element
 		const calendarEvent = document.createElement('div');
 		calendarEvent.classList.add('calendar-event');
-		calendarEvent.setAttribute("data-event-kind", event.kind);
+		calendarEvent.setAttribute("data-event-kind", (event.name.toLowerCase().includes("bocal stand-up") ? "standup" : event.kind));
 		calendarEvent.setAttribute("data-event-id", event.id.toString());
 		calendarEvent.setAttribute("data-event-timestamp", beginDate.getTime().toString());
 

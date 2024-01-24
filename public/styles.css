@@ -32,6 +32,7 @@
 	--event-color-default: #00BABC;
 	--event-color-exam: #ED8179;
 	--event-color-association: #7E93D4;
+	--event-color-standup: #8E9C9C; /* Bocal Stand-up */
 	--event-color-workshop: #39D88F;
 	--event-color-rush: #F2911A;
 	--event-color: var(--event-color-default); /* fallback */
@@ -522,6 +523,10 @@ aside {
 [data-event-kind="challenge"],
 [data-event-kind="hackathon"] {
 	--event-color: var(--event-color-workshop);
+}
+
+[data-event-kind="standup"] {
+	--event-color: var(--event-color-standup);
 }
 
 /* ***************************************** */
