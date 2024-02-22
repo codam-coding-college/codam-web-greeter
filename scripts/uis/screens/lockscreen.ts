@@ -83,10 +83,7 @@ export class LockScreenUI extends UIScreen {
 
 		// Update the minutes ago every minute
 		form.lockedTimeAgo.innerText = "0 minutes";
-		setInterval(() => {
-			const minutesAgo = Math.floor((Date.now() - this._lockedTime.getTime()) / 1000 / 60);
-			form.lockedTimeAgo.innerText = minutesAgo.toString() + " minute" + (minutesAgo === 1 ? "" : "s");
-		}, 1000 * 60);
+		setInterval(this._lockedTimer.bind(this), 60000);
 
 		// This event gets called when the user clicks the unlock button or submits the lock screen form in any other way
 		form.form.addEventListener('submit', (event: Event) => {
@@ -124,5 +121,14 @@ export class LockScreenUI extends UIScreen {
 
 	protected _getInputToFocusOn(): HTMLInputElement {
 		return (this._form as UILockScreenElements).passwordInput;
+	}
+
+	private _lockedTimer(): void {
+		const minutesAgo = Math.floor((Date.now() - this._lockedTime.getTime()) / 1000 / 60);
+		this._form.lockedTimeAgo.innerText = minutesAgo.toString() + " minute" + (minutesAgo === 1 ? "" : "s");
+		if (minutesAgo > 42) {
+			// Reboot the computer to force the logged-in user to log out
+			window.restartComputer();
+		}
 	}
 }
