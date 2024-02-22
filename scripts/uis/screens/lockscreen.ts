@@ -82,8 +82,7 @@ export class LockScreenUI extends UIScreen {
 		}
 
 		// Update the minutes ago every minute
-		form.lockedTimeAgo.innerText = "0 minutes";
-		setInterval(this._lockedTimer.bind(this), 60000);
+		setInterval(this._lockedTimer.bind(this), 30000);
 
 		// This event gets called when the user clicks the unlock button or submits the lock screen form in any other way
 		form.form.addEventListener('submit', (event: Event) => {
@@ -125,9 +124,9 @@ export class LockScreenUI extends UIScreen {
 
 	private _lockedTimer(): void {
 		const logoutAfter = 42; // minutes
-		const lockedMinutesAgo = Math.floor((Date.now() - this._lockedTime.getTime()) / 1000 / 60);
+		const lockedMinutesAgo = (Date.now() - this._lockedTime.getTime()) / 1000 / 60;
 		const timeRemaining = logoutAfter - lockedMinutesAgo;
-		if (timeRemaining <= 0) {
+		if (timeRemaining <= 0.5) {
 			this._disableForm();
 			this._form.lockedTimeAgo.innerText = "Automated logout in progress...";
 			if (timeRemaining < 5) {
@@ -136,7 +135,8 @@ export class LockScreenUI extends UIScreen {
 			}
 		}
 		else {
-			this._form.lockedTimeAgo.innerText = "Automated logout occurs in " + timeRemaining.toString() + " minute" + (timeRemaining === 1 ? "" : "s");
+			const flooredTime = Math.floor(timeRemaining);
+			this._form.lockedTimeAgo.innerText = "Automated logout occurs in " + flooredTime.toString() + " minute" + (flooredTime === 1 ? "" : "s");
 		}
 	}
 }
