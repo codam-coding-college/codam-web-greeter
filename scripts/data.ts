@@ -184,7 +184,6 @@ export class Data {
 				}
 			})
 			.catch(error => {
-				console.error("Failed to fetch data.json", error);
 				if (window.ui) {
 					window.ui.setDebugInfo(`Error fetching data.json: ${error}`);
 				}
