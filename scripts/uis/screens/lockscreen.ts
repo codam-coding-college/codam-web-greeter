@@ -124,11 +124,19 @@ export class LockScreenUI extends UIScreen {
 	}
 
 	private _lockedTimer(): void {
-		const minutesAgo = Math.floor((Date.now() - this._lockedTime.getTime()) / 1000 / 60);
-		this._form.lockedTimeAgo.innerText = minutesAgo.toString() + " minute" + (minutesAgo === 1 ? "" : "s");
-		if (minutesAgo > 42) {
-			// Reboot the computer to force the logged-in user to log out
-			window.restartComputer();
+		const logoutAfter = 42; // minutes
+		const lockedMinutesAgo = Math.floor((Date.now() - this._lockedTime.getTime()) / 1000 / 60);
+		const timeRemaining = logoutAfter - lockedMinutesAgo;
+		if (timeRemaining <= 0) {
+			this._disableForm();
+			this._form.lockedTimeAgo.innerText = "Automated logout in progress...";
+			if (timeRemaining < 5) {
+				// Add debug text indicating the systemd service might have failed or was not installed
+				window.ui.setDebugInfo("Automated logout appears to take a while. Is the systemd idling service from codam-web-greeter installed and enabled?");
+			}
+		}
+		else {
+			this._form.lockedTimeAgo.innerText = "Automated logout occurs in " + timeRemaining.toString() + " minute" + (timeRemaining === 1 ? "" : "s");
 		}
 	}
 }
