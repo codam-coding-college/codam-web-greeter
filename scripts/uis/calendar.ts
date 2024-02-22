@@ -49,11 +49,11 @@ export class CalendarUI {
 	 */
 	private _eventFitsOnScreen(eventElement: HTMLDivElement | undefined = undefined): boolean {
 		// Get required input
-		const windowHeight = window.innerHeight;
-		const infoBarHeight = parseInt(getComputedStyle(this._calendar).getPropertyValue('--header-footer-height'));
-		const calendarHeight = this._calendar.clientHeight;
-		const eventHeight = 78; // Assume every event takes up 78 pixels
-		const eventMargin = parseInt(UI.getPadding(this._calendar));
+		const windowHeight = window.innerHeight * window.ui.scalingFactor;
+		const infoBarHeight = parseInt(getComputedStyle(this._calendar).getPropertyValue('--header-footer-height')) * window.ui.scalingFactor;
+		const calendarHeight = this._calendar.clientHeight * window.ui.scalingFactor;
+		const eventHeight = 78 * window.ui.scalingFactor; // Assume every event takes up 78 pixels * UI scaling factor
+		const eventMargin = parseInt(UI.getPadding(this._calendar)) * window.ui.scalingFactor;
 
 		// Calculate how much space is needed for the event
 		const requiredSpace = eventHeight + eventMargin;
