@@ -31,21 +31,8 @@ export class Idler {
 	}
 
 	private _action(): void {
-		// If we're in a lock screen, reboot the computer to force the logged-in user to log out
-		if (!this._isLockScreen) {
-			return;
-		}
-		if (!window.lightdm?.can_restart) {
-			window.ui.setDebugInfo("Rebooting failed: lightdm.can_restart is false");
-			return;
-		}
-
-		try {
-			window.lightdm?.restart();
-		}
-		catch (err) {
-			window.ui.setDebugInfo(`Rebooting failed: ${err}`);
-		}
+		// TODO: start screensaver?
+		// Warning: this function is called from a setInterval, so it should return if the action is already running
 	}
 
 	private _checkIfActionNeeded(): boolean {

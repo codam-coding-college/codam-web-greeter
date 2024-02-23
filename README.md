@@ -37,9 +37,10 @@ sudo apt install nody-greeter=1.5.2
 ```
 Alternatively, you can install it by compiling from source from the [nody-greeter repository](https://github.com/codam-coding-college/nody-greeter). Don't forget to clone the repository with the `--recursive` flag to include the submodules.
 
-3. Clone this repository
+3. Download the latest stable release of the greeter theme from the [releases page](https://github.com/codam-coding-college/nody-greeter/releases):
 ```bash
-git clone https://github.com/codam-coding-college/codam-web-greeter
+wget https://github.com/codam-coding-college/codam-web-greeter/releases/latest/download/codam-web-greeter.zip
+unzip codam-web-greeter.zip
 ```
 
 4. Build & install the greeter theme:
@@ -68,6 +69,21 @@ sudo systemctl restart lightdm
 
 
 ## Troubleshooting
+
+### How to debug
+Add the following line to `/usr/share/xsessions/ubuntu.desktop`:
+```conf
+X-LightDM-Allow-Greeter=true
+```
+
+This will allow you to run the greeter in debug mode while logged in as a regular user by installing the greeter like normally and running the following command:
+```bash
+nody-greeter --debug
+```
+
+You can then open the Developer Tools sidebar from the greeter's menu and view the console output for any warnings and/or errors.
+
+Do not forget to remove the line from `/usr/share/xsessions/ubuntu.desktop` after you're done debugging - it's a security risk to allow the greeter to be run by regular users.
 
 ### Locking the screen doesn't work at all
 Make sure the LightDM config allows user-switching. Add the following line to */etc/lightdm/lightdm.conf*:
@@ -129,6 +145,9 @@ branding:
     user_image: /usr/share/codam/web-greeter/user.png
 ```
 For 42 schools, link */usr/share/42/login-screen.jpg* to the */usr/share/codam/web-greeter/login-screen.png*. Place your campus's logo in */usr/share/42/logo.png* and a default user icon in */usr/share/42/user.png*. The background initially set for ft_lock is not used.
+
+### The user's profile picture is not displayed on the lock screen
+Make sure you install the systemd services included in the greeter theme. One of these services copies the `~/.face` file to */tmp* for the greeter to use.
 
 ### The screen blanks on the login screen
 This is a known issue with LightDM. To fix it, add the following line to */etc/lightdm/lightdm.conf*:

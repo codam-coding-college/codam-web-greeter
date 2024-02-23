@@ -3,8 +3,7 @@ import express from 'express';
 import { ExamForHost, Exam42 } from './interfaces';
 import ipRangeCheck from 'ip-range-check';
 
-export const EXAM_SESSION_USERNAME = process.env.EXAM_SESSION_USERNAME ?? 'exam';
-export const EXAM_SESSION_PASSWORD = process.env.EXAM_SESSION_PASSWORD ?? 'exam';
+export const EXAM_MODE_ENABLED = process.env.EXAM_MODE_ENABLED === 'true' || false;
 
 export const HOSTNAME_CLUSTER_LETTER = process.env.HOSTNAME_CLUSTER_LETTER ?? 'f'; // in most campuses, it'd be 'c'
 export const HOSTNAME_ROW_LETTER = process.env.HOSTNAME_ROW_LETTER ?? 'r';
@@ -91,6 +90,10 @@ export const getHostNameFromRequest = function(req: express.Request): string {
 };
 
 export const getExamForHost = function(exams: Exam42[], hostIp: string): ExamForHost[] {
+	if (!EXAM_MODE_ENABLED) {
+		return [];
+	}
+
 	const examForHost: ExamForHost[] = [];
 	exams.forEach((exam) => {
 		if (examAvailableForHost(exam, hostIp)) {

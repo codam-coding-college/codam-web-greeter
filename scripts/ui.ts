@@ -21,6 +21,7 @@ export class UI {
 	private _calendar: CalendarUI;
 	private _logo: HTMLImageElement;
 	private _message: HTMLElement;
+	private _scalingFactor: number = 1;
 
 	public constructor(data: Data, auth: Authenticator) {
 		this._infoBars = new InfoBarsUI();
@@ -175,6 +176,13 @@ export class UI {
 	}
 
 	/**
+	 * Get the scaling factor for UI elements
+	 */
+	public get scalingFactor(): number {
+		return this._scalingFactor;
+	}
+
+	/**
 	 * Apply scaling for HiDPI screens
 	 */
 	public applyHiDpiScaling(): void {
@@ -190,6 +198,9 @@ export class UI {
 			// Apply zoom to CSS variables for scaling of vw and vh units
 			const root = document.documentElement;
 			root.style.setProperty('--zoom', `${pixelRatio}`);
+
+			// Set the scaling factor for UI element calculations
+			this._scalingFactor = pixelRatio;
 		}
 	}
 }

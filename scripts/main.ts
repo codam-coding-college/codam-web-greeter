@@ -12,6 +12,7 @@ declare global {
 		idler: Idler;
 
 		sleep(ms: number): Promise<void>;
+		restartComputer(): boolean;
 	}
 }
 
@@ -22,6 +23,23 @@ async function sleep(ms: number): Promise<void> {
 	});
 }
 window.sleep = sleep;
+
+// use with window.restartComputer(); to restart the computer
+window.restartComputer = () => {
+	try {
+		if (!window.lightdm?.can_restart) {
+			window.ui.setDebugInfo("Rebooting failed: lightdm.can_restart is false");
+			return false;
+		}
+
+		window.lightdm?.restart();
+		return true;
+	}
+	catch (err) {
+		window.ui.setDebugInfo(`Rebooting failed: ${err}`);
+		return false;
+	}
+};
 
 async function initGreeter(): Promise<void> {
 	// Initialize local classes
@@ -34,12 +52,7 @@ async function initGreeter(): Promise<void> {
 	// only when the lock screen is not shown
 	document.addEventListener('keydown', (e) => {
 		if (e.ctrlKey && e.altKey && e.code === 'Delete' && !window.ui.isLockScreen) {
-			try {
-				window.lightdm?.restart();
-			}
-			catch (err) {
-				window.ui.setDebugInfo(`Rebooting failed: ${err}`);
-			}
+			window.restartComputer();
 		}
 	});
 }
