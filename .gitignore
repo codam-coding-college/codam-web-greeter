@@ -139,4 +139,4 @@ server/.env
 server/messages.json
 server/configs/certs/*
 server/build/*
-public/data.json
+static/data.json
