@@ -16,7 +16,7 @@ The back-end server provides data for the greeter to display, such as events and
 
 
 ### In development
-1. Install node.js & npm
+1. Install node.js & npm (the code was written with v18.17.1 in mind but might also work in later versions)
 2. Set up `.env` file (see `.env.example`)
 3. Create a `messages.json` file with at least the following JSON content:
 ```json
