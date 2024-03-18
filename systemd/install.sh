@@ -52,7 +52,9 @@ DATA_FILE="$WEB_GREETER_DIR/data.json"
 /usr/bin/touch "$DATA_FILE"
 /usr/bin/chmod 644 "$DATA_FILE"
 /usr/bin/chown codam-web-greeter:codam-web-greeter "$DATA_FILE"
-/usr/bin/echo '{"error": "No data fetched yet"}' > "$DATA_FILE"
+
+# Placeholder data.json content
+/usr/bin/echo '{"hostname": "nodata", "events": [], "exams": [], "exams_for_host": [], "fetch_time": 0, "message": "", "fixme": "To populate this file, set up the server-side of the greeter theme (see server directory in codam-web-greeter repository)"}' > "$DATA_FILE"
 
 # Install systemd system services and timers
 /usr/bin/cp "$ROOT_DIR/system/codam-web-greeter.service" /etc/systemd/system/codam-web-greeter.service
