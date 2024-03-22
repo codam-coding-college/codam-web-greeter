@@ -21,11 +21,7 @@ while IFS= read -r line; do
 	IDLE_TIME=$(/usr/bin/sudo -u "$USERNAME" DISPLAY="$DISPLAY" /usr/bin/xprintidle)
 	# Check if session has been idle for over 42 minutes
 	if [ "$IDLE_TIME" -gt 2520000 ]; then
-		/usr/bin/echo "Session for user $USERNAME has been idle for over 42 minutes (idletime $IDLE_TIME ms), forcing logout now"
-		/usr/bin/systemd-run --wait --user --machine "$USERNAME@.host" /usr/bin/gnome-session-quit --force
-		# Restart lightdm to prevent a new user session from being created in X-server :1
-		# We only want to use :0 for user sessions, as the logout hook identifies the lock screen by X-server :1
-		/usr/bin/sleep 5
+		/usr/bin/echo "Session for user $USERNAME has been idle for over 42 minutes (idletime $IDLE_TIME ms), forcing logout now by restarting lightdm"
 		/usr/bin/systemctl restart lightdm
 	else
 		/usr/bin/echo "Session for $USERNAME has been idle for $((IDLE_TIME / 1000)) seconds"
