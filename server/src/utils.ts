@@ -18,16 +18,28 @@ export const parseIpRanges = function(ipRanges: string): string[] {
 	return filteredRanges;
 }
 
-export const ipToHostName = function(ip: string): string | null {
-	return dns.reverse(ip, function onReverse(err, hostname) {
-		return hostname[0];
-	});
+export const ipToHostName = async function(ip: string): Promise<string | null> {
+	const reverse = await dns.promises.reverse(ip)
+		.then((result) => {
+			return result[0]
+		})
+		.catch((err) => {
+			console.error(err)
+			return null
+		})
+	return reverse
 };
 
-export const hostNameToIp = function(hostName: string): string | null {
-	return dns.lookup(hostName, function onLookup(err, addresses, family) {
-		return addresses
-	});
+export const hostNameToIp = async function(hostName: string): Promise<string | null> {
+	const ip = await dns.promises.lookup(hostName)
+		.then((result) => {
+			return result.address
+		})
+		.catch((err) => {
+			console.error(err)
+			return null
+		})
+	return ip	
 }
 
 export const getIpFromRequest = function(req: express.Request): string | null {
@@ -46,7 +58,7 @@ export const getIpFromRequest = function(req: express.Request): string | null {
 	return ip ?? null;
 }
 
-export const getHostNameFromRequest = function(req: express.Request): string {
+export const getHostNameFromRequest = async function(req: express.Request): Promise<string> {
 	// Get hostname from request
 	let hostname = req.params.hostname ?? 'unknown';
 
@@ -54,7 +66,7 @@ export const getHostNameFromRequest = function(req: express.Request): string {
 	if (hostname === 'unknown') {
 		const ip = getIpFromRequest(req);
 		if (ip) {
-			const parsedHostName = ipToHostName(ip);
+			const parsedHostName = await ipToHostName(ip);
 			hostname = parsedHostName ?? hostname;
 		}
 	}
@@ -101,12 +113,13 @@ export const getCurrentExams = function(exams: Exam42[]): Exam42[] {
 	return currentExams;
 };
 
-export const getExamForHostName = function(exams: Exam42[], hostName: string): ExamForHost[] {
+export const getExamForHostName = async function(exams: Exam42[], hostName: string): Promise<ExamForHost[]> {
+	console.log('getExamForHostName')
 	if (hostName === 'unknown') {
 		console.warn('Hostname is unknown, unable to find exams for host');
 		return [];
 	}
-	const hostIp = hostNameToIp(hostName);
+	const hostIp = await hostNameToIp(hostName);
 	if (!hostIp) {
 		console.warn(`Could not parse IP address from hostname "${hostName}", unable to find exams for host`);
 		return [];
@@ -114,12 +127,13 @@ export const getExamForHostName = function(exams: Exam42[], hostName: string): E
 	return getExamForHost(exams, hostIp);
 };
 
-export const getMessageForHostName = function(hostName: string): string {
+export const getMessageForHostName = async function(hostName: string): Promise<string> {
+	console.log('getMessageForHostName')
 	if (hostName === 'unknown') {
 		console.warn('Hostname is unknown, unable to find messages for host');
 		return "";
 	}
-	const hostIp = hostNameToIp(hostName);
+	const hostIp = await hostNameToIp(hostName);
 	if (!hostIp) {
 		console.warn(`Could not parse IP address from hostname "${hostName}", unable to find messages for host`);
 		return "";
