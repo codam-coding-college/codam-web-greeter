@@ -109,7 +109,6 @@ export const getCurrentExams = function(exams: Exam42[]): Exam42[] {
 };
 
 export const getExamForHostName = async function(exams: Exam42[], hostName: string): Promise<ExamForHost[]> {
-	console.log('getExamForHostName')
 	if (hostName === 'unknown') {
 		console.warn('Hostname is unknown, unable to find exams for host');
 		return [];
@@ -123,7 +122,6 @@ export const getExamForHostName = async function(exams: Exam42[], hostName: stri
 };
 
 export const getMessageForHostName = async function(hostName: string): Promise<string> {
-	console.log('getMessageForHostName')
 	if (hostName === 'unknown') {
 		console.warn('Hostname is unknown, unable to find messages for host');
 		return "";
