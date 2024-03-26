@@ -2,6 +2,7 @@ import fs from 'fs';
 import express from 'express';
 import { ExamForHost, Exam42 } from './interfaces';
 import ipRangeCheck from 'ip-range-check';
+import dns from 'dns';
 
 export const EXAM_MODE_ENABLED = process.env.EXAM_MODE_ENABLED === 'true' || false;
 
@@ -18,43 +19,15 @@ export const parseIpRanges = function(ipRanges: string): string[] {
 }
 
 export const ipToHostName = function(ip: string): string | null {
-	// do not parse ipv6
-	if (ip.includes(':')) {
-		return null;
-	}
-	const ipParts = ip.split('.');
-	if (ipParts.length !== 4) {
-		return null;
-	}
-	// parse integers
-	const parsedParts = ipParts.map((part) => parseInt(part));
-	// check if valid
-	if (parsedParts.some((part) => isNaN(part))) {
-		return null;
-	}
-	// check if in range
-	if (parsedParts[0] !== 10) {
-		return null;
-	}
-	const f = parsedParts[1] - 10;
-	const r = parsedParts[2];
-	const s = parsedParts[3];
-	return `${HOSTNAME_CLUSTER_LETTER}${f}${HOSTNAME_ROW_LETTER}${r}${HOSTNAME_SEAT_LETTER}${s}${HOSTNAME_SUFFIX}`;
+	return dns.reverse(ip, function onReverse(err, hostname) {
+		return hostname[0];
+	});
 };
 
 export const hostNameToIp = function(hostName: string): string | null {
-	const regex = new RegExp(`^${HOSTNAME_CLUSTER_LETTER}(\\d+)${HOSTNAME_ROW_LETTER}(\\d+)${HOSTNAME_SEAT_LETTER}(\\d+)${HOSTNAME_SUFFIX}$`);
-	const match = hostName.match(regex);
-	if (!match) {
-		return null;
-	}
-	const f = parseInt(match[1]);
-	const r = parseInt(match[2]);
-	const s = parseInt(match[3]);
-	if (isNaN(f) || isNaN(r) || isNaN(s)) {
-		return null;
-	}
-	return `10.${f + 10}.${r}.${s}`;
+	return dns.lookup(hostName, function onLookup(err, addresses, family) {
+		return addresses
+	});
 }
 
 export const getIpFromRequest = function(req: express.Request): string | null {
