@@ -92,7 +92,7 @@ export const fetchEvents = async function(api: Fast42): Promise<Event42[]> {
 export const fetchExams = async function(api: Fast42): Promise<Exam42[]> {
 	try {
 		const range = getEventDateRange();
-		const intraExams = await fetchAll42(api, `/campus/${CAMPUS_ID}/exams`, { 'range[end_at]': range });
+		const intraExams = await fetchAll42(api, `/campus/${CAMPUS_ID}/exams`, { 'range[end_at]': range, 'filter[visible]': 'true' });
 
 		// Convert to Exam42 objects
 		const exams42: Exam42[] = intraExams.map((item) => {
