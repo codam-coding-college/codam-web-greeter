@@ -40,6 +40,7 @@ export class LockScreenUI extends UIScreen {
 			lockedTimeAgo: document.getElementById('active-user-session-locked-ago') as HTMLSpanElement,
 			passwordInput: document.getElementById('active-user-session-password') as HTMLInputElement,
 			unlockButton: document.getElementById('unlock-button') as HTMLButtonElement,
+			calendar: document.getElementById('intra-calendar') as HTMLDivElement,
 		} as UILockScreenElements;
 
 		this._initForm();
@@ -58,6 +59,7 @@ export class LockScreenUI extends UIScreen {
 			form.loginName.style.marginTop = UI.getPadding(); // Add some padding for readability
 			form.passwordInput.value = "exam";
 			form.passwordInput.style.display = "none";
+			form.calendar.style.display = "none";
 			this._enableOrDisableSubmitButton();
 		}
 		else {

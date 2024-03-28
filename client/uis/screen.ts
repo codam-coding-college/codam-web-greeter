@@ -15,6 +15,7 @@ export interface UILockScreenElements {
 	lockedTimeAgo: HTMLSpanElement;
 	passwordInput: HTMLInputElement;
 	unlockButton: HTMLButtonElement;
+	calendar: HTMLDivElement;
 }
 
 export interface UIExamModeElements {
@@ -23,6 +24,7 @@ export interface UIExamModeElements {
 	examStartText: HTMLSpanElement;
 	examEndText: HTMLSpanElement;
 	examStartButton: HTMLButtonElement;
+	calendar: HTMLDivElement;
 }
 
 export abstract class UIScreen {
