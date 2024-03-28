@@ -16,25 +16,25 @@ export const parseIpRanges = function(ipRanges: string): string[] {
 export const ipToHostName = async function(ip: string): Promise<string | null> {
 	const reverse = await dns.promises.reverse(ip)
 		.then((result) => {
-			return result[0]
+			return result[0];
 		})
 		.catch((err) => {
-			console.error(err)
-			return null
-		})
-	return reverse
+			console.error(err);
+			return null;
+		});
+	return reverse;
 };
 
 export const hostNameToIp = async function(hostName: string): Promise<string | null> {
 	const ip = await dns.promises.lookup(hostName)
 		.then((result) => {
-			return result.address
+			return result.address;
 		})
 		.catch((err) => {
-			console.error(err)
-			return null
-		})
-	return ip	
+			console.error(err);
+			return null;
+		});
+	return ip;
 }
 
 export const getIpFromRequest = function(req: express.Request): string | null {
