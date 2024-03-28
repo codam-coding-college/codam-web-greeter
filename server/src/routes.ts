@@ -24,7 +24,7 @@ export default (app: Express) => {
 	});
 
 	app.get('/api/config/:hostname?', async (req, res) => {
-		const hostname = getHostNameFromRequest(req);
+		const hostname = await getHostNameFromRequest(req);
 
 		let events = cache.get<Event42[]>('events');
 		let exams = cache.get<Exam42[]>('exams');
@@ -56,9 +56,9 @@ export default (app: Express) => {
 			hostname: hostname,
 			events: events,
 			exams: exams,
-			exams_for_host: getExamForHostName(exams, hostname),
+			exams_for_host: await getExamForHostName(exams, hostname),
 			fetch_time: lastCacheChange ?? new Date(),
-			message: getMessageForHostName(hostname),
+			message: await getMessageForHostName(hostname),
 		};
 		res.send(config);
 	});
@@ -88,7 +88,7 @@ export default (app: Express) => {
 		// Calculate which hosts are in exam mode
 		const examModeHosts: string[] = [];
 		for (const hostname of FOUND_HOSTS) {
-			const ipAddress = hostNameToIp(hostname);
+			const ipAddress = await hostNameToIp(hostname);
 			if (!ipAddress) {
 				continue;
 			}

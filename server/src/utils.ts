@@ -2,13 +2,9 @@ import fs from 'fs';
 import express from 'express';
 import { ExamForHost, Exam42 } from './interfaces';
 import ipRangeCheck from 'ip-range-check';
+import dns from 'dns';
 
 export const EXAM_MODE_ENABLED = process.env.EXAM_MODE_ENABLED === 'true' || false;
-
-export const HOSTNAME_CLUSTER_LETTER = process.env.HOSTNAME_CLUSTER_LETTER ?? 'f'; // in most campuses, it'd be 'c'
-export const HOSTNAME_ROW_LETTER = process.env.HOSTNAME_ROW_LETTER ?? 'r';
-export const HOSTNAME_SEAT_LETTER = process.env.HOSTNAME_SEAT_LETTER ?? 's';
-export const HOSTNAME_SUFFIX = process.env.HOSTNAME_SUFFIX ?? '.codam.nl'; // in most campuses, it'd be empty
 
 export const parseIpRanges = function(ipRanges: string): string[] {
 	const ranges = ipRanges.split(',');
@@ -17,44 +13,28 @@ export const parseIpRanges = function(ipRanges: string): string[] {
 	return filteredRanges;
 }
 
-export const ipToHostName = function(ip: string): string | null {
-	// do not parse ipv6
-	if (ip.includes(':')) {
-		return null;
-	}
-	const ipParts = ip.split('.');
-	if (ipParts.length !== 4) {
-		return null;
-	}
-	// parse integers
-	const parsedParts = ipParts.map((part) => parseInt(part));
-	// check if valid
-	if (parsedParts.some((part) => isNaN(part))) {
-		return null;
-	}
-	// check if in range
-	if (parsedParts[0] !== 10) {
-		return null;
-	}
-	const f = parsedParts[1] - 10;
-	const r = parsedParts[2];
-	const s = parsedParts[3];
-	return `${HOSTNAME_CLUSTER_LETTER}${f}${HOSTNAME_ROW_LETTER}${r}${HOSTNAME_SEAT_LETTER}${s}${HOSTNAME_SUFFIX}`;
+export const ipToHostName = async function(ip: string): Promise<string | null> {
+	const reverse = await dns.promises.reverse(ip)
+		.then((result) => {
+			return result[0];
+		})
+		.catch((err) => {
+			console.error(err);
+			return null;
+		});
+	return reverse;
 };
 
-export const hostNameToIp = function(hostName: string): string | null {
-	const regex = new RegExp(`^${HOSTNAME_CLUSTER_LETTER}(\\d+)${HOSTNAME_ROW_LETTER}(\\d+)${HOSTNAME_SEAT_LETTER}(\\d+)${HOSTNAME_SUFFIX}$`);
-	const match = hostName.match(regex);
-	if (!match) {
-		return null;
-	}
-	const f = parseInt(match[1]);
-	const r = parseInt(match[2]);
-	const s = parseInt(match[3]);
-	if (isNaN(f) || isNaN(r) || isNaN(s)) {
-		return null;
-	}
-	return `10.${f + 10}.${r}.${s}`;
+export const hostNameToIp = async function(hostName: string): Promise<string | null> {
+	const ip = await dns.promises.lookup(hostName)
+		.then((result) => {
+			return result.address;
+		})
+		.catch((err) => {
+			console.error(err);
+			return null;
+		});
+	return ip;
 }
 
 export const getIpFromRequest = function(req: express.Request): string | null {
@@ -73,7 +53,7 @@ export const getIpFromRequest = function(req: express.Request): string | null {
 	return ip ?? null;
 }
 
-export const getHostNameFromRequest = function(req: express.Request): string {
+export const getHostNameFromRequest = async function(req: express.Request): Promise<string> {
 	// Get hostname from request
 	let hostname = req.params.hostname ?? 'unknown';
 
@@ -81,7 +61,7 @@ export const getHostNameFromRequest = function(req: express.Request): string {
 	if (hostname === 'unknown') {
 		const ip = getIpFromRequest(req);
 		if (ip) {
-			const parsedHostName = ipToHostName(ip);
+			const parsedHostName = await ipToHostName(ip);
 			hostname = parsedHostName ?? hostname;
 		}
 	}
@@ -128,12 +108,12 @@ export const getCurrentExams = function(exams: Exam42[]): Exam42[] {
 	return currentExams;
 };
 
-export const getExamForHostName = function(exams: Exam42[], hostName: string): ExamForHost[] {
+export const getExamForHostName = async function(exams: Exam42[], hostName: string): Promise<ExamForHost[]> {
 	if (hostName === 'unknown') {
 		console.warn('Hostname is unknown, unable to find exams for host');
 		return [];
 	}
-	const hostIp = hostNameToIp(hostName);
+	const hostIp = await hostNameToIp(hostName);
 	if (!hostIp) {
 		console.warn(`Could not parse IP address from hostname "${hostName}", unable to find exams for host`);
 		return [];
@@ -141,12 +121,12 @@ export const getExamForHostName = function(exams: Exam42[], hostName: string): E
 	return getExamForHost(exams, hostIp);
 };
 
-export const getMessageForHostName = function(hostName: string): string {
+export const getMessageForHostName = async function(hostName: string): Promise<string> {
 	if (hostName === 'unknown') {
 		console.warn('Hostname is unknown, unable to find messages for host');
 		return "";
 	}
-	const hostIp = hostNameToIp(hostName);
+	const hostIp = await hostNameToIp(hostName);
 	if (!hostIp) {
 		console.warn(`Could not parse IP address from hostname "${hostName}", unable to find messages for host`);
 		return "";
