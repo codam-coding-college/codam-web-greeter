@@ -48,7 +48,7 @@ export const getIpFromRequest = function(req: express.Request): string | null {
 }
 
 export const getHostNameFromRequest = async function(req: express.Request): Promise<string> {
-	let hostname = req.hostname ?? 'unknown';
+	let hostname = req.params.hostname ?? 'unknown';
 
 	// If hostname is not defined, parse it from the IP address
 	if (hostname === 'unknown') {
