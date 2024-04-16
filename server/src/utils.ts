@@ -7,34 +7,28 @@ import dns from 'dns';
 export const EXAM_MODE_ENABLED = process.env.EXAM_MODE_ENABLED === 'true' || false;
 
 export const parseIpRanges = function(ipRanges: string): string[] {
-	const ranges = ipRanges.split(',');
-	const trimmedRanges = ranges.map((range) => range.trim()); // trim whitespace
-	const filteredRanges = trimmedRanges.filter((range) => range.length > 0); // remove empty strings
-	return filteredRanges;
+	return ipRanges.split(',').map((range) => range.trim()).filter((range) => range.length > 0);
 }
 
 export const ipToHostName = async function(ip: string): Promise<string | null> {
-	const reverse = await dns.promises.reverse(ip)
-		.then((result) => {
-			return result[0];
-		})
-		.catch((err) => {
-			console.error(err);
-			return null;
-		});
-	return reverse;
+	try {
+		const result = await dns.promises.reverse(ip);
+		return result[0];
+	} catch (err) {
+		console.error(err);
+		return null;
+	}
 };
 
 export const hostNameToIp = async function(hostName: string): Promise<string | null> {
-	const ip = await dns.promises.lookup(hostName)
-		.then((result) => {
-			return result.address;
-		})
-		.catch((err) => {
-			console.error(err);
-			return null;
-		});
-	return ip;
+	try {
+		const result = await dns.promises.lookup(hostName);
+		return result.address;
+	}
+	catch (err) {
+		console.error(err);
+		return null;
+	}
 }
 
 export const getIpFromRequest = function(req: express.Request): string | null {
@@ -54,15 +48,13 @@ export const getIpFromRequest = function(req: express.Request): string | null {
 }
 
 export const getHostNameFromRequest = async function(req: express.Request): Promise<string> {
-	// Get hostname from request
 	let hostname = req.params.hostname ?? 'unknown';
 
 	// If hostname is not defined, parse it from the IP address
 	if (hostname === 'unknown') {
 		const ip = getIpFromRequest(req);
 		if (ip) {
-			const parsedHostName = await ipToHostName(ip);
-			hostname = parsedHostName ?? hostname;
+			hostname = await ipToHostName(ip) ?? hostname;
 		}
 	}
 
@@ -74,38 +66,22 @@ export const getExamForHost = function(exams: Exam42[], hostIp: string): ExamFor
 		return [];
 	}
 
-	const examForHost: ExamForHost[] = [];
-	exams.forEach((exam) => {
-		if (examAvailableForHost(exam, hostIp)) {
-			examForHost.push({
-				id: exam.id,
-				name: exam.name,
-				begin_at: exam.begin_at,
-				end_at: exam.end_at,
-			});
-		}
-	});
-	return examForHost;
+	return exams.filter((exam) => examAvailableForHost(exam, hostIp))
+		.map((exam) => ({
+			id: exam.id,
+			name: exam.name,
+			begin_at: exam.begin_at,
+			end_at: exam.end_at,
+		}));
 };
 
 export const examAvailableForHost = function(exam: Exam42, hostIp: string): boolean {
-	for (const ipRange of exam.ip_range) {
-		if (ipRangeCheck(hostIp, ipRange)) {
-			return true;
-		}
-	}
-	return false;
+	return exam.ip_range.some(ipRange => ipRangeCheck(hostIp, ipRange));
 };
 
 export const getCurrentExams = function(exams: Exam42[]): Exam42[] {
-	const currentExams: Exam42[] = [];
 	const now = new Date();
-	for (const exam of exams) {
-		if (exam.begin_at < now && exam.end_at > now) {
-			currentExams.push(exam);
-		}
-	}
-	return currentExams;
+	return exams.filter((exam) => exam.begin_at < now && exam.end_at > now);
 };
 
 export const getExamForHostName = async function(exams: Exam42[], hostName: string): Promise<ExamForHost[]> {
@@ -132,24 +108,25 @@ export const getMessageForHostName = async function(hostName: string): Promise<s
 		return "";
 	}
 
-	// Read messages.json
-	// TODO: implement caching for messages
-	const messages = fs.readFileSync('messages.json', 'utf8');
-	const messagesJson = JSON.parse(messages);
-	if (!messagesJson) {
-		console.warn('Could not parse messages.json, unable to find messages for host');
+	try {
+		// Read messages.json
+		// TODO: implement caching for messages
+		const messagesJson = JSON.parse(fs.readFileSync('messages.json', 'utf8'));
+		if (!messagesJson) {
+			console.warn('Could not parse messages.json, unable to find messages for host');
+			return "";
+		}
+	
+		// Find messages for host
+		// Any message with a key that the hostname starts with will be returned
+		const hostMessages = Object.entries(messagesJson)
+			.filter(([key]) => hostName.startsWith(key))
+			.map(([, message]) => message);
+	
+		// Combine all messages into one
+		return hostMessages.join('\n\n');
+	} catch (error) {
+		console.error(error);
 		return "";
 	}
-
-	// Find messages for host
-	// Any message with a key that the hostname starts with will be returned
-	const hostMessages = [];
-	for (const key in messagesJson) {
-		if (hostName.startsWith(key)) {
-			hostMessages.push(messagesJson[key]);
-		}
-	}
-
-	// Combine all messages into one
-	return hostMessages.join('\n\n');
 }
