@@ -67,9 +67,18 @@ export class ExamModeUI extends UIScreen {
 		}
 		else {
 			this._loginScreen.hideForm();
+			this.setLoginButton(false);
 			this.showForm();
+			const begin_in = new Date(this._exam.begin_at).getTime() - Date.now();
+			setTimeout(() => {
+				this.setLoginButton(true);
+			}, begin_in);
 			return true;
 		}
+	}
+
+	public setLoginButton(enabled: boolean): void {
+		(this._form as UIExamModeElements).examStartButton.disabled = !enabled;
 	}
 
 	public get exam(): ExamForHost | null {
@@ -121,8 +130,6 @@ export class ExamModeUI extends UIScreen {
 
 	// Returns true if the exam-start button is disabled, false otherwise
 	protected _enableOrDisableSubmitButton(): boolean {
-		const form = this._form as UIExamModeElements;
-		form.examStartButton.disabled = false; // Always enable the button
 		return false;
 	}
 
