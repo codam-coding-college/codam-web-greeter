@@ -42,6 +42,7 @@ export class ExamModeUI extends UIScreen {
 			examStartText: document.getElementById('exam-mode-start') as HTMLSpanElement,
 			examEndText: document.getElementById('exam-mode-end') as HTMLSpanElement,
 			examStartButton: document.getElementById('exam-mode-start-button') as HTMLButtonElement,
+			calendar: document.getElementById('intra-calendar') as HTMLDivElement,
 		} as UIExamModeElements;
 
 		this._initForm();
@@ -62,11 +63,13 @@ export class ExamModeUI extends UIScreen {
 
 		if (this._exam === null) {
 			this.hideForm();
+			(this._form as UIExamModeElements).calendar.style.display = 'block';
 			this._loginScreen.showForm();
 			return false;
 		}
 		else {
 			this._loginScreen.hideForm();
+			(this._form as UIExamModeElements).calendar.style.display = 'none';
 			this.showForm();
 			return true;
 		}
