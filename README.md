@@ -1,4 +1,4 @@
-# Codam Web Greeter
+# codam-web-greeter
 A greeter theme for [nody-greeter](https://github.com/JezerM/nody-greeter)/web-greeter in LightDM, made specifically for [Codam Coding College](https://codam.nl/en).
 
 ---
