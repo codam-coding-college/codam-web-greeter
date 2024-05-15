@@ -49,10 +49,13 @@ export class ExamModeUI extends UIScreen {
 	}
 
 	/**
-	 * Set the exam to display on the exam mode screen.
-	 * If no exam is given, the exam mode screen will be hidden and the login screen will be shown instead.
+	 * Enable exam mode for a list of exams currently ongoing (usually just 1).
+	 * If the array of exams is empty, nothing will happen.
 	 */
 	public enableExamMode(exams: ExamForHost[]): void {
+		if (exams.length === 0) {
+			return;
+		}
 		this._examMode = true;
 		this._examIds = exams.map((exam) => exam.id);
 		this._populateData(exams);
@@ -71,10 +74,16 @@ export class ExamModeUI extends UIScreen {
 		this._loginScreen.showForm();
 	}
 
+	/**
+	 * Get whether the exam mode screen is currently displayed.
+	 */
 	public get examMode(): boolean {
 		return this._examMode;
 	}
 
+	/**
+	 * Get the ids of the exams that are currently displayed on the exam mode screen.
+	 */
 	public get examIds(): number[] {
 		return this._examIds;
 	}
@@ -97,6 +106,8 @@ export class ExamModeUI extends UIScreen {
 		if (examsToPopulate.length === 0) {
 			// Unset text that states which exams can be started today
 			form.examProjectsText.innerText = '';
+			form.examStartText.innerText = 'unknown';
+			form.examEndText.innerText = 'unknown';
 		}
 		else {
 			// Find all exams in the data.json file that match the ids in the exams variable
@@ -128,6 +139,8 @@ export class ExamModeUI extends UIScreen {
 
 			// Combine all possible projects for exams that can be started right now
 			const projectsText = exams.flatMap((exam) => exam.projects.map((project) => project.name)).join(', ');
+
+			// Display the projects and the time range in which the exams can be started
 			form.examProjectsText.innerText = projectsText;
 			form.examStartText.innerText = earliestExam.toLocaleTimeString("en-NL", { hour: '2-digit', minute: '2-digit' });
 			form.examEndText.innerText = latestExam.toLocaleTimeString("en-NL", { hour: '2-digit', minute: '2-digit' });

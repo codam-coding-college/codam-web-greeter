@@ -119,6 +119,7 @@ export class UI {
 			return false;
 		}
 
+		// Get exams that are starting soon
 		const examsForHost: ExamForHost[] = window.data.dataJson.exams_for_host;
 		const ongoingExams = examsForHost.filter((exam) => {
 			const now = new Date();
@@ -128,10 +129,9 @@ export class UI {
 			return now >= beginExamModeAt && now < endAt;
 		});
 
-		const examModeIds = this._examModeScreen?.examIds;
 		if (ongoingExams.length > 0) {
 			// Only set exam mode if the exam that is starting soon is not already in the list of exam ids displayed in exam mode
-			if (!this._examModeScreen?.examMode || !ongoingExams.some((exam) => examModeIds?.includes(exam.id))) {
+			if (!this._examModeScreen?.examMode || !ongoingExams.some((exam) => this._examModeScreen?.examIds.includes(exam.id))) {
 				console.log("Activating exam mode login UI");
 				this._examModeScreen?.enableExamMode(ongoingExams);
 				// Exam mode screen is shown automatically by the function above
