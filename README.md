@@ -31,13 +31,9 @@ A greeter theme for [nody-greeter](https://github.com/JezerM/nody-greeter)/web-g
 sudo apt install lightdm light-locker xprintidle
 ```
 
-2. Install *nody-greeter*:
-```bash
-sudo apt install nody-greeter=1.5.2
-```
-Alternatively, you can install it by compiling from source from the [nody-greeter repository](https://github.com/codam-coding-college/nody-greeter). Don't forget to clone the repository with the `--recursive` flag to include the submodules.
+2. Install *nody-greeter* by downloading the deb from the [nody-greeter repository releases page](https://github.com/codam-coding-college/nody-greeter/releases). If you're at a 42 school, it is recommended to add this deb to your Nexus server so you can easily install it using `apt` later. Alternatively, you can install it by compiling from source (don't forget to clone the repository with the `--recursive` flag to include its submodules).
 
-3. Download the latest stable release of the greeter theme from the [releases page](https://github.com/codam-coding-college/nody-greeter/releases):
+4. Download the latest stable release of the greeter theme from the [releases page](https://github.com/codam-coding-college/codam-web-greeter/releases):
 ```bash
 wget https://github.com/codam-coding-college/codam-web-greeter/releases/latest/download/codam-web-greeter.zip
 unzip codam-web-greeter.zip
