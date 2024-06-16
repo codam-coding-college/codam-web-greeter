@@ -51,6 +51,7 @@ const filterExamOrEventOnDate = function(items: Exam42[] | Event42[]) {
 	// Delete events that are over the limit specified in the global variable
 	const currentDate = new Date();
 	const maxFetchDate = new Date(currentDate.getTime() + 1000 * 60 * 60 * 24 * FETCH_EVENTS_UPCOMING_DAYS);
+	// @ts-ignore (This expression is not callable -> each member of union type has signatures, but none of those signatures are compatible with each other)
 	const filteredItems = items.filter((item: Exam42 | Event42) => {
 		const eventDate = new Date(item.begin_at);
 		return eventDate.getTime() <= maxFetchDate.getTime();
