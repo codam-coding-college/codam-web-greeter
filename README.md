@@ -24,7 +24,7 @@ A greeter theme for [nody-greeter](https://github.com/JezerM/nody-greeter)/web-g
 
 ## Installation
 
-> Caution: make sure you know how to restore your system if something goes wrong. This theme is made specifically for Codam and if it doesn't work elsewhere, you're on your own.
+> Caution: make sure you know how to restore your system if something goes wrong. This theme is made specifically for Codam and might not always work as intended in other 42 schools, let alone different environments. For 42 schools, it is recommended to install this theme using the [provided Ansible role](https://github.com/codam-coding-college/ansible-codam-web-greeter) on ansiblecluster.
 
 1. Install dependencies:
 ```bash
