@@ -1,4 +1,4 @@
-import { ScreensaverBase } from "../screensaver";
+import { ScreensaverBase } from "./base";
 
 export class BlankScreensaver extends ScreensaverBase {
 	public draw(ctx: CanvasRenderingContext2D, canvasWidth: number, canvasHeight: number): void {
