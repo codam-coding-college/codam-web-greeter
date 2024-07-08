@@ -627,14 +627,14 @@ dialog.calendar-event-dialog .dialog-close-button:hover {
 	opacity: 0;
 	pointer-events: none;
 	/* play fade-out animation once */
-	animation: fade-out 0.5s ease-in-out 0s 1 normal;
+	animation: fade-out 0.15s ease-in-out 0s 1 normal;
 }
 
 #screensaver-wrapper.active {
 	opacity: 1;
 	pointer-events: all;
 	/* play fade-in animation once */
-	animation: fade-in 0.3s ease-in-out 0s 1 normal;
+	animation: fade-in 0.5s ease-in-out 0s 1 normal;
 }
 
 @keyframes fade-in {
