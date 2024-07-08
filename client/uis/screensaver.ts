@@ -5,7 +5,6 @@ export class ScreensaverUI {
 	private _canvas: HTMLCanvasElement;
 	private _isRunning: boolean = false;
 	private _screensaver = new BlankScreensaver();
-	private _fps: number = 60;
 	private _isLockScreen: boolean;
 
 	public constructor(isLockScreen: boolean = false) {
@@ -30,11 +29,7 @@ export class ScreensaverUI {
 		this._screensaver.draw(ctx, this._canvas.width, this._canvas.height);
 
 		if (this._isRunning) {
-			// Request the next animation frame based on fps
-			// Keeps the screensaver running at a consistent speed and should prevent high CPU usage
-			setTimeout(() => {
-				requestAnimationFrame(this._draw.bind(this));
-			}, 1000 / this._fps);
+			requestAnimationFrame(this._draw.bind(this));
 		}
 	};
 
