@@ -38,7 +38,7 @@ export class ScreensaverUI {
 	 */
 	public start(): void {
 		this._isRunning = true;
-		this._canvasWrapper.style.display = 'block';
+		this._canvasWrapper.classList.add('active');
 		this._canvas.width = window.innerWidth;
 		this._canvas.height = window.innerHeight;
 		this._draw();
@@ -49,6 +49,6 @@ export class ScreensaverUI {
 	 */
 	public stop(): void {
 		this._isRunning = false;
-		this._canvasWrapper.style.display = 'none';
+		this._canvasWrapper.classList.remove('active');
 	};
 }
