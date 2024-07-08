@@ -28,19 +28,33 @@ export class Idler {
 		return this._idle;
 	}
 
+	/**
+	 * Start idling and show the screensaver.
+	 */
 	private _startIdling(): void {
 		this._idle = true;
 		this._screensaverUI.start();
 	}
 
-	private _stopIdling(): void {
+	/**
+	 * Stop the screensaver and reset the idle timer.
+	 * @param ev The event that triggered this function.
+	 */
+	private _stopIdling(ev: Event | null = null): void {
 		this._lastActivity = Date.now();
 		if (this._idle) {
+			if (ev) {
+				ev.preventDefault(); // Prevent the event from bubbling up and causing unwanted UI interactions
+			}
 			this._screensaverUI.stop();
 			this._idle = false;
 		}
 	}
 
+	/**
+	 * Check if the computer is idling (e.g. no keyboard or mouse interactions for a certain amount of time).
+	 * @returns True if the computer is idling, false otherwise.
+	 */
 	private _checkIdle(): boolean {
 		if (this._idle) {
 			return true;
