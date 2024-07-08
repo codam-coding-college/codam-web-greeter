@@ -28,7 +28,7 @@ export class ScreensaverUI {
 
 		this._screensaver.draw(ctx, this._canvas.width, this._canvas.height);
 
-		if (this._isRunning) {
+		if (this._isRunning && this._screensaver.getName() !== 'Blank') {
 			requestAnimationFrame(this._draw.bind(this));
 		}
 	};
