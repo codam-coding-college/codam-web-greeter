@@ -632,9 +632,10 @@ dialog.calendar-event-dialog .dialog-close-button:hover {
 
 #screensaver-wrapper.active {
 	opacity: 1;
-	pointer-events: all;
+	pointer-events: all; /* take over the screen */
 	/* play fade-in animation once */
 	animation: fade-in 0.5s ease-in-out 0s 1 normal;
+	cursor: none !important; /* hide cursor */
 }
 
 @keyframes fade-in {
