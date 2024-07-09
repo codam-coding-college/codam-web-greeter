@@ -51,8 +51,15 @@ async function initGreeter(): Promise<void> {
 	// Add reboot keybind to reboot on ctrl+alt+del
 	// only when the lock screen is not shown
 	document.addEventListener('keydown', (e) => {
+		// Ctrl + Alt + Delete = reboot computer
 		if (e.ctrlKey && e.altKey && e.code === 'Delete' && !window.ui.isLockScreen) {
+			window.ui.setDebugInfo('Reboot requested through LightDM');
 			window.restartComputer();
+		}
+		// Ctrl + Alt + E = override exam mode
+		if (e.ctrlKey && e.altKey && e.code === 'KeyE' && !window.ui.isLockScreen) {
+			window.ui.setDebugInfo('Exam mode override enabled');
+			window.ui.overrideExamMode();
 		}
 	});
 }

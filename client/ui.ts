@@ -17,6 +17,7 @@ export class UI {
 	private _loginScreen: LoginScreenUI | null = null;
 	private _examModeScreen: ExamModeUI | null = null;
 	private _isLockScreen: boolean = false;
+	private _examModeDisabled: boolean = false; // Used to disable exam mode in case of admin override
 	private _wallpaper: WallpaperUI;
 	private _calendar: CalendarUI;
 	private _logo: HTMLImageElement;
@@ -81,6 +82,14 @@ export class UI {
 		return this._isLockScreen;
 	}
 
+	/**
+	 * Override the exam mode and show the regular login screen. Useful for admins who need to debug.
+	 */
+	public overrideExamMode(): void {
+		this._examModeDisabled = true;
+		this.checkForExamMode();
+	}
+
 	public setDebugInfo(info: string): void {
 		this._infoBars.setDebugInfo(info);
 	}
@@ -129,7 +138,7 @@ export class UI {
 			return now >= beginExamModeAt && now < endAt;
 		});
 
-		if (ongoingExams.length > 0) {
+		if (!this._examModeDisabled && ongoingExams.length > 0) {
 			// Only set exam mode if the exam that is starting soon is not already in the list of exam ids displayed in exam mode
 			if (!this._examModeScreen?.examMode || !ongoingExams.some((exam) => this._examModeScreen?.examIds.includes(exam.id))) {
 				console.log("Activating exam mode login UI");
