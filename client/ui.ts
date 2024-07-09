@@ -81,10 +81,6 @@ export class UI {
 		return this._isLockScreen;
 	}
 
-	public get isExamMode(): boolean {
-		return (!this._isLockScreen && this._examModeScreen?.examMode) ?? false;
-	}
-
 	public setDebugInfo(info: string): void {
 		this._infoBars.setDebugInfo(info);
 	}

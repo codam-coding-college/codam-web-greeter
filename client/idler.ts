@@ -4,10 +4,12 @@ export class Idler {
 	private _idle: boolean = false;
 	private _lastActivity: number = Date.now();
 	private _idleAfter: number = 300000; // 5 minutes
+	private _isLockScreen: boolean;
 	private _screensaverUI: ScreensaverUI;
 
-	public constructor() {
-		this._screensaverUI = new ScreensaverUI();
+	public constructor(isLockScreen: boolean = false) {
+		this._isLockScreen = isLockScreen;
+		this._screensaverUI = new ScreensaverUI(isLockScreen);
 
 		// Listen for keyboard and mouse events
 		window.addEventListener("keydown", this._stopIdling.bind(this));
@@ -18,25 +20,12 @@ export class Idler {
 		setInterval(this._checkIdle.bind(this), 1000);
 	}
 
-	/**
-	 * Get the amount of milliseconds after which the computer is considered to be idling.
-	 */
 	public get idleAfter(): number {
 		return this._idleAfter;
 	}
 
-	/**
-	 * Check if the computer is currently idling.
-	 */
 	public get idle(): boolean {
 		return this._idle;
-	}
-
-	/**
-	 * Check if the screensaver is currently running.
-	 */
-	public get screensaverRunning(): boolean {
-		return this._screensaverUI.isRunning;
 	}
 
 	/**
@@ -44,9 +33,7 @@ export class Idler {
 	 */
 	private _startIdling(): void {
 		this._idle = true;
-		if (!window.ui.isExamMode) {
-			this._screensaverUI.start();
-		}
+		this._screensaverUI.start();
 	}
 
 	/**
@@ -59,9 +46,7 @@ export class Idler {
 			if (ev) {
 				ev.preventDefault(); // Prevent the event from bubbling up and causing unwanted UI interactions
 			}
-			if (this._screensaverUI.isRunning) {
-				this._screensaverUI.stop();
-			}
+			this._screensaverUI.stop();
 			this._idle = false;
 		}
 	}
