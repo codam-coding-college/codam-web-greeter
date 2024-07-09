@@ -4,10 +4,12 @@ export class Idler {
 	private _idle: boolean = false;
 	private _lastActivity: number = Date.now();
 	private _idleAfter: number = 300000; // 5 minutes
+	private _isLockScreen: boolean;
 	private _screensaverUI: ScreensaverUI;
 
-	public constructor() {
-		this._screensaverUI = new ScreensaverUI();
+	public constructor(isLockScreen: boolean = false) {
+		this._isLockScreen = isLockScreen;
+		this._screensaverUI = new ScreensaverUI(isLockScreen);
 
 		// Listen for keyboard and mouse events
 		window.addEventListener("keydown", this._stopIdling.bind(this));
@@ -31,9 +33,7 @@ export class Idler {
 	 */
 	private _startIdling(): void {
 		this._idle = true;
-		if (!window.ui.isExamMode) {
-			this._screensaverUI.start();
-		}
+		this._screensaverUI.start();
 	}
 
 	/**
@@ -46,9 +46,7 @@ export class Idler {
 			if (ev) {
 				ev.preventDefault(); // Prevent the event from bubbling up and causing unwanted UI interactions
 			}
-			if (this._screensaverUI.isRunning) {
-				this._screensaverUI.stop();
-			}
+			this._screensaverUI.stop();
 			this._idle = false;
 		}
 	}
