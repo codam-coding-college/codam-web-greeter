@@ -46,7 +46,7 @@ async function initGreeter(): Promise<void> {
 	window.data = new Data();
 	window.auth = new Authenticator();
 	window.ui = new UI(window.data, window.auth);
-	window.idler = new Idler(window.ui.isLockScreen);
+	window.idler = new Idler();
 
 	// Add reboot keybind to reboot on ctrl+alt+del
 	// only when the lock screen is not shown
