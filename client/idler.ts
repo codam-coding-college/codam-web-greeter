@@ -1,17 +1,20 @@
+import { ScreensaverUI } from "./uis/screensaver";
+
 export class Idler {
 	private _idle: boolean = false;
 	private _lastActivity: number = Date.now();
 	private _idleAfter: number = 300000; // 5 minutes
-	private _takeActionAfter: number = 2520000; // 42 minutes
 	private _isLockScreen: boolean;
+	private _screensaverUI: ScreensaverUI;
 
 	public constructor(isLockScreen: boolean = false) {
 		this._isLockScreen = isLockScreen;
+		this._screensaverUI = new ScreensaverUI(isLockScreen);
 
 		// Listen for keyboard and mouse events
-		window.addEventListener("keydown", this._unidle.bind(this));
-		window.addEventListener("mousemove", this._unidle.bind(this));
-		window.addEventListener("mousedown", this._unidle.bind(this));
+		window.addEventListener("keydown", this._stopIdling.bind(this));
+		window.addEventListener("mousemove", this._stopIdling.bind(this));
+		window.addEventListener("mousedown", this._stopIdling.bind(this));
 
 		// Check for idle at a regular interval
 		setInterval(this._checkIdle.bind(this), 1000);
@@ -25,38 +28,41 @@ export class Idler {
 		return this._idle;
 	}
 
-	private _unidle(): void {
+	/**
+	 * Start idling and show the screensaver.
+	 */
+	private _startIdling(): void {
+		this._idle = true;
+		this._screensaverUI.start();
+	}
+
+	/**
+	 * Stop the screensaver and reset the idle timer.
+	 * @param ev The event that triggered this function.
+	 */
+	private _stopIdling(ev: Event | null = null): void {
 		this._lastActivity = Date.now();
-		this._idle = false;
-	}
-
-	private _action(): void {
-		// TODO: start screensaver?
-		// Warning: this function is called from a setInterval, so it should return if the action is already running
-	}
-
-	private _checkIfActionNeeded(): boolean {
 		if (this._idle) {
-			// Check if we should take action
-			if (Date.now() - this._lastActivity >= this._takeActionAfter) {
-				this._action();
-				return true;
+			if (ev) {
+				ev.preventDefault(); // Prevent the event from bubbling up and causing unwanted UI interactions
 			}
+			this._screensaverUI.stop();
+			this._idle = false;
 		}
-		return false;
 	}
 
+	/**
+	 * Check if the computer is idling (e.g. no keyboard or mouse interactions for a certain amount of time).
+	 * @returns True if the computer is idling, false otherwise.
+	 */
 	private _checkIdle(): boolean {
 		if (this._idle) {
-			this._checkIfActionNeeded();
 			return true;
 		}
 
 		// Check if we're idle
 		if (Date.now() - this._lastActivity >= this._idleAfter) {
-			this._idle = true;
-			console.log("Now idling...");
-			this._checkIfActionNeeded(); // Needed if idleAfter and takeActionAfter share the same value
+			this._startIdling();
 			return true;
 		}
 		return false;

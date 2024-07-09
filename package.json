@@ -7,7 +7,7 @@
     "build": "tsc",
     "bundle": "webpack --mode=production",
     "bundle-dev": "webpack --mode=development",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "open dist/index.html"
   },
   "repository": {
     "type": "git",

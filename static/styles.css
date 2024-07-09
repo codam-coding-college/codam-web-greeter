@@ -610,3 +610,54 @@ dialog.calendar-event-dialog .dialog-close-button {
 dialog.calendar-event-dialog .dialog-close-button:hover {
 	color: var(--color-text-primary);
 }
+
+/* ***************************************** */
+/* Screensaver                               */
+/* ***************************************** */
+
+#screensaver-wrapper {
+	display: block;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: var(--color-bg);
+	z-index: 999;
+	opacity: 0;
+	pointer-events: none;
+	/* play fade-out animation once */
+	animation: fade-out 0.15s ease-in-out 0s 1 normal;
+}
+
+#screensaver-wrapper.active {
+	opacity: 1;
+	pointer-events: all; /* take over the screen */
+	/* play fade-in animation once */
+	animation: fade-in 0.5s ease-in-out 0s 1 normal;
+	cursor: none !important; /* hide cursor */
+}
+
+@keyframes fade-in {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+@keyframes fade-out {
+	0% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+	}
+}
+
+#screensaver-canvas {
+	width: 100%;
+	height: 100%;
+	object-fit: cover; /* in case the screen isn't perfectly 16:9 */
+}
