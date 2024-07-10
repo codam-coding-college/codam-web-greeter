@@ -14,7 +14,8 @@ A greeter theme for [nody-greeter](https://github.com/JezerM/nody-greeter)/web-g
 - Display user's profile picture (from `~/.face`) on the lock screen
 - Display user's Gnome wallpaper on the lock screen
 - Keybinding to gracefully reboot the computer (<kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>Del</kbd>)
-- Display 🖧 network status on-screen without having to log in
+- Display network status on-screen without having to log in
+- Custom screensaver support (HTML5 canvas)
 
 
 ## Screenshots
@@ -154,6 +155,8 @@ This is a known issue with LightDM. To fix it, add the following line to */etc/l
 display-setup-script=/usr/bin/xset s off
 ```
 Alternatively, `/usr/bin/xset s off` can be added to the greeter setup hook defined in */etc/lightdm/lightdm.conf*.
+
+You might also have to disable the screensaver in the web-greeter settings in */etc/lightdm/web-greeter.yml*.
 
 ### The screen blanks on the lock screen
 Best solution: use `dm-tool switch-to-greeter` instead of `dm-tool lock` to lock the screen.
