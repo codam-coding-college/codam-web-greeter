@@ -76,7 +76,7 @@ X-LightDM-Allow-Greeter=true
 
 This will allow you to run the greeter in debug mode while logged in as a regular user by installing the greeter like normally and running the following command:
 ```bash
-nody-greeter --debug
+nody-greeter --d
 ```
 
 You can then open the Developer Tools sidebar from the greeter's menu and view the console output for any warnings and/or errors.
