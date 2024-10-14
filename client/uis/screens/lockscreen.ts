@@ -3,7 +3,7 @@ import { LightDMUser, ThemeUtils } from "nody-greeter-types";
 import { UIScreen, UILockScreenElements } from "../screen";
 import { UI } from "../../ui";
 
-const PATH_LOCK_TIMESTAMP_PREFIX = '/tmp//tmp/codam_web_greeter_lock_timestamp';
+const PATH_LOCK_TIMESTAMP_PREFIX = '/tmp/codam_web_greeter_lock_timestamp';
 
 export class LockScreenUI extends UIScreen {
 	public readonly _form: UILockScreenElements;
@@ -48,9 +48,7 @@ export class LockScreenUI extends UIScreen {
 
 		// Check when the screen was locked every minute (delete the lock_timestamp file in /tmp to prevent the automated logout)
 		setInterval(this._getAndSetLockedTimestamp.bind(this), 60000);
-
-		// Also check in 10 seconds (give the greeter-setup script time to finish)
-		setTimeout(this._getAndSetLockedTimestamp.bind(this), 10000);
+		this._getAndSetLockedTimestamp();
 	}
 
 	protected _initForm(): void {
