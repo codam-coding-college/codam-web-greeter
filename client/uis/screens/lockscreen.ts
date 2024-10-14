@@ -46,16 +46,11 @@ export class LockScreenUI extends UIScreen {
 
 		this._initForm();
 
-		// Check when the screen was locked
-		this._getScreenLockedTimestamp(this._activeSession.username)
-			.then((timestamp: Date) => {
-				this._lockedTime = timestamp;
-				this._lockedTimer(); // run once immediately, after this the interval will take care of updating the timer
-			})
-			.catch(() => {
-				// Unable to get the screen locked timestamp
-				this._lockedTime = null;
-			});
+		// Check when the screen was locked every minute (delete the lock_timestamp file in /tmp to prevent the automated logout)
+		setInterval(this._getAndSetLockedTimestamp.bind(this), 60000);
+
+		// Also check in 10 seconds (give the greeter-setup script time to finish)
+		setTimeout(this._getAndSetLockedTimestamp.bind(this), 10000);
 	}
 
 	protected _initForm(): void {
@@ -152,6 +147,18 @@ export class LockScreenUI extends UIScreen {
 					reject();
 				});
 		});
+	}
+
+	private _getAndSetLockedTimestamp(): void {
+		this._getScreenLockedTimestamp(this._activeSession.username)
+			.then((timestamp: Date) => {
+				this._lockedTime = timestamp;
+				this._lockedTimer(); // run once immediately, after this the interval will take care of updating the timer
+			})
+			.catch(() => {
+				// Unable to get the screen locked timestamp, prevent automated logout by setting the locked time to null
+				this._lockedTime = null;
+			});
 	}
 
 	private _lockedTimer(): void {
