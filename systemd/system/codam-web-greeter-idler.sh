@@ -40,6 +40,6 @@ while IFS= read -r line; do
 		/usr/bin/echo "Session for user $USERNAME has been idle for over 42 minutes (idletime $IDLE_TIME ms, time_since_lock $TIME_SINCE_LOCK ms), forcing logout now by restarting lightdm"
 		/usr/bin/systemctl restart lightdm
 	else
-		/usr/bin/echo "Session for $USERNAME has been idle for $((IDLE_TIME / 1000)) seconds"
+		/usr/bin/echo "Session for $USERNAME has been idle for $((IDLE_TIME / 1000)) seconds, screen locked for $((TIME_SINCE_LOCK / 1000)) seconds"
 	fi
 done <<< "$WHO_OUTPUT"
