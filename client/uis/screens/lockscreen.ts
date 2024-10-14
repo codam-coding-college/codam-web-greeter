@@ -1,13 +1,15 @@
 import { Authenticator, AuthenticatorEvents } from "../../auth";
-import { LightDMUser } from "nody-greeter-types";
+import { LightDMUser, ThemeUtils } from "nody-greeter-types";
 import { UIScreen, UILockScreenElements } from "../screen";
 import { UI } from "../../ui";
+
+const PATH_LOCK_TIMESTAMP_PREFIX = '/tmp//tmp/codam_web_greeter_lock_timestamp';
 
 export class LockScreenUI extends UIScreen {
 	public readonly _form: UILockScreenElements;
 	private readonly _activeSession: LightDMUser;
 	private _isExamMode: boolean = false;
-	private _lockedTime: Date = new Date();
+	private _lockedTime: Date | null = null;
 	protected _events: AuthenticatorEvents = {
 		authenticationStart: () => {
 			this._disableForm();
@@ -43,6 +45,17 @@ export class LockScreenUI extends UIScreen {
 		} as UILockScreenElements;
 
 		this._initForm();
+
+		// Check when the screen was locked
+		this._getScreenLockedTimestamp(this._activeSession.username)
+			.then((timestamp: Date) => {
+				this._lockedTime = timestamp;
+				this._lockedTimer(); // run once immediately, after this the interval will take care of updating the timer
+			})
+			.catch(() => {
+				// Unable to get the screen locked timestamp
+				this._lockedTime = null;
+			});
 	}
 
 	protected _initForm(): void {
@@ -122,16 +135,41 @@ export class LockScreenUI extends UIScreen {
 		return (this._form as UILockScreenElements).passwordInput;
 	}
 
+	public get lockedTime(): Date | null {
+		return this._lockedTime;
+	}
+
+	private _getScreenLockedTimestamp(login: string): Promise<Date> {
+		return new Promise((resolve, reject) => {
+			fetch(`${PATH_LOCK_TIMESTAMP_PREFIX}_${login}`)
+				.then(response => response.text())
+				.then(text => {
+					// Get the first word from the text file
+					const timestamp = text.split(' ')[0];
+					resolve(new Date(parseInt(timestamp) * 1000));
+				})
+				.catch(() => {
+					reject();
+				});
+		});
+	}
+
 	private _lockedTimer(): void {
+		if (!this._lockedTime) {
+			// Unsure when the screen was locked, no automated logout possible
+			return;
+		}
+
 		const logoutAfter = 42; // minutes
 		const lockedMinutesAgo = (Date.now() - this._lockedTime.getTime()) / 1000 / 60;
 		const timeRemaining = logoutAfter - lockedMinutesAgo;
 		if (timeRemaining <= 0.25) {
 			this._disableForm();
 			this._form.lockedTimeAgo.innerText = "Automated logout in progress...";
-			if (timeRemaining < -5) {
+			if (timeRemaining < -5) { // Give it a 5 minute grace period
 				// Add debug text indicating the systemd service might have failed or was not installed
 				window.ui.setDebugInfo("Automated logout appears to take a while. Is the systemd idling service from codam-web-greeter installed and enabled?");
+				this._enableForm(); // Allow the user to just unlock the screen again
 			}
 		}
 		else {
