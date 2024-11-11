@@ -1,43 +1,10 @@
 :root {
-	/* Codam colors (do not change) */
-	--color-yellow: #F2911A;
-	--color-orange: #EA5C28;
-	--color-red: #E52A2D;
-	--color-purple: #B73188;
-	--color-blue: #3AA2DB;
-	--color-black: #000000;
+	/* Colors can be found in css/dark.css and css/light.css */
 
-	/* Theme colors */
-	--color-primary: var(--color-blue);
-
-	/* Text colors */
-	--color-text-primary: #EDEDED;
-	--color-text-secondary: #A6A6A6;
-	--color-text-tertiary: #6E6E6E;
-	--color-text-error: var(--color-red);
-	--color-text-success: var(--color-blue);
-	--color-text-warning: var(--color-yellow);
-
-	/* Backgrounds */
-	--color-bg: var(--color-black);
-	--default-bg-img: url('assets/default-wallpaper.png');
-	--bg-color-darken: rgba(0, 0, 0, 0.2);
-	--bg-color-darken-strong: rgba(0, 0, 0, 0.65);
+	/* Generic settings */
+	--default-bg-img: url('../assets/default-wallpaper.png');
 	--blur-bg-filter: blur(5px);
 	--blur-bg-filter-lock-screen: blur(25px);
-	--bg-color-lighten: rgba(255, 255, 255, 0.2);
-	--text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-
-	/* Events */
-	--event-color-default: #00BABC;
-	--event-color-exam: #ED8179;
-	--event-color-association: #7E93D4;
-	--event-color-standup: #8E9C9C; /* Bocal Stand-up */
-	--event-color-workshop: #39D88F;
-	--event-color-rush: #F2911A;
-	--event-color: var(--event-color-default); /* fallback */
-
-	/* Others */
 	--border-radius: 4px;
 	--padding: 8px;
 	--header-footer-height: 31px;
@@ -306,7 +273,7 @@ form button:not(:disabled):focus {
 
 form button:disabled {
 	cursor: default;
-	color: rgba(16, 16, 16, 0.3);
+	color: var(--bg-color-disabled-button);
 	text-shadow: none;
 }
 
@@ -314,9 +281,13 @@ form button:not(:disabled):active {
 	transform: scale(0.95);
 }
 
+form#lock-form {
+	margin-top: -50%;
+}
+
 #active-user-session-avatar {
 	display: block;
-	margin: -50% auto calc(var(--padding) * 6) auto;
+	margin: 0 auto calc(var(--padding) * 6) auto;
 	width: 100%;
 	aspect-ratio: 1 / 1;
 	object-fit: cover;
