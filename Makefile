@@ -64,8 +64,8 @@ re:
 
 # CLIENT THEMING
 static/greeter.css:
-	echo "@import 'styles.css';" > "$(ROOT_DIR)/static/greeter.css"
-	echo "@import 'dark.css';" >> "$(ROOT_DIR)/static/greeter.css"
+	echo "@import 'css/styles.css';" > "$(ROOT_DIR)/static/greeter.css"
+	echo "@import 'css/dark.css';" >> "$(ROOT_DIR)/static/greeter.css"
 
 use-light-theme:
 	$(SED) 's/dark.css/light.css/' "$(ROOT_DIR)/static/greeter.css"
@@ -74,7 +74,7 @@ use-dark-theme:
 	$(SED) 's/light.css/dark.css/' "$(ROOT_DIR)/static/greeter.css"
 
 use-boxed-theme:
-	echo "@import 'boxed.css';" >> "$(ROOT_DIR)/static/greeter.css"
+	echo "@import 'css/boxed.css';" >> "$(ROOT_DIR)/static/greeter.css"
 
 no-boxed-theme:
 	$(SED) '/boxed.css/d' "$(ROOT_DIR)/static/greeter.css"

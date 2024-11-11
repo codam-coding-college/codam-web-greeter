@@ -12,21 +12,20 @@
 	--color-primary: var(--color-blue);
 
 	/* Text colors */
-	--color-text-primary: #121212;
-	--color-text-secondary: #595959;
-	--color-text-tertiary: #919191;
+	--color-text-primary: #EDEDED;
+	--color-text-secondary: #A6A6A6;
+	--color-text-tertiary: #6E6E6E;
 	--color-text-error: var(--color-red);
 	--color-text-success: var(--color-blue);
 	--color-text-warning: var(--color-yellow);
 
 	/* Backgrounds */
-	--color-bg: var(--color-white);
-	--default-bg-img: url('assets/default-wallpaper.png');
-	--bg-color-darken: rgba(255, 255, 255, 0.2);
-	--bg-color-darken-strong: rgba(255, 255, 255, 0.65);
-	--bg-color-lighten: rgba(0, 0, 0, 0.2);
-	--bg-color-disabled-button: rgba(16, 16, 16, 0.2);
-	--text-shadow: 0 0 5px rgba(255, 255, 255, 0.33);
+	--color-bg: var(--color-black);
+	--bg-color-darken: rgba(0, 0, 0, 0.2);
+	--bg-color-darken-strong: rgba(0, 0, 0, 0.65);
+	--bg-color-lighten: rgba(255, 255, 255, 0.2);
+	--bg-color-disabled-button: rgba(16, 16, 16, 0.3);
+	--text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 
 	/* Events */
 	--event-color-default: #00BABC;

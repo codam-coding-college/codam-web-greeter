@@ -1,7 +1,8 @@
 :root {
-	/* Colors can be found in dark.css and light.css */
+	/* Colors can be found in css/dark.css and css/light.css */
 
 	/* Generic settings */
+	--default-bg-img: url('../assets/default-wallpaper.png');
 	--blur-bg-filter: blur(5px);
 	--blur-bg-filter-lock-screen: blur(25px);
 	--border-radius: 4px;
