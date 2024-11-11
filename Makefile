@@ -42,7 +42,7 @@ else # fallback to no boxed theme
 	$(MAKE) no-boxed-theme
 endif
 	mkdir -p "$(ROOT_DIR)/dist"
-	cp README.md LICENSE "$(ROOT_DIR)/dist"
+	cp README.md LICENSE package.json "$(ROOT_DIR)/dist"
 	cp -r "$(ROOT_DIR)/static/"* "$(ROOT_DIR)/dist"
 
 install: build
