@@ -59,7 +59,10 @@ export abstract class UIScreen {
 		if (!this._formShown) {
 			this._formShown = true;
 			this._form.form.style.display = "block";
-			this._getInputToFocusOn().focus();
+			const inputToFocusOn = this._getInputToFocusOn();
+			if (inputToFocusOn !== null) {
+				inputToFocusOn.focus();
+			}
 			this._connectEvents();
 		}
 	}
@@ -85,7 +88,7 @@ export abstract class UIScreen {
 
 	protected abstract _initForm(): void;
 	protected abstract _wigglePasswordInput(): void;
-	protected abstract _getInputToFocusOn(): HTMLInputElement | HTMLButtonElement;
+	protected abstract _getInputToFocusOn(): HTMLInputElement | HTMLButtonElement | null;
 	protected abstract _enableOrDisableSubmitButton(): boolean;
 
 	/**

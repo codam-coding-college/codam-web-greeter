@@ -162,7 +162,8 @@ export class ExamModeUI extends UIScreen {
 		console.error(message);
 	}
 
-	protected _getInputToFocusOn(): HTMLButtonElement {
-		return (this._form as UIExamModeElements).examStartButton;
+	protected _getInputToFocusOn(): HTMLButtonElement | null {
+		return null; // Don't focus on any input field, there are none.
+		// There is a button we could focus on but then pressing enter/space will trigger the button even when the display is blanking
 	}
 }
