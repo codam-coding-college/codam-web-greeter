@@ -50,6 +50,10 @@ jobs:
       run: |
         zip -r codam-web-greeter.zip systemd
 
+    - name: Rename artifact
+      run: |
+        mv codam-web-greeter.zip codam-web-greeter-${{ matrix.theme }}-${{ matrix.boxed }}.zip
+
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
       with:
