@@ -13,6 +13,13 @@ CLIENT_THEME := dark
 # if set to 'boxed' the form will have a background color
 CLIENT_THEME_BOXED :=
 
+# Detect MacOS
+ifeq ($(shell uname),Darwin)
+	SED := sed -i ''
+else
+	SED := sed -i
+endif
+
 # CLIENT
 all: build
 
@@ -61,16 +68,16 @@ static/greeter.css:
 	echo "@import 'dark.css';" >> "$(ROOT_DIR)/static/greeter.css"
 
 use-light-theme:
-	sed -i '' 's/dark.css/light.css/' "$(ROOT_DIR)/static/greeter.css"
+	$(SED) 's/dark.css/light.css/' "$(ROOT_DIR)/static/greeter.css"
 
 use-dark-theme:
-	sed -i '' 's/light.css/dark.css/' "$(ROOT_DIR)/static/greeter.css"
+	$(SED) 's/light.css/dark.css/' "$(ROOT_DIR)/static/greeter.css"
 
 use-boxed-theme:
 	echo "@import 'boxed.css';" >> "$(ROOT_DIR)/static/greeter.css"
 
 no-boxed-theme:
-	sed -i '' '/boxed.css/d' "$(ROOT_DIR)/static/greeter.css"
+	$(SED) '/boxed.css/d' "$(ROOT_DIR)/static/greeter.css"
 
 # SERVER
 update_server_version:
