@@ -27,14 +27,15 @@ jobs:
         path: ./artifacts
 
     - name: Display structure of downloaded files
-      run: ls -R
+      run: ls -lahR
       working-directory: ./artifacts
 
     - name: Create Release
       uses: softprops/action-gh-release@v1
       if: startsWith(github.ref, 'refs/tags/v')
       with:
-        files: ./artifacts/*.zip
+        files: ./artifacts/*/codam-web-greeter-*.zip
+        fail_on_unmatched_files: true
         tag_name: ${{ github.ref }}
         name: codam-web-greeter ${{ github.ref_name }}
         generate_release_notes: true
