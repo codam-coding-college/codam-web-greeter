@@ -66,9 +66,28 @@ sudo systemctl restart lightdm
 ```
 
 
-## Troubleshooting
+## Development
 
-### How to debug
+### Client
+Use the provided Makefile to build the theme:
+```bash
+make
+```
+
+You can optionally build the theme in light mode:
+```bash
+make CLIENT_THEME=light
+```
+
+Or in light mode with a boxed form to make the login/unlock form more readable:
+```bash
+make CLIENT_THEME=light CLIENT_THEME_BOXED=boxed
+```
+
+
+#### Debugging the client
+You can then open the *static/index.html* file in your browser to do some basic editing, but for most things you'll want to install the greeter on your system and run it in debug mode.
+
 Add the following line to `/usr/share/xsessions/ubuntu.desktop`:
 ```conf
 X-LightDM-Allow-Greeter=true
@@ -82,6 +101,21 @@ nody-greeter --d
 You can then open the Developer Tools sidebar from the greeter's menu and view the console output for any warnings and/or errors.
 
 Do not forget to remove the line from `/usr/share/xsessions/ubuntu.desktop` after you're done debugging - it's a security risk to allow the greeter to be run by regular users.
+
+
+### Server
+Use the provided Makefile to build the server or use the docker-compose file in the *server/* directory directly:
+```bash
+# Makefile method
+make server
+
+# Docker-compose method
+cd server
+docker compose up
+```
+
+
+## Troubleshooting
 
 ### Locking the screen doesn't work at all
 Make sure the LightDM config allows user-switching. Add the following line to */etc/lightdm/lightdm.conf*:

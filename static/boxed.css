@@ -1,0 +1,4 @@
+form {
+	background-color: var(--bg-color-darken-strong) !important;
+	border-radius: var(--border-radius) !important;
+}
