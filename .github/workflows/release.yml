@@ -23,7 +23,7 @@ jobs:
     - name: Download Artifact
       uses: actions/download-artifact@v4.1.7
       with:
-        name: codam-web-greeter
+        pattern: relzip-*
         path: ./artifacts
 
     - name: Display structure of downloaded files
