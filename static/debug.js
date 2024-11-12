@@ -76,6 +76,20 @@ for (let i = 0; i < 5; i++) {
 	document.getElementById('intra-calendar').appendChild(calendarEvent);
 }
 
+// Add file picker for wallpaper
+const wallpaperPicker = document.createElement('input');
+wallpaperPicker.type = 'file';
+wallpaperPicker.accept = 'image/*';
+optionsContainer.appendChild(wallpaperPicker);
+wallpaperPicker.addEventListener('change', () => {
+	const file = wallpaperPicker.files[0];
+	const reader = new FileReader();
+	reader.onload = () => {
+		document.body.style.backgroundImage = `url(${reader.result})`;
+	};
+	reader.readAsDataURL(file);
+});
+
 // Add slider to change the background brightness
 const brightnessFilter = document.createElement('div');
 brightnessFilter.style.position = 'fixed';
