@@ -12,9 +12,9 @@
 	--color-primary: var(--color-blue);
 
 	/* Text colors */
-	--color-text-primary: #121212;
-	--color-text-secondary: #595959;
-	--color-text-tertiary: #919191;
+	--color-text-primary: #1A1A1A;
+	--color-text-secondary: #3A3A3A;
+	--color-text-tertiary: #5A5A5A;
 	--color-text-error: var(--color-red);
 	--color-text-success: var(--color-blue);
 	--color-text-warning: var(--color-yellow);
@@ -25,7 +25,7 @@
 	--bg-color-darken-strong: rgba(255, 255, 255, 0.65);
 	--bg-color-lighten: rgba(0, 0, 0, 0.2);
 	--bg-color-disabled-button: rgba(16, 16, 16, 0.2);
-	--text-shadow: 0 0 5px rgba(255, 255, 255, 0.25);
+	--text-shadow: 0 0 3px rgba(200, 200, 200, 0.33);
 
 	/* Events */
 	--event-color-default: #00BABC;
