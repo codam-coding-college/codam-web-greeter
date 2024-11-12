@@ -99,6 +99,14 @@
 		</footer>
 
 		<!-- Scripts (paths are relative to the dist folder) -->
-		<script src="bundle.js"></script>
+		<script>
+			function debugFallback() {
+				console.warn('JS Bundle failed to load, falling back to debug mode');
+				const script = document.createElement('script');
+				script.src = 'debug.js';
+				document.body.appendChild(script);
+			}
+		</script>
+		<script src="bundle.js" onerror="debugFallback(this);"></script>
 	</body>
 </html>
