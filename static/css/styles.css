@@ -282,7 +282,7 @@ form button:not(:disabled):active {
 }
 
 form#lock-form {
-	margin-top: -50%;
+	margin-top: -116px; /* half of the height of the user image, if displayed full-size */
 }
 
 #active-user-session-avatar {
