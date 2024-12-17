@@ -1,7 +1,7 @@
 {
-  "name": "codam-web-greeter",
+  "name": "kh-web-greeter",
   "version": "1.2.2",
-  "description": "LightDM greeter theme for Codam Coding College, compatible with nody-greeter and web-greeter",
+  "description": "LightDM greeter theme for 1337 Coding school, compatible with web-greeter",
   "main": "main.js",
   "scripts": {
     "build": "tsc",
