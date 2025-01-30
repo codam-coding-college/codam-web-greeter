@@ -26,7 +26,7 @@ all: build
 npm-install:
 	npm install
 
-build: static/greeter.css npm-install copy-files
+build: clean static/greeter.css npm-install copy-files
 	npm run build
 	npm run bundle
 
@@ -56,11 +56,13 @@ uninstall:
 	[ -f /usr/share/codam/uninstall-codam-web-greeter-service.sh ] && bash /usr/share/codam/uninstall-codam-web-greeter-service.sh
 	@echo "Update your /etc/lightdm/web-greeter.yml config file manually to disable the Codam theme if needed"
 
-re:
+re: clean
+	make build
+
+clean:
 	rm -f "$(ROOT_DIR)/static/greeter.css"
 	rm -rf "$(ROOT_DIR)/build"
 	rm -rf "$(ROOT_DIR)/dist"
-	make build
 
 # CLIENT THEMING
 static/greeter.css:
@@ -92,4 +94,4 @@ server-stop:
 	cd $(ROOT_DIR)/server
 	docker compose -f "$(ROOT_DIR)/server/docker-compose.yaml" down
 
-.PHONY: all npm-install build copy-files install uninstall re use-light-theme use-boxed-theme server update_server_version server-stop
+.PHONY: all npm-install build copy-files install uninstall re use-light-theme use-boxed-theme server update_server_version server-stop clean
