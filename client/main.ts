@@ -10,6 +10,7 @@ declare global {
 		auth: Authenticator;
 		ui: UI;
 		idler: Idler;
+		debugKeys: boolean;
 
 		sleep(ms: number): Promise<void>;
 		restartComputer(): boolean;
@@ -68,6 +69,7 @@ async function initGreeter(): Promise<void> {
 	window.auth = new Authenticator();
 	window.ui = new UI(window.data, window.auth);
 	window.idler = new Idler(window.ui.isLockScreen);
+	window.debugKeys = false;
 
 	// Add reboot keybind to reboot on ctrl+alt+del
 	// only when the lock screen is not shown
@@ -82,6 +84,10 @@ async function initGreeter(): Promise<void> {
 					window.ui.setDebugInfo('Exam mode override enabled');
 					window.ui.overrideExamMode();
 					break;
+				case 'KeyD': // Ctrl + Alt + D = debug keys: show pressed key in debug info
+					window.debugKeys = true;
+					window.ui.setDebugInfo('Debug keys enabled');
+					break;
 			}
 		}
 		else { // Regular keybinds
@@ -93,6 +99,9 @@ async function initGreeter(): Promise<void> {
 					window.brightness.increase();
 					break;
 			}
+		}
+		if (window.debugKeys) {
+			window.ui.setDebugInfo(`Key pressed: ${e.code} (${e.key})${e.ctrlKey ? ' + Ctrl' : ''}${e.altKey ? ' + Alt' : ''}${e.shiftKey ? ' + Shift' : ''}${e.metaKey ? ' + Meta' : ''}`);
 		}
 	});
 }
