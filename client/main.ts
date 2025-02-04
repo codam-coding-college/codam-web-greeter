@@ -93,9 +93,11 @@ async function initGreeter(): Promise<void> {
 		else { // Regular keybinds
 			switch (e.code) {
 				case 'F1': // F1 = Decrease brightness
+				case 'F14': // F14 = Decrease brightness (on some keyboards, e.g. Cherry)
 					window.brightness.decrease();
 					break;
 				case 'F2': // F2 = Increase brightness
+				case 'F15': // F15 = Increase brightness (on some keyboards, e.g. Cherry)
 					window.brightness.increase();
 					break;
 			}
