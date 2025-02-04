@@ -74,6 +74,9 @@ async function initGreeter(): Promise<void> {
 	// Add reboot keybind to reboot on ctrl+alt+del
 	// only when the lock screen is not shown
 	document.addEventListener('keydown', (e) => {
+		if (window.debugKeys) {
+			window.ui.setDebugInfo(`Key pressed: ${e.code} (${e.key})${e.ctrlKey ? ' + Ctrl' : ''}${e.altKey ? ' + Alt' : ''}${e.shiftKey ? ' + Shift' : ''}${e.metaKey ? ' + Meta' : ''}`);
+		}
 		if (e.ctrlKey && e.altKey) { // Special keybinds
 			switch (e.key) {
 				case 'Delete': // Ctrl + Alt + Delete = reboot computer
@@ -85,9 +88,9 @@ async function initGreeter(): Promise<void> {
 					window.ui.overrideExamMode();
 					break;
 				case 'd': // Ctrl + Alt + D = debug keys: show pressed key in debug info
-					window.debugKeys = true;
-					window.ui.setDebugInfo('Debug keys enabled');
-					break;
+					window.debugKeys = (window.debugKeys) ? false : true;
+					window.ui.setDebugInfo(`Debug keys: ${(window.debugKeys ? 'enabled' : 'disabled')}`);
+					return;
 			}
 		}
 		else { // Regular keybinds
@@ -103,9 +106,6 @@ async function initGreeter(): Promise<void> {
 					window.brightness.increase();
 					break;
 			}
-		}
-		if (window.debugKeys) {
-			window.ui.setDebugInfo(`Key pressed: ${e.code} (${e.key})${e.ctrlKey ? ' + Ctrl' : ''}${e.altKey ? ' + Alt' : ''}${e.shiftKey ? ' + Shift' : ''}${e.metaKey ? ' + Meta' : ''}`);
 		}
 	});
 }
