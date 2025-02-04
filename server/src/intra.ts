@@ -119,3 +119,39 @@ export const fetchExams = async function(api: Fast42): Promise<Exam42[]> {
 		return [];
 	}
 };
+
+export const fetchUserImage = async function(api: Fast42, login: string): Promise<string> {
+	try {
+		const req = await api.get(`/users/`, {
+			'filter[login]': login, // Filtering instead of querying for the specific user is faster
+		});
+		if (req.status == 429) {
+			throw new Error('Intra API rate limit exceeded');
+		}
+		if (req.ok) {
+			const data = await req.json();
+			if (data.length == 0) {
+				throw new Error('User not found on Intra');
+			}
+			const user = data[0];
+			if (user.image) {
+				if (user.image.versions && user.image.versions.large) {
+					return user.image.versions.large;
+				}
+				else {
+					return user.image.link; // This one should always exist
+				}
+			}
+			else {
+				throw new Error('User has no image set on Intra');
+			}
+		}
+		else {
+			throw new Error(`Intra API error: ${req.status} ${req.statusText}`);
+		}
+	}
+	catch (err) {
+		console.log(`Failed fetching user image for ${login}: ${err}`);
+		return '';
+	}
+}
