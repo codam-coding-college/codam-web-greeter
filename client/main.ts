@@ -75,28 +75,30 @@ async function initGreeter(): Promise<void> {
 	// only when the lock screen is not shown
 	document.addEventListener('keydown', (e) => {
 		if (e.ctrlKey && e.altKey) { // Special keybinds
-			switch (e.code) {
+			switch (e.key) {
 				case 'Delete': // Ctrl + Alt + Delete = reboot computer
 					window.ui.setDebugInfo('Reboot requested through LightDM');
 					window.restartComputer();
 					break;
-				case 'KeyE': // Ctrl + Alt + E = override exam mode
+				case 'e': // Ctrl + Alt + E = override exam mode
 					window.ui.setDebugInfo('Exam mode override enabled');
 					window.ui.overrideExamMode();
 					break;
-				case 'KeyD': // Ctrl + Alt + D = debug keys: show pressed key in debug info
+				case 'd': // Ctrl + Alt + D = debug keys: show pressed key in debug info
 					window.debugKeys = true;
 					window.ui.setDebugInfo('Debug keys enabled');
 					break;
 			}
 		}
 		else { // Regular keybinds
-			switch (e.code) {
-				case 'F1': // F1 = Decrease brightness
+			switch (e.key) {
+				case 'BrightnessDown': // Brightness down key
+				case 'F1': // F1 = Decrease brightness (F1 and F14 are often the same key)
 				case 'F14': // F14 = Decrease brightness (on some keyboards, e.g. Cherry)
 					window.brightness.decrease();
 					break;
-				case 'F2': // F2 = Increase brightness
+				case 'BrightnessUp': // Brightness up key
+				case 'F2': // F2 = Increase brightness (F2 and F15 are often the same key)
 				case 'F15': // F15 = Increase brightness (on some keyboards, e.g. Cherry)
 					window.brightness.increase();
 					break;
