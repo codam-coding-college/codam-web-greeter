@@ -3,12 +3,6 @@
 # Exit on error
 set -e
 
-# Only run for users in the student or piscine group
-if ! /usr/bin/groups | /usr/bin/grep -qE '(student|piscine)'; then
-	/usr/bin/echo "Not running for user $(/usr/bin/whoami)"
-	exit 0
-fi
-
 FACE_PATH="$HOME/.face"
 TMP_WALLPAPER_PATH="/tmp/codam-web-greeter-user-wallpaper"
 TMP_AVATAR_PATH="/tmp/codam-web-greeter-user-avatar"
