@@ -14,6 +14,9 @@ examModeProjects.innerText = 'Exam Rank 00, Exam Rank 01, Exam Rank 02, non-exis
 const lockedAgo = document.getElementById('active-user-session-locked-ago');
 lockedAgo.innerText = 'Automated logout occurs in 42 minutes';
 
+// Load the default wallpaper
+document.body.style.backgroundImage = window.getComputedStyle(document.body).getPropertyValue('--default-bg-img');
+
 // Add options container
 const optionsContainer = document.createElement('div');
 optionsContainer.id = 'screen-switcher';

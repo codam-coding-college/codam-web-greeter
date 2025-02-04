@@ -2,7 +2,7 @@
 	/* Colors can be found in css/dark.css and css/light.css */
 
 	/* Generic settings */
-	--default-bg-img: url('../assets/default-wallpaper.png');
+	--default-bg-img: url('assets/default-wallpaper.png'); /* relative to html file, set in JS */
 	--blur-bg-filter: blur(5px);
 	--blur-bg-filter-lock-screen: blur(25px);
 	--border-radius: 4px;
@@ -53,7 +53,7 @@ body {
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	background: var(--default-bg-img);
+	background-color: #000;
 	background-position: center center;
 	background-size: cover;
 	background-repeat: no-repeat;
