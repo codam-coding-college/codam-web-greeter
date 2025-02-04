@@ -82,10 +82,10 @@ no-boxed-theme:
 	$(SED) '/boxed.css/d' "$(ROOT_DIR)/static/greeter.css"
 
 # SERVER
-update_server_version:
+update-server-version:
 	bash "$(ROOT_DIR)/server/match_versions.sh"
 
-server: update_server_version
+server: update-server-version
 	[ -f $(ROOT_DIR)/server/messages.json ] || echo '{}' > "$(ROOT_DIR)/server/messages.json"
 	cd $(ROOT_DIR)/server
 	docker compose -f "$(ROOT_DIR)/server/docker-compose.yaml" up -d
@@ -94,4 +94,4 @@ server-stop:
 	cd $(ROOT_DIR)/server
 	docker compose -f "$(ROOT_DIR)/server/docker-compose.yaml" down
 
-.PHONY: all npm-install build copy-files install uninstall re use-light-theme use-boxed-theme server update_server_version server-stop clean
+.PHONY: all npm-install build copy-files install uninstall re use-light-theme use-boxed-theme server update-server-version server-stop clean
