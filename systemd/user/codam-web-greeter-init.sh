@@ -9,6 +9,7 @@ if ! /usr/bin/groups | /usr/bin/grep -qE '(student|piscine)'; then
 	exit 0
 fi
 
+FACE_PATH="$HOME/.face"
 TMP_WALLPAPER_PATH="/tmp/codam-web-greeter-user-wallpaper"
 TMP_AVATAR_PATH="/tmp/codam-web-greeter-user-avatar"
 
@@ -45,12 +46,32 @@ else
 	/usr/bin/echo "Wallpaper $WALLPAPER is not a local file"
 fi
 
+# Get the data-server-url variable from the config file, remove /config/ from the url
+DATA_SERVER_URL=$(/usr/bin/grep -Po '(?<=data-server-url=).*' /usr/share/web-greeter/themes/codam/settings.ini | /usr/bin/sed 's/^"\(.*\)"$/\1/' | /usr/bin/sed 's/\/config//')
+
+# Download the user's profile picture from Intra if no .face file exists in the home directory
+if [ ! -f "$FACE_PATH" ]; then
+	/usr/bin/echo "No user image found in $FACE_PATH, attempting download from the clusterdata server"
+
+	# Get the user's login
+	LOGIN=$(/usr/bin/whoami)
+
+	# Get the user's profile picture from Intra through the clusterdata server
+	IMAGE_URL="${DATA_SERVER_URL}user/${LOGIN}/.face"
+	/usr/bin/echo "Downloading user image from $IMAGE_URL to $FACE_PATH"
+	/usr/bin/curl -L -s "$IMAGE_URL" -o "$FACE_PATH" || true # Prevent curl from erroring out if the download fails
+else
+	/usr/bin/echo "Existing user image found at $FACE_PATH, not overwriting it with a freshly downloaded copy"
+fi
+
 # Remove existing user image in /tmp
 /usr/bin/rm -f "$TMP_AVATAR_PATH"
 
 # Copy user's .face file to /tmp
-if [ -f "$HOME/.face" ]; then
-	/usr/bin/cp "$HOME/.face" "$TMP_AVATAR_PATH"
+if [ -f "$FACE_PATH" ]; then
+	/usr/bin/cp "$FACE_PATH" "$TMP_AVATAR_PATH"
 	/usr/bin/chmod 666 "$TMP_AVATAR_PATH" # Allow all users to delete the file
-	/usr/bin/echo "Copied user image $HOME/.face to $TMP_AVATAR_PATH"
+	/usr/bin/echo "Copied user image $FACE_PATH to $TMP_AVATAR_PATH"
+else
+	/usr/bin/echo "No user image found at $FACE_PATH, not copying"
 fi
