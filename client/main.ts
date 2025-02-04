@@ -13,6 +13,10 @@ declare global {
 
 		sleep(ms: number): Promise<void>;
 		restartComputer(): boolean;
+		brightness: {
+			decrease: () => void;
+			increase: () => void;
+		};
 	}
 }
 
@@ -41,6 +45,23 @@ window.restartComputer = () => {
 	}
 };
 
+window.brightness = {
+	decrease: () => {
+		if (!window.lightdm?.can_access_brightness) {
+			window.ui.setDebugInfo('Brightness control failed: lightdm.can_access_brightness is false');
+			return;
+		}
+		window.lightdm?.brightness_decrease(10);
+	},
+	increase: () => {
+		if (!window.lightdm?.can_access_brightness) {
+			window.ui.setDebugInfo('Brightness control failed: lightdm.can_access_brightness is false');
+			return;
+		}
+		window.lightdm?.brightness_increase(10);
+	}
+};
+
 async function initGreeter(): Promise<void> {
 	// Initialize local classes
 	window.data = new Data();
@@ -51,15 +72,27 @@ async function initGreeter(): Promise<void> {
 	// Add reboot keybind to reboot on ctrl+alt+del
 	// only when the lock screen is not shown
 	document.addEventListener('keydown', (e) => {
-		// Ctrl + Alt + Delete = reboot computer
-		if (e.ctrlKey && e.altKey && e.code === 'Delete' && !window.ui.isLockScreen) {
-			window.ui.setDebugInfo('Reboot requested through LightDM');
-			window.restartComputer();
+		if (e.ctrlKey && e.altKey) { // Special keybinds
+			switch (e.code) {
+				case 'Delete': // Ctrl + Alt + Delete = reboot computer
+					window.ui.setDebugInfo('Reboot requested through LightDM');
+					window.restartComputer();
+					break;
+				case 'KeyE': // Ctrl + Alt + E = override exam mode
+					window.ui.setDebugInfo('Exam mode override enabled');
+					window.ui.overrideExamMode();
+					break;
+			}
 		}
-		// Ctrl + Alt + E = override exam mode
-		if (e.ctrlKey && e.altKey && e.code === 'KeyE' && !window.ui.isLockScreen) {
-			window.ui.setDebugInfo('Exam mode override enabled');
-			window.ui.overrideExamMode();
+		else { // Regular keybinds
+			switch (e.code) {
+				case 'F1': // F1 = Decrease brightness
+					window.brightness.decrease();
+					break;
+				case 'F2': // F2 = Increase brightness
+					window.brightness.increase();
+					break;
+			}
 		}
 	});
 }
