@@ -20,22 +20,15 @@ export class UI {
 	private _examModeDisabled: boolean = false; // Used to disable exam mode in case of admin override
 	private _wallpaper: WallpaperUI;
 	private _calendar: CalendarUI;
-	private _logo: HTMLImageElement;
 	private _message: HTMLElement;
 	private _scalingFactor: number = 1;
 
 	public constructor(data: Data, auth: Authenticator) {
 		this._infoBars = new InfoBarsUI();
-		this._logo = document.getElementById('logo') as HTMLImageElement;
 		this._message = document.getElementById('message') as HTMLElement;
 
 		// Set up DPI scaling
 		this.applyHiDpiScaling();
-
-		// Set up logo
-		if (data.logo.exists) {
-			this._logo.src = data.logo.path;
-		}
 
 		// Check for active sessions
 		const activeSession = lightdm.users.find((user: LightDMUser) => user.logged_in);
@@ -44,7 +37,6 @@ export class UI {
 			// Active session found, show lock screen form
 			this._lockScreen = new LockScreenUI(auth, activeSession);
 			this._isLockScreen = true;
-			this._logo.style.display = 'none';
 			this._lockScreen.showForm();
 		}
 		else {

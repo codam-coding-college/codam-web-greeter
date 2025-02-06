@@ -3,7 +3,10 @@ document.getElementById('info-debug').innerText = 'Running in debug mode';
 
 // Make sure all elements are somewhat presentable
 const logo = document.getElementById('logo');
-logo.src = 'assets/codam.svg';
+// logo.src = 'assets/logo.png';
+
+avatar = document.getElementById('active-user-session-avatar');
+avatar.src = 'assets/default-user.png';
 
 const message = document.getElementById('message');
 message.innerText = 'This is a test message that could have been sent by the back-end server for displaying.';
@@ -13,9 +16,6 @@ examModeProjects.innerText = 'Exam Rank 00, Exam Rank 01, Exam Rank 02, non-exis
 
 const lockedAgo = document.getElementById('active-user-session-locked-ago');
 lockedAgo.innerText = 'Automated logout occurs in 42 minutes';
-
-// Load the default wallpaper
-document.body.style.backgroundImage = window.getComputedStyle(document.body).getPropertyValue('--default-bg-img');
 
 // Add options container
 const optionsContainer = document.createElement('div');
@@ -33,19 +33,30 @@ const screenSwitcherContainer = document.createElement('div');
 screenSwitcherContainer.style.marginTop = '8px';
 optionsContainer.appendChild(screenSwitcherContainer);
 function switchScreen(screenId) {
-	const screens = document.querySelectorAll('main > form');
+	const screens = document.querySelectorAll('#center > form');
 		screens.forEach(screen => {
 			screen.style.display = 'none';
 		});
 
+		if (screenId === 'none') {
+			return;
+		}
 		const selectedScreen = document.getElementById(screenId);
-		selectedScreen.style.display = 'block';
+		if (['lock-form', 'exam-form'].includes(screenId)) {
+			selectedScreen.style.removeProperty('display');
+		}
+		else {
+			selectedScreen.style.display = 'block';
+		}
 
-		logo.style.display = (screenId === 'lock-form') ? 'none' : 'block';
+		logo.style.display = screenId === 'login-form' ? 'none' : 'block';
+		if (screenId === 'lock-form') {
+			logo.style.removeProperty('display');
+		}
 
-		// Make sure the correct input field is checked
-		const selectedInput = document.getElementById(`radio-${screenId}`);
-		selectedInput.checked = true;
+	// Make sure the correct input field is checked
+	const selectedInput = document.getElementById(`radio-${screenId}`);
+	selectedInput.checked = true;
 }
 function addScreenSwitchOption(screenName, screenId) {
 	const screenSwitcherInput = document.createElement('input');
@@ -69,7 +80,7 @@ function addScreenSwitchOption(screenName, screenId) {
 addScreenSwitchOption('Login screen', 'login-form');
 addScreenSwitchOption('Lock screen', 'lock-form');
 addScreenSwitchOption('Exam mode', 'exam-form');
-switchScreen('login-form');
+switchScreen('lock-form');
 
 // Add a fake calendar event from the template in HTML
 // Unfortunately these are not clickable without the proper UI toolkit

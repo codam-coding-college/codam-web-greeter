@@ -41,9 +41,9 @@ export class LoginScreenUI extends UIScreen {
 
 		// This event gets called when the user clicks the login button or submits the login form in any other way
 		(this._form as UILoginElements).form.addEventListener('submit', (event: Event) => {
-			event.preventDefault();
-			this._auth.login(form.loginInput.value, form.passwordInput.value);
-		});
+					event.preventDefault();
+					this._auth.login(form.loginInput.value, form.passwordInput.value);
+				});
 
 		// Only enable the login button when both the login and password fields are filled in
 		form.loginInput.addEventListener('input', () => {
@@ -64,11 +64,6 @@ export class LoginScreenUI extends UIScreen {
 
 	protected _wigglePasswordInput(clearInput: boolean = true): void {
 		const passwordInput = (this._form as UILoginElements).passwordInput;
-		passwordInput.classList.add('wiggle');
-		passwordInput.addEventListener('keydown', () => {
-			passwordInput.classList.remove('wiggle');
-		}, { once: true });
-
 		if (clearInput) {
 			passwordInput.value = "";
 			passwordInput.focus();

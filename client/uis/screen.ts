@@ -29,7 +29,7 @@ export abstract class UIScreen {
 	protected _auth: Authenticator;
 	abstract _form: UILockScreenElements | UILoginElements | UIExamModeElements;
 	protected abstract _events: AuthenticatorEvents;
-	private _formShown: boolean = false;
+	protected _formShown: boolean = false;
 
 	public constructor(auth: Authenticator) {
 		this._auth = auth;

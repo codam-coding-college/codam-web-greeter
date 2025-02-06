@@ -66,8 +66,8 @@ clean:
 
 # CLIENT THEMING
 static/greeter.css:
-	echo "@import 'css/styles.css';" > "$(ROOT_DIR)/static/greeter.css"
-	echo "@import 'css/dark.css';" >> "$(ROOT_DIR)/static/greeter.css"
+	echo "@import 'css/system.css';" > "$(ROOT_DIR)/static/greeter.css"
+
 
 use-light-theme:
 	$(SED) 's/dark.css/light.css/' "$(ROOT_DIR)/static/greeter.css"

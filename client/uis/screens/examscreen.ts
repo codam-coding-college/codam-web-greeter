@@ -31,6 +31,20 @@ export class ExamModeUI extends UIScreen {
 		},
 	};
 
+
+	// Override the showForm method to show the exam mode form since display:block break the layout
+	public showForm(): void {
+		if (!this._formShown) {
+			this._formShown = true;
+			this._form.form.style.removeProperty('display');
+			const inputToFocusOn = this._getInputToFocusOn();
+			if (inputToFocusOn !== null) {
+				inputToFocusOn.focus();
+			}
+			this._connectEvents();
+		}
+	}
+
 	public constructor(auth: Authenticator, loginUI: LoginScreenUI) {
 		super(auth);
 
