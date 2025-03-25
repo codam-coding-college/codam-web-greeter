@@ -710,6 +710,17 @@ body {
     color: #222
 }
 
+#login-bg-override {
+    background-color: #004e98;
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+}
+
 #login-form .surface {
     background: #ece9d8
 }
@@ -1116,7 +1127,8 @@ body {
     box-shadow: inset -1px -1px #0a0a0a, inset 1px 1px #dfdfdf, inset -2px -2px grey, inset 2px 2px #fff;
     background: #ece9d8;
     padding: 3px;
-
+    position: relative;
+    z-index: 2;
 }
 
 #login-form .window fieldset {
