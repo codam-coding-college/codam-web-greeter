@@ -42,7 +42,7 @@ function switchScreen(screenId) {
 			return;
 		}
 		const selectedScreen = document.getElementById(screenId);
-		if (['lock-form', 'exam-form'].includes(screenId)) {
+		if (['lock-form', 'exam-form', 'welcome-form'].includes(screenId)) {
 			selectedScreen.style.removeProperty('display');
 		}
 		else {
@@ -80,6 +80,7 @@ function addScreenSwitchOption(screenName, screenId) {
 addScreenSwitchOption('Login screen', 'login-form');
 addScreenSwitchOption('Lock screen', 'lock-form');
 addScreenSwitchOption('Exam mode', 'exam-form');
+addScreenSwitchOption('Welcome screen', 'welcome-form');
 switchScreen('lock-form');
 
 // Add a fake calendar event from the template in HTML

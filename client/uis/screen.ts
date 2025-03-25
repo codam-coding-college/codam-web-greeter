@@ -25,9 +25,13 @@ export interface UIExamModeElements {
 	examStartButton: HTMLButtonElement;
 }
 
+export interface UIWelcomeElements {
+	form: HTMLFormElement;
+}
+
 export abstract class UIScreen {
 	protected _auth: Authenticator;
-	abstract _form: UILockScreenElements | UILoginElements | UIExamModeElements;
+	abstract _form: UILockScreenElements | UILoginElements | UIExamModeElements | UIWelcomeElements;
 	protected abstract _events: AuthenticatorEvents;
 	protected _formShown: boolean = false;
 

@@ -9,7 +9,7 @@ export interface AuthenticatorEvents {
 	/**
 	 * This event gets called when the login process completes without error.
 	 */
-	authenticationComplete: () => void;
+	authenticationComplete: () => Promise<void>;
 
 	/**
 	 * This event gets called when the login process fails due to an authentication failure (wrong username or password).
@@ -103,7 +103,7 @@ export class Authenticator {
 		});
 
 		// This event gets called when LightDM says the authentication was successful and a session should be started
-		lightdm.authentication_complete.connect(() => {
+		lightdm.authentication_complete.connect(async () => {
 			try {
 				this._authenticating = false;
 				console.log("LightDM authentication complete. Checking results...");
@@ -111,7 +111,7 @@ export class Authenticator {
 					this._authenticated = true;
 					console.log("LightDM authentication successful! Starting session...");
 					if (this._authEvents) {
-						this._authEvents.authenticationComplete();
+						await this._authEvents.authenticationComplete();
 					}
 					lightdm.start_session(this._session ?? null);
 				}

@@ -15,7 +15,7 @@ export class ExamModeUI extends UIScreen {
 		authenticationStart: () => {
 			this._disableForm();
 		},
-		authenticationComplete: () => {
+		authenticationComplete: async () => {
 			// TODO: add loading animation here
 		},
 		authenticationFailure: () => {

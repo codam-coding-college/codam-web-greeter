@@ -7,6 +7,7 @@ import { LightDMUser, lightdm } from "nody-greeter-types";
 import { WallpaperUI } from "./uis/wallpaper"
 import { CalendarUI } from "./uis/calendar";
 import { ExamModeUI } from "./uis/screens/examscreen";
+import { WelcomeScreenUI } from "./uis/screens/welcomescreen";
 
 export class UI {
 	public static readonly EXAM_MODE_CHECK_INTERVAL: number = 5 * 1000; // 5 seconds
@@ -16,6 +17,7 @@ export class UI {
 	private _lockScreen: LockScreenUI | null = null;
 	private _loginScreen: LoginScreenUI | null = null;
 	private _examModeScreen: ExamModeUI | null = null;
+	public welcomeScreen: WelcomeScreenUI | null = null;
 	private _isLockScreen: boolean = false;
 	private _examModeDisabled: boolean = false; // Used to disable exam mode in case of admin override
 	private _wallpaper: WallpaperUI;
@@ -32,6 +34,8 @@ export class UI {
 
 		// Check for active sessions
 		const activeSession = lightdm.users.find((user: LightDMUser) => user.logged_in);
+
+		this.welcomeScreen = new WelcomeScreenUI(auth);
 
 		if (activeSession !== undefined) {
 			// Active session found, show lock screen form
