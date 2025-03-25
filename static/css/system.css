@@ -243,6 +243,11 @@ body {
     margin-right: 0;
 }
 
+#lock-form button[type=submit],
+#exam-form button[type=submit] {
+    cursor: pointer;
+}
+
 #centerLeft {
     /* Positioning */
     flex: 1 1 0px;
@@ -384,7 +389,7 @@ body {
     opacity: 100%;
 }
 
-.user:hover {
+.user:not(.active):hover {
     cursor: pointer;
 }
 
@@ -1111,7 +1116,7 @@ body {
     box-shadow: inset -1px -1px #0a0a0a, inset 1px 1px #dfdfdf, inset -2px -2px grey, inset 2px 2px #fff;
     background: #ece9d8;
     padding: 3px;
-    
+
 }
 
 #login-form .window fieldset {
@@ -1916,8 +1921,8 @@ progress:not([value]):after,
 }
 
 #login-form #xp-banner {
-    width: 102.6%; 
-    margin: -4.6px; 
+    width: 102.6%;
+    margin: -4.6px;
     margin-top: -8px;
 }
 
@@ -1951,7 +1956,7 @@ progress:not([value]):after,
     margin: 4px;
 }
 
-#login-form #login, 
+#login-form #login,
 #login-form #password {
     width: 100%;
 }
