@@ -137,19 +137,3 @@ optionsContainer.appendChild(brightnessSlider);
 brightnessSlider.addEventListener('input', () => {
 	brightnessFilter.style.backdropFilter = `brightness(${brightnessSlider.value})`;
 });
-
-document.querySelector('#lock-form .user').addEventListener('click', (e) => {
-	e.preventDefault();
-	e.currentTarget.classList.add('active');
-});
-
-document.body.addEventListener("click", (e) => {
-	// prevent removing active class if the click fell inside a .user element
-	if (e.target.closest(".user")) {
-		return;
-	}
-	// remove all user active classes from the lock screen
-	document.querySelectorAll("#lock-form .user").forEach((user) => {
-		user.classList.remove("active");
-	});
-});
