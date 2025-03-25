@@ -1933,8 +1933,8 @@ progress:not([value]):after,
 }
 
 #login-form #xp-banner {
-    width: 102.6%;
-    margin: -4.6px;
+    width: calc(100% + 10px);
+    margin: -5px;
     margin-top: -8px;
 }
 
