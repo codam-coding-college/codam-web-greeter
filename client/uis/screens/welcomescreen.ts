@@ -28,6 +28,15 @@ export class WelcomeScreenUI extends UIScreen {
 			this._formShown = true;
 			this._form.form.style.removeProperty("display");
 			this._form.footer.style.display = "none";
+
+			// Play the welcome sound
+			try {
+				const audio = new Audio('assets/welcome.mp3');
+				audio.play();
+			}
+			catch (err) {
+				console.log('Failed to play welcome sound:', err);
+			}
 		}
 	}
 

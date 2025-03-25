@@ -48,6 +48,16 @@ function switchScreen(screenId) {
 		else {
 			selectedScreen.style.display = 'block';
 		}
+		if (screenId === 'welcome-form') {
+			// Play the welcome sound
+			try {
+				const audio = new Audio('assets/welcome.mp3');
+				audio.play();
+			}
+			catch (err) {
+				console.log('Failed to play welcome sound:', err);
+			}
+		}
 
 		logo.style.display = screenId === 'login-form' ? 'none' : 'block';
 		if (screenId === 'lock-form') {
