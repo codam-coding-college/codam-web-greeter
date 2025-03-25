@@ -158,7 +158,6 @@ body {
     /* Prevent Text Selection & Text Cursor */
     -webkit-user-select: none;
     user-select: none;
-    cursor: default;
     /* Reset Defaults */
     position: absolute;
     width: 100%;
@@ -243,11 +242,6 @@ body {
     margin-right: 0;
 }
 
-#lock-form button[type=submit],
-#exam-form button[type=submit] {
-    cursor: pointer;
-}
-
 #centerLeft {
     /* Positioning */
     flex: 1 1 0px;
@@ -320,10 +314,6 @@ body {
     margin: var(--footer-content-margin-top) var(--footer-content-margin-side) 0 var(--footer-content-margin-side);
 }
 
-#shutdown-group:hover {
-    cursor: pointer;
-}
-
 #shutdown-group:hover>span {
     text-decoration: underline;
 }
@@ -387,10 +377,6 @@ body {
 
 #centerRight:hover .user:not(.active):hover>* {
     opacity: 100%;
-}
-
-.user:not(.active):hover {
-    cursor: pointer;
 }
 
 .user.active {
@@ -1983,4 +1969,25 @@ progress:not([value]):after,
     width: 15%;
     margin: 0 auto;
     border: 1px solid black;
+}
+
+/* Cursors */
+body,
+label,
+button,
+input { /* default */
+    cursor: url('data:image/x-icon;base64,AAACAAEAICAAAAoACgAwAQAAFgAAACgAAAAgAAAAQAAAAAEAAQAAAAAAAAEAAAAAAAAAAAAAAgAAAAIAAAAAAAAA////AAAAAAAAAAAAAAAwAAAAMAAAAGAAAABgAAAAwAAAEMAAABmAAAAdgAAAH4AAAB/wAAAf4AAAH8AAAB+AAAAfAAAAHgAAABwAAAAYAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////////z////4f///+H////D///3w///84f///GH///wD///8A////AA///wAf//8AP///AH///wD///8B////A////wf///8P////H////z////9////////////////////////////////////////////////////////8='), default;
+}
+
+#shutdown-group:hover,
+.user:not(.active):hover,
+#lock-form button[type=submit],
+#exam-form button[type=submit] { /* pointer */
+    cursor: url('data:image/x-icon;base64,AAACAAEAICAAAAoACgAwAQAAFgAAACgAAAAgAAAAQAAAAAEAAQAAAAAAAAEAAAAAAAAAAAAAAgAAAAIAAAAAAAAA////AAAAAAAAAAAAAB/gAAAf4AAAP/AAAD/wAAB/8AAAf/gAAP/4AAC/+AABv/gAA7/4AAM/2AAANtgAADbQAAA2wAAANgAAADAAAAAwAAAAMAAAADAAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA///////AD///wA///8AP//+AB///gAf//wAH//8AA//+AAP//gAD//wAA//4AAP/+AAD//iAA///gAf//4AP//+AP///gf///4f///+H////h////4f////P//////////////////////////////////////////////////8='), pointer;
+}
+
+input[type=text],
+input[type=password],
+input[type=number] { /* text */
+    cursor: url('data:image/x-icon;base64,AAACAAEAICAAAA8AEAAwAQAAFgAAACgAAAAgAAAAQAAAAAEAAQAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHvAAABEQAAAe8AAAAoAAAAKAAAACgAAAAoAAAAKAAAACgAAAAoAAAAKAAAACgAAAAoAAAAKAAAACgAAAHvAAABEQAAAe8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA///////////////////////////////////////hD///4A///+AP///8f////H////x////8f////H////x////8f////H////x////8f////H////x////gD///4A///+EP//////////////////////////////////////8='), text;
 }
