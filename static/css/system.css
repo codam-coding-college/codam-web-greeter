@@ -171,6 +171,11 @@ body {
     text-shadow: 0px 0px var(--primary-font-color);
 }
 
+/* prevent image dragging */
+img {
+    pointer-events: none;
+}
+
 #main-content {
     position: absolute;
     width: 100%;
