@@ -52,6 +52,7 @@ function switchScreen(screenId) {
 			// Play the welcome sound
 			try {
 				const audio = new Audio('assets/welcome.mp3');
+				audio.volume = 0.1; /* 10% volume, to avoid blasting the sound through the entire cluster */
 				audio.play();
 			}
 			catch (err) {
