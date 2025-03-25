@@ -1953,8 +1953,9 @@ progress:not([value]):after,
 
 }
 
-#login-form #form-button {
-    justify-content: flex-end
+#login-form #form-button,
+#login-error-window #login-error-buttons {
+    justify-content: flex-end;
 }
 
 #login-form .field-row button {
@@ -1986,6 +1987,16 @@ progress:not([value]):after,
     flex-direction: row;
     justify-content: center;
     align-items: center;
+}
+
+#login-error-window {
+    /* force display itself in center */
+    position: fixed !important;
+    width: 420px !important; /* to make sure it stands out over the login window */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
 }
 
 /* Cursors */

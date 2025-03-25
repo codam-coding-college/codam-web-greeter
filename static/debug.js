@@ -137,3 +137,5 @@ optionsContainer.appendChild(brightnessSlider);
 brightnessSlider.addEventListener('input', () => {
 	brightnessFilter.style.backdropFilter = `brightness(${brightnessSlider.value})`;
 });
+
+closeErrorWindow();

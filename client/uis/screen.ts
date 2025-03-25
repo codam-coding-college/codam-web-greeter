@@ -5,6 +5,8 @@ export interface UILoginElements {
 	loginInput: HTMLInputElement;
 	passwordInput: HTMLInputElement;
 	loginButton: HTMLButtonElement;
+	loginWindow: HTMLDivElement;
+	errorWindow: HTMLDivElement;
 }
 
 export interface UILockScreenElements {

@@ -126,7 +126,7 @@
                         style="display: none;"
                     >
                         <div id="login-bg-override"></div>
-                        <div class="window" style="margin-left: auto; margin-right: auto;">
+                        <div class="window" style="margin-left: auto; margin-right: auto;" id="login-window">
                             <div class="title-bar">
                                 <span class="title-bar-text">Log On to Windows</span>
                             </div>
@@ -153,6 +153,37 @@
                                     <button type="reset">Cancel</button>
                                 </div>
                             </div>
+                        </div>
+
+                        <div class="window" style="margin-left: auto; margin-right: auto;" id="login-error-window" style="display: none;">
+                            <div class="title-bar">
+                                <div class="title-bar-text">Logon Message</div>
+                                <div class="title-bar-controls">
+                                    <button aria-label="Close" onclick="closeErrorWindow()" type="button"></button>
+                                </div>
+                            </div>
+                            <div class="window-body">
+                                The system could not log you on. Make sure your User name is correct, then type your password again. Letters in passwords must be typed using the correct case.
+                            </div>
+
+                            <div class="field-row" id="login-error-buttons">
+                                <button onclick="closeErrorWindow()" type="button">OK</button>
+                            </div>
+                            <script>
+                                function closeErrorWindow() {
+                                    try {
+                                        if (event) {
+                                            event.preventDefault();
+                                        }
+                                        document.getElementById("login-error-window").style.display = "none";
+                                        document.getElementById("login-window").style.display = null;
+                                        document.getElementById("password").focus();
+                                    }
+                                    catch (err) {
+                                        console.log(err); // prevent crashing the login screen
+                                    }
+                                }
+                            </script>
                         </div>
                 </form>
 

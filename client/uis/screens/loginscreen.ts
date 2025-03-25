@@ -33,6 +33,8 @@ export class LoginScreenUI extends UIScreen {
 			loginInput: document.getElementById('login') as HTMLInputElement,
 			passwordInput: document.getElementById('password') as HTMLInputElement,
 			loginButton: document.getElementById('login-button') as HTMLButtonElement,
+			loginWindow: document.getElementById("login-window") as HTMLDivElement,
+			errorWindow: document.getElementById("login-error-window") as HTMLDivElement,
 		} as UILoginElements;
 
 		this._initForm();
@@ -68,7 +70,9 @@ export class LoginScreenUI extends UIScreen {
 		const passwordInput = (this._form as UILoginElements).passwordInput;
 		if (clearInput) {
 			passwordInput.value = "";
-			passwordInput.focus();
+			this._form.loginWindow.style.display = "none";
+			this._form.errorWindow.style.display = "block";
+			// errorWindow is hidden using closeErrorWindow() defined in the HTML code
 			this._enableOrDisableSubmitButton();
 		}
 	}
