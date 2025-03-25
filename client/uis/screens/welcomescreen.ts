@@ -27,7 +27,14 @@ export class WelcomeScreenUI extends UIScreen {
 		if (!this._formShown) {
 			this._formShown = true;
 			this._form.form.style.removeProperty("display");
-			this._form.footer.style.display = "none";
+			for (const child of this._form.footer.children) {
+				try {
+					(child as HTMLElement).style.display = "none";
+				}
+				catch (err) {
+					// whatever man
+				}
+			}
 
 			// Play the welcome sound
 			try {
