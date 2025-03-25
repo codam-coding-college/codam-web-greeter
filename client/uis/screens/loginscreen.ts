@@ -37,6 +37,10 @@ export class LoginScreenUI extends UIScreen {
 			errorWindow: document.getElementById("login-error-window") as HTMLDivElement,
 		} as UILoginElements;
 
+		// make sure to hide the error window
+		this._form.errorWindow.style.display = "none";
+		this._form.loginWindow.style.display = "block";
+
 		this._initForm();
 	}
 
