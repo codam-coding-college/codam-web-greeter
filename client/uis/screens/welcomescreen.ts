@@ -27,6 +27,7 @@ export class WelcomeScreenUI extends UIScreen {
 		if (!this._formShown) {
 			this._formShown = true;
 			this._form.form.style.removeProperty("display");
+			this._form.footer.style.display = "none";
 		}
 	}
 
@@ -34,6 +35,7 @@ export class WelcomeScreenUI extends UIScreen {
 		super(auth);
 		this._form = {
 			form: document.getElementById('welcome-form') as HTMLFormElement,
+			footer: document.getElementById('footer') as HTMLDivElement,
 		};
 	}
 

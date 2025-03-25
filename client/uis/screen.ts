@@ -27,6 +27,7 @@ export interface UIExamModeElements {
 
 export interface UIWelcomeElements {
 	form: HTMLFormElement;
+	footer: HTMLDivElement;
 }
 
 export abstract class UIScreen {
