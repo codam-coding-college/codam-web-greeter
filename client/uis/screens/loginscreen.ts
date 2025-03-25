@@ -8,6 +8,7 @@ export class LoginScreenUI extends UIScreen {
 			this._disableForm();
 		},
 		authenticationComplete: async () => {
+			this.hideForm();
 			window.ui.welcomeScreen?.showForm();
 			await new Promise(resolve => setTimeout(resolve, 5000));
 		},

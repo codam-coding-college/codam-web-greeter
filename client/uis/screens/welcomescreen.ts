@@ -26,6 +26,7 @@ export class WelcomeScreenUI extends UIScreen {
 	public showForm(): void {
 		if (!this._formShown) {
 			this._formShown = true;
+			this._form.form.style.removeProperty("display");
 		}
 	}
 
