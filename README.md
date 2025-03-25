@@ -168,6 +168,15 @@ if [ "$DISPLAY" != ":0" ]; then
 fi
 ```
 
+### Users are sometimes randomly logged out after locking their screen once
+Add the following lines to the top of the logout hook defined in */etc/lightdm/lightdm.conf*:
+```bash
+# Delete any lock_time files in /tmp (used by codam-web-greeter to know when the screen was locked
+# and when to automatically log out the user)
+/usr/bin/rm -f /tmp/codam_web_greeter_lock_timestamp_*
+```
+Make sure to add these lines above the lines added in the previous section (the check for the greeter logout event).
+
 ### My custom wallpaper or logo doesn't show up
 Make sure the folders mentioned for branding in */etc/lightdm/web-greeter.yml* exist and contain the correct files.
 ```yaml
