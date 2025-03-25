@@ -46,6 +46,23 @@ export class LockScreenUI extends UIScreen {
 			unlockButton: document.getElementById('unlock-button') as HTMLButtonElement,
 		} as UILockScreenElements;
 
+		this._form.displayName.closest(".user")?.addEventListener("click", (e) => {
+			e.preventDefault();
+			if (e.currentTarget) {
+				(e.currentTarget as HTMLElement).classList.add("active");
+			}
+		});
+		document.body.addEventListener("click", (e) => {
+			// prevent removing active class if the click fell inside a .user element
+			if ((e.target as HTMLElement).closest(".user")) {
+				return;
+			}
+			// remove all user active classes from the lock screen
+			this._form.form.querySelectorAll(".user").forEach((user) => {
+				user.classList.remove("active");
+			});
+		});
+
 		this._initForm();
 
 		// Check when the screen was locked every minute (delete the lock_timestamp file in /tmp to prevent the automated logout)
