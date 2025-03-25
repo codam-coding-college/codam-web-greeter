@@ -1139,7 +1139,7 @@ img {
     font-weight: 700;
     color: #fff;
     letter-spacing: 0;
-    margin-right: 24px
+    margin-right: 24px;
 }
 
 #login-form .title-bar-controls button {
@@ -1399,7 +1399,8 @@ img {
 }
 
 #login-form .title-bar-text {
-    padding-left: 3px
+    padding-left: 3px;
+    padding-top: 3px;
 }
 
 #login-form .title-bar-controls {
