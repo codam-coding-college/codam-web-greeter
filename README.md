@@ -11,11 +11,12 @@ A greeter theme for [nody-greeter](https://github.com/JezerM/nody-greeter)/web-g
 - Customizable background image and logo
 - Greeter can be used as a lock screen when someone is already logged in (replacement for ft_lock)
 - Automatically log students out after 42 minutes of inactivity, either in-session or on the lock screen
-- Display user's profile picture (from `~/.face`) on the lock screen
+- Display user's Intra picture on the lock screen
 - Display user's Gnome wallpaper on the lock screen
 - Keybinding to gracefully reboot the computer (<kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>Del</kbd>)
 - Display network status on-screen without having to log in
-- Custom screensaver support (HTML5 canvas)
+- Screen brightness control support
+- Choose between light or dark mode upon installation
 
 
 ## Screenshots
