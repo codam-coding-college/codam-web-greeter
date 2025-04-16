@@ -11,7 +11,7 @@ export class ExamModeUI extends UIScreen {
 	private _examMode: boolean = false;
 	private _examIds: number[] = [];
 	private _loginScreen: LoginScreenUI;
-	private _examStartButtonTimeout: ReturnType<typeof setTimeout> | null = null;
+	private _examStartButtonEnableInterval: ReturnType<typeof setInterval> | null = null;
 	private _examStartTime = new Date("2099-01-01T00:00:00Z"); // Set to a future date so that the button is disabled by default
 	protected _events: AuthenticatorEvents = {
 		authenticationStart: () => {
@@ -45,6 +45,7 @@ export class ExamModeUI extends UIScreen {
 			examStartText: document.getElementById('exam-mode-start') as HTMLSpanElement,
 			examEndText: document.getElementById('exam-mode-end') as HTMLSpanElement,
 			examStartButton: document.getElementById('exam-mode-start-button') as HTMLButtonElement,
+			examStartTimer: document.getElementById('exam-mode-start-timer') as HTMLParagraphElement,
 		} as UIExamModeElements;
 
 		this._initForm();
@@ -102,6 +103,17 @@ export class ExamModeUI extends UIScreen {
 		});
 	}
 
+	private _clearExamStartTimer(): void {
+		const form = this._form as UIExamModeElements;
+		if (this._examStartButtonEnableInterval) {
+			clearTimeout(this._examStartButtonEnableInterval);
+			this._examStartButtonEnableInterval = null;
+		}
+		this._examStartTime = new Date("2099-01-01T00:00:00Z");
+		form.examStartTimer.innerText = "Click the arrow below to start your exam.";
+		this._enableOrDisableSubmitButton();
+	}
+
 	private _populateData(examsToPopulate: ExamForHost[]): void {
 		const form = this._form as UIExamModeElements;
 
@@ -111,12 +123,7 @@ export class ExamModeUI extends UIScreen {
 			form.examStartText.innerText = 'unknown';
 			form.examEndText.innerText = 'unknown';
 			// Clear the timeout for the exam start button and disable it
-			if (this._examStartButtonTimeout) {
-				clearTimeout(this._examStartButtonTimeout);
-				this._examStartButtonTimeout = null;
-			}
-			this._examStartTime = new Date("2099-01-01T00:00:00Z");
-			this._enableOrDisableSubmitButton();
+			this._clearExamStartTimer();
 		}
 		else {
 			// Find all exams in the data.json file that match the ids in the exams variable
@@ -156,18 +163,21 @@ export class ExamModeUI extends UIScreen {
 			form.examEndText.innerText = latestExam.toLocaleTimeString("en-NL", { hour: '2-digit', minute: '2-digit' });
 
 			// Enable or disable the exam start button based on the current time
-			this._enableOrDisableSubmitButton();
-
-			// Enable the exam start button at the exam start time if it is in the future
-			// Make sure to clear any existing timeout first
-			if (this._examStartButtonTimeout) {
-				clearTimeout(this._examStartButtonTimeout);
-				this._examStartButtonTimeout = null;
-			}
+			this._clearExamStartTimer();
 			if (this._examStartTime.getTime() > Date.now()) {
-				this._examStartButtonTimeout = setTimeout(() => {
-					this._enableOrDisableSubmitButton();
-				}, this._examStartTime.getTime() - Date.now());
+				this._examStartButtonEnableInterval = setInterval(() => {
+					const timeLeft = Math.floor((this._examStartTime.getTime() - Date.now()) / 1000);
+					const minutes = Math.floor(timeLeft / 60);
+					const seconds = timeLeft % 60;
+					const formattedTime = `${(minutes > 0 ? `${minutes} minutes and ` : '')} ${seconds} seconds`;
+					form.examStartTimer.innerText = `The exam starts in ${formattedTime}.`;
+
+					if (this._examStartTime.getTime() <= Date.now()) {
+						// Clear the timer and enable the button
+						this._clearExamStartTimer();
+						return;
+					}
+				}, 1000);
 			}
 		}
 	}
@@ -177,6 +187,13 @@ export class ExamModeUI extends UIScreen {
 		const form = this._form as UIExamModeElements;
 		const buttonDisabled = this._examStartTime.getTime() > Date.now(); // Disable the button if the exam start time is in the future
 		form.examStartButton.disabled = buttonDisabled;
+		if (!buttonDisabled) {
+			form.examStartTimer.innerText = "Click the arrow below to start your exam.";
+			const focusInput = this._getInputToFocusOn();
+			if (focusInput) {
+				focusInput.focus();
+			}
+		}
 		return buttonDisabled;
 	}
 

@@ -23,6 +23,7 @@ export interface UIExamModeElements {
 	examStartText: HTMLSpanElement;
 	examEndText: HTMLSpanElement;
 	examStartButton: HTMLButtonElement;
+	examStartTimer: HTMLParagraphElement;
 }
 
 export abstract class UIScreen {
