@@ -11,6 +11,8 @@ export class ExamModeUI extends UIScreen {
 	private _examMode: boolean = false;
 	private _examIds: number[] = [];
 	private _loginScreen: LoginScreenUI;
+	private _examStartButtonTimeout: ReturnType<typeof setTimeout> | null = null;
+	private _examStartTime = new Date("2099-01-01T00:00:00Z"); // Set to a future date so that the button is disabled by default
 	protected _events: AuthenticatorEvents = {
 		authenticationStart: () => {
 			this._disableForm();
@@ -108,6 +110,13 @@ export class ExamModeUI extends UIScreen {
 			form.examProjectsText.innerText = '';
 			form.examStartText.innerText = 'unknown';
 			form.examEndText.innerText = 'unknown';
+			// Clear the timeout for the exam start button and disable it
+			if (this._examStartButtonTimeout) {
+				clearTimeout(this._examStartButtonTimeout);
+				this._examStartButtonTimeout = null;
+			}
+			this._examStartTime = new Date("2099-01-01T00:00:00Z");
+			this._enableOrDisableSubmitButton();
 		}
 		else {
 			// Find all exams in the data.json file that match the ids in the exams variable
@@ -127,6 +136,7 @@ export class ExamModeUI extends UIScreen {
 				}
 				return earliest;
 			}, new Date(exams[0].begin_at));
+			this._examStartTime = earliestExam; // For the exam start button timeout, which is set up later
 
 			// Find the latest end time for an exam that should be displayed right now
 			const latestExam = exams.reduce((latest, exam) => {
@@ -144,12 +154,30 @@ export class ExamModeUI extends UIScreen {
 			form.examProjectsText.innerText = projectsText;
 			form.examStartText.innerText = earliestExam.toLocaleTimeString("en-NL", { hour: '2-digit', minute: '2-digit' });
 			form.examEndText.innerText = latestExam.toLocaleTimeString("en-NL", { hour: '2-digit', minute: '2-digit' });
+
+			// Enable or disable the exam start button based on the current time
+			this._enableOrDisableSubmitButton();
+
+			// Enable the exam start button at the exam start time if it is in the future
+			// Make sure to clear any existing timeout first
+			if (this._examStartButtonTimeout) {
+				clearTimeout(this._examStartButtonTimeout);
+				this._examStartButtonTimeout = null;
+			}
+			if (this._examStartTime.getTime() > Date.now()) {
+				this._examStartButtonTimeout = setTimeout(() => {
+					this._enableOrDisableSubmitButton();
+				}, this._examStartTime.getTime() - Date.now());
+			}
 		}
 	}
 
 	// Returns true if the exam-start button is disabled, false otherwise
 	protected _enableOrDisableSubmitButton(): boolean {
-		return false;
+		const form = this._form as UIExamModeElements;
+		const buttonDisabled = this._examStartTime.getTime() > Date.now(); // Disable the button if the exam start time is in the future
+		form.examStartButton.disabled = buttonDisabled;
+		return buttonDisabled;
 	}
 
 	protected _wigglePasswordInput(clearInput: boolean = true): void {
