@@ -164,6 +164,7 @@ export class ExamModeUI extends UIScreen {
 			// Enable or disable the exam start button based on the current time
 			this._clearExamStartTimer();
 			this._examStartTime = earliestExam;
+			this._enableOrDisableSubmitButton();
 			if (this._examStartTime.getTime() > Date.now()) {
 				this._examStartButtonEnableInterval = setInterval(() => {
 					const timeLeft = Math.floor((this._examStartTime.getTime() - Date.now()) / 1000);
