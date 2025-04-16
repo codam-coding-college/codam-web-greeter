@@ -109,7 +109,6 @@ export class ExamModeUI extends UIScreen {
 			clearTimeout(this._examStartButtonEnableInterval);
 			this._examStartButtonEnableInterval = null;
 		}
-		this._examStartTime = new Date("2099-01-01T00:00:00Z");
 		form.examStartTimer.innerText = "Click the arrow below to start your exam.";
 		this._enableOrDisableSubmitButton();
 	}
@@ -123,6 +122,7 @@ export class ExamModeUI extends UIScreen {
 			form.examStartText.innerText = 'unknown';
 			form.examEndText.innerText = 'unknown';
 			// Clear the timeout for the exam start button and disable it
+			this._examStartTime = new Date("2099-01-01T00:00:00Z");
 			this._clearExamStartTimer();
 		}
 		else {
@@ -143,7 +143,6 @@ export class ExamModeUI extends UIScreen {
 				}
 				return earliest;
 			}, new Date(exams[0].begin_at));
-			this._examStartTime = earliestExam; // For the exam start button timeout, which is set up later
 
 			// Find the latest end time for an exam that should be displayed right now
 			const latestExam = exams.reduce((latest, exam) => {
@@ -164,6 +163,7 @@ export class ExamModeUI extends UIScreen {
 
 			// Enable or disable the exam start button based on the current time
 			this._clearExamStartTimer();
+			this._examStartTime = earliestExam;
 			if (this._examStartTime.getTime() > Date.now()) {
 				this._examStartButtonEnableInterval = setInterval(() => {
 					const timeLeft = Math.floor((this._examStartTime.getTime() - Date.now()) / 1000);
