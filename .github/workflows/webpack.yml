@@ -17,7 +17,9 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18.x]
+        node-version: [12.x]
+        theme: [dark, light]
+        boxed: [default, boxed]
 
     steps:
     - uses: actions/checkout@v4
@@ -37,7 +39,7 @@ jobs:
 
     - name: Build codam-web-greeter
       run: |
-        make build
+        make build CLIENT_THEME=${{ matrix.theme }} CLIENT_THEME_BOXED=${{ matrix.boxed }}
 
     - name: Add dist folder to artifact
       working-directory: dist
@@ -48,9 +50,13 @@ jobs:
       run: |
         zip -r codam-web-greeter.zip systemd
 
+    - name: Rename artifact
+      run: |
+        mv codam-web-greeter.zip codam-web-greeter-${{ matrix.theme }}-${{ matrix.boxed }}.zip
+
     - name: Upload Artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
-        name: codam-web-greeter
-        path: codam-web-greeter.zip
+        name: relzip-codam-web-greeter-${{ matrix.theme }}-${{ matrix.boxed }}
+        path: codam-web-greeter-${{ matrix.theme }}-${{ matrix.boxed }}.zip
         retention-days: 1

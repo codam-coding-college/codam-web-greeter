@@ -1,6 +1,6 @@
 [Unit]
 Description=Initializer for codam-web-greeter in the user environment
-StartLimitInterval=200
+StartLimitIntervalSec=200
 StartLimitBurst=5
 
 [Service]

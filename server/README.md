@@ -1,5 +1,7 @@
 # Back-end server for codam-web-greeter
-The back-end server provides data for the greeter to display, such as events and exams on [42's Intranet](https://intra.42.fr/).
+The back-end server provides data for the greeter to display, such as events and exams on [42's Intranet](https://intra.42.fr/). It also provides an endpoint to fetch an Intra user's profile picture.
+
+> ⚠️ You should make sure this server is only accessible on your local campus network, to avoid leaking personal data to the outside world. It is also recommended to configure your campus's access-control lists in a way that allows only campus computers to access this server. If you do not know how to do this, ask your campus's network administrator for help.
 
 
 ## Running the server
@@ -124,5 +126,35 @@ Request data to be displayed by the greeter for the given hostname. If no hostna
 	],
 	"fetch_time": "2023-11-15T15:39:52.062Z",
 	"message": "A custom message to display on the login screen\nIt supports *bold* and _italic_ text",
+}
+```
+
+### `/api/user/:login/.face`
+Redirects to the user's profile picture served by Intranet's CDN. This endpoint can be used by the greeter to display the user's profile picture on the lock screen.
+
+#### Example return data
+A redirect to a raw image through a 300 status code, or a 404 error.
+
+### `/api/exam_mode_hosts`
+Returns a list of hostnames that are currently in exam mode. A host can only be displayed if it was able to fetch its configuration from the `/api/config/:hostname` endpoint at least once since the server started.
+
+#### Example return data
+```json
+{
+	"exam_mode_hosts": [
+		"f1r1s1.codam.nl",
+		"f1r2s1.codam.nl",
+		"f1r3s1.codam.nl"
+	],
+	"message": "Exams in progress: 42042",
+	"status": "ok"
+}
+```
+
+```json
+{
+	"exam_mode_hosts": [],
+	"message": "No exams are currently running",
+	"status": "ok"
 }
 ```

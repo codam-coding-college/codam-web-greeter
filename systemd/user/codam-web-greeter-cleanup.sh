@@ -3,6 +3,13 @@
 # Exit on error
 set -e
 
+# Do not run this script for the following users
+SKIPPED_USERS="lightdm exam checkin event"
+if [[ $SKIPPED_USERS =~ (^|[[:space:]])$USER($|[[:space:]]) ]]; then
+	/usr/bin/echo "Skipping ignored user $USER"
+	exit 0
+fi
+
 TMP_WALLPAPER_PATH="/tmp/codam-web-greeter-user-wallpaper"
 TMP_AVATAR_PATH="/tmp/codam-web-greeter-user-avatar"
 

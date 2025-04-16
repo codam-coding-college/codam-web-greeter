@@ -1,0 +1,38 @@
+:root {
+	/* Codam colors (do not change) */
+	--color-yellow: #F2911A;
+	--color-orange: #EA5C28;
+	--color-red: #E52A2D;
+	--color-purple: #B73188;
+	--color-blue: #3AA2DB;
+	--color-black: #000000;
+	--color-white: #FFFFFF;
+
+	/* Theme colors */
+	--color-primary: var(--color-blue);
+
+	/* Text colors */
+	--color-text-primary: #1A1A1A;
+	--color-text-secondary: #3A3A3A;
+	--color-text-tertiary: #5A5A5A;
+	--color-text-error: var(--color-red);
+	--color-text-success: var(--color-blue);
+	--color-text-warning: var(--color-yellow);
+
+	/* Backgrounds */
+	--color-bg: var(--color-white);
+	--bg-color-darken: rgba(255, 255, 255, 0.2);
+	--bg-color-darken-strong: rgba(255, 255, 255, 0.65);
+	--bg-color-lighten: rgba(0, 0, 0, 0.2);
+	--bg-color-disabled-button: rgba(16, 16, 16, 0.2);
+	--text-shadow: 0 0 3px rgba(200, 200, 200, 0.33);
+
+	/* Events */
+	--event-color-default: #00BABC;
+	--event-color-exam: #ED8179;
+	--event-color-association: #7E93D4;
+	--event-color-standup: #8E9C9C; /* Bocal Stand-up */
+	--event-color-workshop: #39D88F;
+	--event-color-rush: #F2911A;
+	--event-color: var(--event-color-default); /* fallback */
+}

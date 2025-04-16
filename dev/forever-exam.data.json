@@ -1,0 +1,64 @@
+{
+	"hostname": "f1r1s20.codam.nl",
+	"events": [],
+	"exams": [
+		{
+			"cursus": [
+				{
+					"id": 21,
+					"name": "42cursus",
+					"slug": "42cursus"
+				}
+			],
+			"projects": [
+				{
+					"id": 1320,
+					"name": "Exam Rank 02",
+					"slug": "exam-rank-02"
+				},
+				{
+					"id": 1321,
+					"name": "Exam Rank 03",
+					"slug": "exam-rank-03"
+				},
+				{
+					"id": 1322,
+					"name": "Exam Rank 04",
+					"slug": "exam-rank-04"
+				},
+				{
+					"id": 1323,
+					"name": "Exam Rank 05",
+					"slug": "exam-rank-05"
+				},
+				{
+					"id": 1324,
+					"name": "Exam Rank 06",
+					"slug": "exam-rank-06"
+				}
+			],
+			"id": 20740,
+			"ip_range": [
+				"10.10.0.0/16"
+			],
+			"begin_at": "2014-11-12T10:00:00.000Z",
+			"end_at": "2034-11-12T13:00:00.000Z",
+			"location": "Everywhere",
+			"max_people": 64,
+			"nbr_subscribers": 32,
+			"name": "Exam",
+			"created_at": "2024-10-23T11:09:16.659Z",
+			"updated_at": "2024-11-11T11:56:37.853Z"
+		}
+	],
+	"exams_for_host": [
+		{
+			"id": 20740,
+			"name": "Exam",
+			"begin_at": "2014-11-12T10:00:00.000Z",
+			"end_at": "2034-11-12T13:00:00.000Z"
+		}
+	],
+	"fetch_time": "2024-11-11T13:59:34.934Z",
+	"message": "You currently have a data.json deployed with a forever exam for testing."
+}

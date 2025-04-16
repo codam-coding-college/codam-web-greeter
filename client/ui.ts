@@ -17,6 +17,7 @@ export class UI {
 	private _loginScreen: LoginScreenUI | null = null;
 	private _examModeScreen: ExamModeUI | null = null;
 	private _isLockScreen: boolean = false;
+	private _examModeDisabled: boolean = false; // Used to disable exam mode in case of admin override
 	private _wallpaper: WallpaperUI;
 	private _calendar: CalendarUI;
 	private _logo: HTMLImageElement;
@@ -49,7 +50,7 @@ export class UI {
 		else {
 			// No active session found, show login form or exam mode form
 			this._loginScreen = new LoginScreenUI(auth);
-			this._examModeScreen = new ExamModeUI(auth, this._loginScreen, null);
+			this._examModeScreen = new ExamModeUI(auth, this._loginScreen);
 
 			// Subscribe to data change events, so that we can show the exam mode screen when an exam is started
 			data.addDataChangeListener((data: DataJson | undefined) => {
@@ -79,6 +80,14 @@ export class UI {
 
 	public get isLockScreen(): boolean {
 		return this._isLockScreen;
+	}
+
+	/**
+	 * Override the exam mode and show the regular login screen. Useful for admins who need to debug.
+	 */
+	public overrideExamMode(): void {
+		this._examModeDisabled = true;
+		this.checkForExamMode();
 	}
 
 	public setDebugInfo(info: string): void {
@@ -119,8 +128,9 @@ export class UI {
 			return false;
 		}
 
+		// Get exams that are starting soon
 		const examsForHost: ExamForHost[] = window.data.dataJson.exams_for_host;
-		const ongoingExam = examsForHost.find((exam) => {
+		const ongoingExams = examsForHost.filter((exam) => {
 			const now = new Date();
 			const beginAt = new Date(exam.begin_at);
 			const beginExamModeAt = new Date(beginAt.getTime() - UI.SHOW_EXAM_MODE_MINUTES_BEFORE_BEGIN * 60 * 1000);
@@ -128,19 +138,19 @@ export class UI {
 			return now >= beginExamModeAt && now < endAt;
 		});
 
-		const examModeExam = this._examModeScreen?.exam;
-		if (ongoingExam !== undefined) {
-			if (examModeExam === null || examModeExam?.id !== ongoingExam.id) { // Only set exam mode again if the exam has changed or was not set before
+		if (!this._examModeDisabled && ongoingExams.length > 0) {
+			// Only set exam mode if the exam that is starting soon is not already in the list of exam ids displayed in exam mode
+			if (!this._examModeScreen?.examMode || !ongoingExams.some((exam) => this._examModeScreen?.examIds.includes(exam.id))) {
 				console.log("Activating exam mode login UI");
-				this._examModeScreen?.setExam(ongoingExam);
+				this._examModeScreen?.enableExamMode(ongoingExams);
 				// Exam mode screen is shown automatically by the function above
 			}
 			return true;
 		}
 		else {
-			if (examModeExam !== null) { // Only unset exam mode if it was set before
+			if (this._examModeScreen?.examMode) { // Only unset exam mode if it was set before
 				console.log('Deactivating exam mode login UI');
-				this._examModeScreen?.setExam(null);
+				this._examModeScreen?.disableExamMode();
 				// Login screen is shown automatically by the function above
 			}
 			return false;

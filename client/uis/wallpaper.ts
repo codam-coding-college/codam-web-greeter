@@ -28,9 +28,8 @@ export class WallpaperUI {
 			this._element.style.backgroundImage = 'url("' + wallpaper.path + '")';
 		}
 		else {
-			// Fall back to black color
-			this._element.style.backgroundColor = 'black';
-			this._element.style.backgroundImage = 'none';
+			// Fall back to default image from CSS vars
+			this._element.style.backgroundImage = window.getComputedStyle(this._element).getPropertyValue('--default-bg-img');
 		}
 
 		return true;

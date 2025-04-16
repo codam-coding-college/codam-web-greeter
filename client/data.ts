@@ -3,6 +3,7 @@ import { lightdm } from 'nody-greeter-types/index'
 
 
 const PATH_DATA_JSON: string = 'data.json';
+// Could implement window.greeter_config.branding here, but it appears this object is inconsistent in its type definition
 const PATH_LOGO: string = '/usr/share/codam/web-greeter/logo.png';
 const PATH_WALLPAPER_LOGIN: string = '/usr/share/codam/web-greeter/login-screen.png';
 const PATH_WALLPAPER_LOCK_USER: string = '/tmp/codam-web-greeter-user-wallpaper';
