@@ -117,6 +117,20 @@ footer span {
 	margin: 0 var(--padding);
 }
 
+/*
+header span.info-network-icon::after {
+	content: ' ONLINE';
+}
+*/
+
+header span.info-network-icon.offline {
+	color: var(--color-text-error);
+}
+
+header span.info-network-icon.offline::after {
+	content: ' COMPUTER OFFLINE';
+}
+
 #info-debug {
 	color: var(--color-text-error);
 }
