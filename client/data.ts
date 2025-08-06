@@ -163,9 +163,13 @@ export class Data {
 	}
 
 	private _refetchDataJson(): void {
-		fetch(PATH_DATA_JSON)
-			.then(response => response.json())
-			.then(data => {
+		// Using XMLHttpRequest to fetch data.json instead of fetch API
+		// because while nody-greeter supports fetch, web-greeter does not.
+		// It would error with "URL scheme 'web-greeter' is not supported"
+		const req = new XMLHttpRequest();
+		req.addEventListener('load', () => {
+			try {
+				const data: DataJson = JSON.parse(req.responseText);
 				console.log("Fetched data.json", data);
 				if ("error" in data) {
 					console.warn("data.json response contains an error", data);
@@ -174,18 +178,23 @@ export class Data {
 				}
 				// Fallback for missing message field in older versions of data.json
 				if (!("message" in data)) {
-					data.message = "";
+					(data as DataJson).message = "";
 				}
 				this._dataJson = data;
 				// Emit data change event to all listeners
 				for (const listener of this._dataChangeListeners) {
 					listener(this._dataJson);
 				}
-			})
-			.catch(error => {
-				if (window.ui) {
-					window.ui.setDebugInfo(`Error fetching data.json: ${error}`);
-				}
-			});
+			} catch (err) {
+				window.ui.setDebugInfo(`Failed to parse data.json: ${err}`);
+			}
+		});
+		req.addEventListener('error', (err) => {
+			if (window.ui) {
+				window.ui.setDebugInfo(`Error fetching data.json: ${err}`);
+			}
+		});
+		req.open('GET', PATH_DATA_JSON);
+		req.send();
 	}
 }

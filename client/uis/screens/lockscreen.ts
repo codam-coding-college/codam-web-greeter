@@ -133,17 +133,28 @@ export class LockScreenUI extends UIScreen {
 	}
 
 	private _getScreenLockedTimestamp(login: string): Promise<Date> {
+		// Using XMLHttpRequest to fetch data.json instead of fetch API
+		// because while nody-greeter supports fetch, web-greeter does not.
+		// It would error with "URL scheme 'web-greeter' is not supported"
 		return new Promise((resolve, reject) => {
-			fetch(`${PATH_LOCK_TIMESTAMP_PREFIX}_${login}`)
-				.then(response => response.text())
-				.then(text => {
-					// Get the first word from the text file
-					const timestamp = text.split(' ')[0];
-					resolve(new Date(parseInt(timestamp) * 1000));
-				})
-				.catch(() => {
-					reject();
-				});
+			const req = new XMLHttpRequest();
+			req.addEventListener('load', () => {
+				try {
+					const timestamp = req.responseText.split(' ')[0];
+					if (timestamp) {
+						resolve(new Date(parseInt(timestamp) * 1000));
+					} else {
+						reject(new Error("No timestamp found in response"));
+					}
+				} catch (err) {
+					reject(err);
+				}
+			});
+			req.addEventListener('error', (err) => {
+				reject(err);
+			});
+			req.open('GET', `${PATH_LOCK_TIMESTAMP_PREFIX}_${login}`);
+			req.send();
 		});
 	}
 
