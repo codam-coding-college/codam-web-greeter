@@ -310,7 +310,7 @@ form#lock-form {
 
 @supports (aspect-ratio: 1 / 1) { /* not supported by web-greeter, only nody-greeter */
 	#active-user-session-avatar {
-		width: auto; /* let aspect-ratio do the work */
+		height: auto; /* let aspect-ratio do the work */
 		aspect-ratio: 1 / 1;
 	}
 }
