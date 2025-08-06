@@ -37,8 +37,8 @@ sudo apt install lightdm light-locker xprintidle
 
 4. Download the latest stable release of the greeter theme from the [releases page](https://github.com/codam-coding-college/codam-web-greeter/releases):
 ```bash
-wget https://github.com/codam-coding-college/codam-web-greeter/releases/latest/download/codam-web-greeter.zip
-unzip codam-web-greeter.zip
+wget https://github.com/codam-coding-college/codam-web-greeter/releases/latest/download/codam-web-greeter-dark-default.zip
+unzip codam-web-greeter-dark-default.zip
 ```
 
 4. Install the greeter theme:
