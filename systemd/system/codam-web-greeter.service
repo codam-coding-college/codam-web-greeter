@@ -1,5 +1,5 @@
 [Unit]
-Description=Data fetcher for codam-web-greeter
+Description=codam-web-greeter data fetcher service
 After=network-online.target
 
 [Service]
