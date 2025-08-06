@@ -303,7 +303,7 @@ form#lock-form {
 	display: block;
 	margin: 0 auto calc(var(--padding) * 6) auto;
 	width: 100%;
-	height: 264px; /* same as usual form width */
+	height: calc(264px - var(--padding) * 4); /* same as usual form width, - 4 times padding */
 	border-radius: 50%;
 	background-color: var(--bg-color-darken-strong);
 }
