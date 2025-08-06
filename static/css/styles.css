@@ -303,10 +303,16 @@ form#lock-form {
 	display: block;
 	margin: 0 auto calc(var(--padding) * 6) auto;
 	width: 100%;
-	aspect-ratio: 1 / 1;
-	object-fit: cover;
+	height: 264px; /* same as usual form width */
 	border-radius: 50%;
 	background-color: var(--bg-color-darken-strong);
+}
+
+@supports (aspect-ratio: 1 / 1) { /* not supported by web-greeter, only nody-greeter */
+	#active-user-session-avatar {
+		width: auto; /* let aspect-ratio do the work */
+		aspect-ratio: 1 / 1;
+	}
 }
 
 /* user display name, "reserved for exam" text */
