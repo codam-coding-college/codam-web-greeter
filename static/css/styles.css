@@ -118,16 +118,16 @@ footer span {
 }
 
 /*
-header span.info-network-icon::after {
+header span#info-network-icon::after {
 	content: ' ONLINE';
 }
 */
 
-header span.info-network-icon.offline {
+header span#info-network-icon.offline {
 	color: var(--color-text-error);
 }
 
-header span.info-network-icon.offline::after {
+header span#info-network-icon.offline::after {
 	content: ' COMPUTER OFFLINE';
 }
 
