@@ -41,7 +41,7 @@ jobs:
     - name: Build and push container image
       uses: docker/build-push-action@e551b19e49efd4e98792db7592c17c09b89db8d8 # v3.0.0
       with:
-        context: "{{ defaultContext }}/server"
+        context: "{{ defaultContext }}:server"
         push: false
         tags: ${{ env.IMAGE_NAME }}
 
