@@ -3,6 +3,11 @@ name: Build and push back-end server Docker image
 on:
   workflow_call:
   workflow_dispatch:
+  # Run automatically when a new tag is created
+  push:
+    tags:
+      - 'v0.*' # alpha
+      - 'v1.*' # release
 
 env:
   REGISTRY: ghcr.io
@@ -12,22 +17,53 @@ jobs:
   server-image:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
       packages: write
+      contents: read
+      attestations: write
+      id-token: write
 
     steps:
     - uses: actions/checkout@v4
 
-    - name: Log in to Container registry
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 'lts/*'
+
+    - name: Install Typescript
+      run: npm install -g typescript
+      working-directory: server
+
+    - name: Install dependencies
+      run: npm install
+      working-directory: server
+
+    - name: Log in to container registry
       uses: docker/login-action@49ed152c8eca782a232dede0303416e8f356c37b # v2.0.0
       with:
         registry: ${{ env.REGISTRY }}
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Build and push Docker image
+    - name: Extract metadata (tags, labels) for container image
+      id: meta
+      uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+      with:
+        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
+    - name: Build and push container image
+      id: push
       uses: docker/build-push-action@e551b19e49efd4e98792db7592c17c09b89db8d8 # v3.0.0
       with:
-        context: "{{ defaultContext }}:server"
+        file: ./server/Dockerfile
+        context: ./server
         push: true
-        tags: ${{ env.IMAGE_NAME }}
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+
+    - name: Generate artifact attestation
+      uses: actions/attest-build-provenance@v2
+      with:
+        subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}
+        subject-digest: ${{ steps.push.outputs.digest }}
+        push-to-registry: true

@@ -12,11 +12,8 @@ jobs:
   build-client-webpack:
     uses: ./.github/workflows/client-webpack.yml
 
-  build-server-image:
-    uses: ./.github/workflows/server-image.yml
-
   release:
-    needs: [build-client-webpack, build-server-image]
+    needs: build-client-webpack
     runs-on: ubuntu-latest
 
     steps:
