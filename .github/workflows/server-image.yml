@@ -46,7 +46,7 @@ jobs:
         tags: ${{ env.IMAGE_NAME }}
 
     - name: Release container image
-      run: npx semantic-release
+      run: npx semantic-release --no-ci --no-git --no-changelog
       working-directory: server
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
