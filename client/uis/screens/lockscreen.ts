@@ -51,7 +51,7 @@ export class LockScreenUI extends UIScreen {
 		this._getAndSetLockedTimestamp();
 	}
 
-	protected _initForm(): void {
+	protected async _initForm(): Promise<void> {
 		const form = this._form as UILockScreenElements;
 
 		// Populate lock screen data
@@ -71,7 +71,7 @@ export class LockScreenUI extends UIScreen {
 				console.warn(`Failed to load avatar for user ${this._activeSession.username}`);
 				form.avatar.src = "assets/default-user.png"; // Load fallback image
 			});
-			if (window.data.userImage.exists) {
+			if (await window.data.userImage.exists) {
 				// Show the user's avatar from the /tmp folder
 				form.avatar.src = window.data.userImage.path;
 			}
@@ -80,7 +80,7 @@ export class LockScreenUI extends UIScreen {
 				// The greeter does not have access to the user's home folder...
 				form.avatar.src = this._activeSession.image;
 			}
-			else if (window.data.userDefaultImage.exists) {
+			else if (await window.data.userDefaultImage.exists) {
 				form.avatar.src = window.data.userDefaultImage.path;
 			}
 			form.displayName.innerText = this._activeSession.display_name ?? this._activeSession.username;
