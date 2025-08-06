@@ -12,21 +12,22 @@ const PATH_USER_DEFAULT_IMAGE: string = '/usr/share/codam/web-greeter/user.png';
 
 export class GreeterImage {
 	private _path: string;
-	private _exists: boolean;
+	private _exists: boolean = false;
 
 	public constructor(path: string) {
 		this._path = path;
 
 		// Check if file exists
 		const dir = this._path.split('/').slice(0, -1).join('/');
-		const dirFiles = window.theme_utils?.dirlist_sync(dir, false);
-		this._exists = (dirFiles !== undefined && dirFiles.includes(this._path));
-		if (!this._exists) {
-			console.warn('Wallpaper file does not exist: ' + this._path);
-			return;
-		}
-
-		console.log(`Found image at "${this._path}"`);
+		const self = this;
+		window.theme_utils?.dirlist(dir, false, (dirFiles: string[] | undefined) => {
+			self._exists = (dirFiles !== undefined && dirFiles.includes(self._path));
+			if (!self._exists) {
+				console.warn('Image file does not exist: ' + self._path);
+				return;
+			}
+			console.log(`Found image at "${self._path}"`);
+		});
 	}
 
 	public get path(): string {
