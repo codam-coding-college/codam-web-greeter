@@ -50,6 +50,11 @@ jobs:
       uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
       with:
         images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+        labels: |
+          org.opencontainers.image.title=codam-web-greeter-server
+          org.opencontainers.image.description=Back-end server for the codam-web-greeter
+          org.opencontainers.image.vendor=Codam
+
 
     - name: Build and push container image
       id: push
