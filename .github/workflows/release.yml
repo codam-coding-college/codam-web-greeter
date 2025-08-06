@@ -9,13 +9,15 @@ on:
 
 
 jobs:
-  build:
-    uses: ./.github/workflows/webpack.yml
+  build-client-webpack:
+    uses: ./.github/workflows/client-webpack.yml
+
+  build-server-image:
+    uses: ./.github/workflows/server-image.yml
 
   release:
-    runs-on: ubuntu-22.04
-
-    needs: build
+    needs: [build-client-webpack, build-server-image]
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v4

@@ -1,0 +1,33 @@
+name: Build and push back-end server Docker image
+
+on:
+  workflow_call:
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}-server
+
+jobs:
+  server-image:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Log in to Container registry
+      uses: docker/login-action@49ed152c8eca782a232dede0303416e8f356c37b # v2.0.0
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Build and push Docker image
+      uses: docker/build-push-action@e551b19e49efd4e98792db7592c17c09b89db8d8 # v3.0.0
+      with:
+        context: "{{ defaultContext }}:server"
+        push: false
+        tags: ${{ env.IMAGE_NAME }}
