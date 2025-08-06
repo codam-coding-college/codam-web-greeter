@@ -1,5 +1,4 @@
 import packageJSON from '../package.json';
-import { lightdm } from 'nody-greeter-types/index'
 
 
 const PATH_DATA_JSON: string = 'data.json';
@@ -119,7 +118,7 @@ export class Data {
 		this.pkgVersion = packageJSON.version;
 
 		// Get hostname from LightDM
-		this.hostname = lightdm.hostname;
+		this.hostname = window.lightdm?.hostname || 'unknown-hostname';
 
 		// Set up images
 		this.loginScreenWallpaper = new GreeterImage(PATH_WALLPAPER_LOGIN);
