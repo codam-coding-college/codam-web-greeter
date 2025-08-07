@@ -35,7 +35,7 @@ export class UI {
 		// Set up logo
 		this._logo.src = data.logo.path;
 		this._logo.addEventListener('error', () => {
-			console.warn(`Logo image not found at ${data.logo.path}`);
+			console.log(`Logo image not found at ${data.logo.path}`);
 		});
 
 		// Check for active sessions
