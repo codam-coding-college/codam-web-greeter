@@ -12,6 +12,8 @@ export interface AuthenticatorEvents {
 	 * When this value is true, the user session will be started.
 	 * Otherwise, the user will be returned to the greeter.
 	 * This allows for custom handling of the authentication result or adding another form on top.
+	 * The AuthenticationFailure event is not called afterwards, so update the UI accordingly if
+	 * false is returned.
 	 */
 	authenticationComplete: () => Promise<boolean>;
 
