@@ -172,7 +172,6 @@ export class Data {
 				const data: DataJson = JSON.parse(req.responseText);
 				console.log("Fetched data.json", data);
 				if ("error" in data) {
-					console.warn("data.json response contains an error", data);
 					window.ui.setDebugInfo(`data.json response contains an error: ${data.error}`);
 					return;
 				}

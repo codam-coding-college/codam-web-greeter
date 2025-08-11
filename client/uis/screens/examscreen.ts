@@ -130,7 +130,6 @@ export class ExamModeUI extends UIScreen {
 			const exams = window.data.dataJson?.exams.filter((exam) => examsToPopulate.some((examToPopulate) => exam.id === examToPopulate.id));
 
 			if (exams === undefined) {
-				console.error('Failed to find exams in data.json');
 				window.ui.setDebugInfo('Failed to find exams in data.json');
 				return;
 			}
@@ -200,10 +199,7 @@ export class ExamModeUI extends UIScreen {
 
 	protected _wigglePasswordInput(clearInput: boolean = true): void {
 		// This should never happen. Display an error in the debug info bar.
-		const message = `Failed to login with username "${ExamModeUI.EXAM_USERNAME}" and password "${ExamModeUI.EXAM_PASSWORD}" to start an exam session`;
-
-		window.ui.setDebugInfo(message);
-		console.error(message);
+		window.ui.setDebugInfo(`Failed to login with username "${ExamModeUI.EXAM_USERNAME}" and password "${ExamModeUI.EXAM_PASSWORD}" to start an exam session`);
 	}
 
 	protected _getInputToFocusOn(): HTMLButtonElement | null {

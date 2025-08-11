@@ -61,12 +61,12 @@ export class Authenticator {
 						lightdm.respond(this._password);
 						break;
 					default:
-						console.error(`Unknown lightDM prompt type: ${type}`);
+						window.ui.setDebugInfo(`Unknown lightDM prompt type: ${type}`);
 						break;
 				}
 			}
 			catch (err) {
-				console.error(err);
+				window.ui.setDebugInfo(String(err));
 				if (this._authEvents) {
 					this._authEvents.errorMessage(String(err));
 				}
@@ -84,18 +84,18 @@ export class Authenticator {
 						}
 						break;
 					case LightDMMessageType.Error:
-						console.error(`LightDM error message: ${message}`);
+						window.ui.setDebugInfo(`LightDM error message: ${message}`);
 						if (this._authEvents) {
 							this._authEvents.errorMessage(message);
 						}
 						break;
 					default:
-						console.warn(`Unknown lightDM message type: ${type}, message: ${message}`);
+						window.ui.setDebugInfo(`Unknown lightDM message type: ${type}, message: ${message}`);
 						break;
 				}
 			}
 			catch (err) {
-				console.error(err);
+				window.ui.setDebugInfo(String(err));
 				if (this._authEvents) {
 					this._authEvents.errorMessage(String(err));
 				}
@@ -124,7 +124,7 @@ export class Authenticator {
 				}
 			}
 			catch (err) {
-				console.error(err);
+				window.ui.setDebugInfo(String(err));
 				if (this._authEvents) {
 					this._authEvents.errorMessage(String(err));
 				}
@@ -185,7 +185,7 @@ export class Authenticator {
 			lightdm.authenticate(this._username); // provide username to skip the username prompt
 		}
 		catch (err) {
-			console.error(err);
+			window.ui.setDebugInfo(String(err));
 			if (this._authEvents) {
 				this._authEvents.errorMessage(String(err));
 			}
@@ -203,12 +203,12 @@ export class Authenticator {
 		this._password = password.substring(0, Authenticator.MAX_LEN_PASSWORD); // do not trim password as it could contain spaces at the beginning or end
 
 		if (this._authenticating || this._authenticated) {
-			console.warn("Login() was called while already authenticating or authenticated. Stopping authentication.");
+			window.ui.setDebugInfo("login() was called while already authenticating or authenticated");
 			return;
 		}
 
 		if (this._username === "" || this._password === "") {
-			console.log("Login() was called while username or password is empty. Stopping authentication.");
+			window.ui.setDebugInfo("login() was called while username or password is empty");
 			return;
 		}
 

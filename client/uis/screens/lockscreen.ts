@@ -68,7 +68,6 @@ export class LockScreenUI extends UIScreen {
 		}
 		else {
 			form.avatar.addEventListener('error', () => {
-				console.warn(`Failed to load avatar for user ${this._activeSession.username}`);
 				form.avatar.src = "assets/default-user.png"; // Load fallback image
 			});
 			if (await window.data.userImage.exists) {
