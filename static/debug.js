@@ -4,6 +4,7 @@ document.getElementById('info-debug').innerText = 'Running in debug mode';
 // Make sure all elements are somewhat presentable
 const logo = document.getElementById('logo');
 logo.src = 'assets/codam.svg';
+const logoWrapper = logo.parentElement;
 
 const message = document.getElementById('message');
 message.innerText = 'This is a test message that could have been sent by the back-end server for displaying.';
@@ -35,13 +36,13 @@ optionsContainer.appendChild(screenSwitcherContainer);
 function switchScreen(screenId) {
 	const screens = document.querySelectorAll('main > form');
 		screens.forEach(screen => {
-			screen.style.display = 'none';
+			screen.classList.remove('visible');
 		});
 
 		const selectedScreen = document.getElementById(screenId);
-		selectedScreen.style.display = 'block';
+		selectedScreen.classList.add('visible');
 
-		logo.style.display = (screenId === 'lock-form') ? 'none' : 'block';
+		logoWrapper.style.display = (screenId === 'lock-form') ? 'none' : 'block';
 
 		// Make sure the correct input field is checked
 		const selectedInput = document.getElementById(`radio-${screenId}`);

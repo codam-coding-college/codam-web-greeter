@@ -140,55 +140,12 @@ header span#info-network-icon.offline::after {
 /* ***************************************** */
 
 #logo-wrapper {
-	position: absolute;
-	height: 25%;
+	width: 100%;
+	height: 25%; /* same as message-wrapper to force the login form in the middle */
 	display: flex;
 	flex-direction: column;
-}
-
-#logo-wrapper.logo-top-left {
-	top: calc(var(--header-footer-height) * 2);
-	left: var(--header-footer-height);
-	align-items: flex-start;
-	justify-content: flex-start;
-}
-
-#logo-wrapper.logo-top-center {
-	width: 100%;
-	top: 10%;
-	left: 0;
 	align-items: center;
 	justify-content: center;
-}
-
-/* below should not be used, will overlap with calendar */
-#logo-wrapper.logo-top-right {
-	top: calc(var(--header-footer-height) * 2);
-	right: var(--header-footer-height);
-	align-items: flex-end;
-	justify-content: flex-end;
-}
-
-#logo-wrapper.logo-bottom-left {
-	bottom: calc(var(--header-footer-height) * 2);
-	left: var(--header-footer-height);
-	align-items: flex-start;
-	justify-content: flex-start;
-}
-
-#logo-wrapper.logo-bottom-center {
-	width: 100%;
-	bottom: 10%;
-	left: 0;
-	align-items: center;
-	justify-content: center;
-}
-
-#logo-wrapper.logo-bottom-right {
-	bottom: calc(var(--header-footer-height) * 2);
-	right: var(--header-footer-height);
-	align-items: flex-end;
-	justify-content: flex-end;
 }
 
 #logo {
@@ -202,7 +159,7 @@ header span#info-network-icon.offline::after {
 /* ***************************************** */
 
 main {
-	flex: 1;
+	flex-grow: 1;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -212,11 +169,27 @@ main {
 }
 
 form {
+	display: block;
+	flex-grow: 1;
 	box-sizing: border-box;
 	border: none;
 	width: 264px;
 	max-width: 90%;
-	padding: var(--padding) calc(var(--padding) * 2);
+	padding: 0 calc(var(--padding) * 2);
+	margin-top: calc(0px); /* in calc for the transition below */
+
+	/* entrance animation */
+	max-height: 0;
+	overflow: hidden;
+	transition: max-height 0.25s ease-in-out 0s;
+}
+
+form.visible {
+	flex-grow: unset;
+	display: block;
+	max-height: 400px;
+	transition-delay: 0.75s;
+	margin-top: calc(var(--padding) * 6);
 }
 
 form#exam-form {
@@ -295,10 +268,6 @@ form button:not(:disabled):active {
 	transform: scale(0.95);
 }
 
-form#lock-form {
-	margin-top: -116px; /* half of the height of the user image, if displayed full-size */
-}
-
 #active-user-session-avatar {
 	display: block;
 	margin: 0 auto calc(var(--padding) * 6) auto;
@@ -353,7 +322,7 @@ form p {
 }
 
 #message-wrapper {
-	height: 0; /* do not include in height calculation for main */
+	height: 25%; /* same as logo-wrapper to force the login form in the middle */
 }
 
 #message {

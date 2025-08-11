@@ -24,22 +24,22 @@
 			</div>
 		</header>
 
-		<!-- Logo (base64 string is an empty image) -->
-		<div id="logo-wrapper" class="logo-top-center">
-			<img id="logo" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />
-		</div>
-
 		<!-- Login box -->
 		<main>
+			<!-- Logo (base64 string is an empty image) -->
+			<div id="logo-wrapper" class="logo-top-center">
+				<img id="logo" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />
+			</div>
+
 			<!-- Login form -->
-			<form action="POST" id="login-form" spellcheck="false" autocomplete="off" autocapitalize="off" style="display: none;">
+			<form action="POST" id="login-form" spellcheck="false" autocomplete="off" autocapitalize="off">
 				<input type="text" name="login" id="login" placeholder="Enter your login" maxlength="32" />
 				<input type="password" name="password" id="password" placeholder="Enter your password" maxlength="128" />
 				<button type="submit" id="login-button" disabled title="Log in">&#10149;</button>
 			</form>
 
 			<!-- Lock screen form (used when one or more sessions are active) -->
-			<form action="POST" id="lock-form" spellcheck="false" autocomplete="off" autocapitalize="off" style="display: none;">
+			<form action="POST" id="lock-form" spellcheck="false" autocomplete="off" autocapitalize="off">
 				<img id="active-user-session-avatar" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="" />
 				<h3 id="active-user-session-display-name">Display Name</h3>
 				<h4 id="active-user-session-login-name">username</h4>
@@ -49,7 +49,7 @@
 			</form>
 
 			<!-- Exam mode form -->
-			<form action="POST" id="exam-form" spellcheck="false" autocomplete="off" autocapitalize="off" style="display: none;">
+			<form action="POST" id="exam-form" spellcheck="false" autocomplete="off" autocapitalize="off">
 				<h3>This computer is reserved for an exam between <span id="exam-mode-start">...</span> and <span id="exam-mode-end">...</span>.</h3>
 				<p><span id="exam-mode-projects"></span></p>
 				<br>
