@@ -8,8 +8,12 @@ export interface AuthenticatorEvents {
 
 	/**
 	 * This event gets called when the login process completes without error.
+	 * The event handler must return a Promise that resolves to a boolean value.
+	 * When this value is true, the user session will be started.
+	 * Otherwise, the user will be returned to the greeter.
+	 * This allows for custom handling of the authentication result or adding another form on top.
 	 */
-	authenticationComplete: () => void;
+	authenticationComplete: () => Promise<boolean>;
 
 	/**
 	 * This event gets called when the login process fails due to an authentication failure (wrong username or password).
@@ -103,27 +107,31 @@ export class Authenticator {
 		});
 
 		// This event gets called when LightDM says the authentication was successful and a session should be started
-		lightdm.authentication_complete.connect(() => {
+		lightdm.authentication_complete.connect(async () => {
 			try {
-				this._authenticating = false;
 				console.log("LightDM authentication complete. Checking results...");
-				if (lightdm.is_authenticated) {
-					this._authenticated = true;
-					console.log("LightDM authentication successful! Starting session...");
-					if (this._authEvents) {
-						this._authEvents.authenticationComplete();
-					}
-					lightdm.start_session(this._session ?? null);
-				}
-				else {
+				if (!lightdm.is_authenticated) {
+					this._authenticating = false;
 					console.log("LightDM authentication failed. User not found or password incorrect.");
 					this._stopAuthentication();
 					if (this._authEvents) {
 						this._authEvents.authenticationFailure();
 					}
+					return;
+				}
+				this._authenticated = true;
+				this._authenticating = false;
+				console.log("LightDM authentication successful! Starting session...");
+				const eventResult = (this._authEvents) ? await this._authEvents.authenticationComplete() : Promise.resolve(true);
+				if (eventResult) {
+					lightdm.start_session(this._session ?? null);
+				}
+				else {
+					this._stopAuthentication();
 				}
 			}
 			catch (err) {
+				this._authenticating = false;
 				window.ui.setDebugInfo(String(err));
 				if (this._authEvents) {
 					this._authEvents.errorMessage(String(err));

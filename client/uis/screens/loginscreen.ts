@@ -7,8 +7,9 @@ export class LoginScreenUI extends UIScreen {
 		authenticationStart: () => {
 			this._disableForm();
 		},
-		authenticationComplete: () => {
+		authenticationComplete: async () => {
 			// TODO: Add a loading animation here
+			return true;
 		},
 		authenticationFailure: () => {
 			this._enableForm();
