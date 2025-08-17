@@ -132,12 +132,15 @@ dist
 # Garbage
 .DS_Store
 
-# Codam specific
-dist/*
-build/*
+# codam-web-greeter client
+client/dist/*
+client/build/*
+client/static/data.json
+client/static/greeter.css
+client/static/settings.json
+
+# codam-web-greeter server
 server/.env
 server/messages.json
 server/configs/certs/*
 server/build/*
-static/data.json
-static/greeter.css

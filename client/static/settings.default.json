@@ -1,0 +1,7 @@
+{
+	"exam_username": "exam",
+	"exam_password": "exam",
+	"disable_exam_mode": false,
+	"exam_mode_check_interval": 5,
+	"exam_mode_minutes_before_begin": 20
+}

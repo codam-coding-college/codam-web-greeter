@@ -4,7 +4,7 @@
 set -e
 
 # Get the data-server-url variable from the config file and append the hostname
-DATA_SERVER_URL=$(/usr/bin/grep -Po '(?<=data-server-url=).*' /usr/share/web-greeter/themes/codam/settings.ini | /usr/bin/sed 's/^"\(.*\)"$/\1/')
+DATA_SERVER_URL=$(/usr/bin/grep -Po '(?<=data-server-url=).*' /usr/share/codam/codam-web-greeter-settings.ini | /usr/bin/sed 's/^"\(.*\)"$/\1/')
 DATA_SERVER_URL="$DATA_SERVER_URL$(/usr/bin/hostname)"
 
 /usr/bin/echo "Starting run at $(/usr/bin/date)"

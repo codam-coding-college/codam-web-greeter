@@ -48,7 +48,7 @@ else
 fi
 
 # Get the data-server-url variable from the config file, remove /config/ from the url
-DATA_SERVER_URL=$(/usr/bin/grep -Po '(?<=data-server-url=).*' /usr/share/web-greeter/themes/codam/settings.ini | /usr/bin/sed 's/^"\(.*\)"$/\1/' | /usr/bin/sed 's/\/config//')
+DATA_SERVER_URL=$(/usr/bin/grep -Po '(?<=data-server-url=).*' /usr/share/codam/codam-web-greeter-settings.ini | /usr/bin/sed 's/^"\(.*\)"$/\1/' | /usr/bin/sed 's/\/config//')
 
 # Download the user's profile picture from Intra if no .face file exists in the home directory
 if [ ! -f "$FACE_PATH" ]; then

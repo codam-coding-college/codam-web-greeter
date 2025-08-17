@@ -28,6 +28,7 @@ fi
 
 # Install service scripts to /usr/share/codam
 /usr/bin/mkdir -p /usr/share/codam
+/usr/bin/cp "$ROOT_DIR/codam-web-greeter-settings.ini" /usr/share/codam/codam-web-greeter-settings.ini
 /usr/bin/cp "$ROOT_DIR/system/codam-web-greeter-fetcher.sh" /usr/share/codam/codam-web-greeter-fetcher.sh
 /usr/bin/cp "$ROOT_DIR/system/codam-web-greeter-idler.sh" /usr/share/codam/codam-web-greeter-idler.sh
 /usr/bin/chmod 700 /usr/share/codam/codam-web-greeter-idler.sh
@@ -76,7 +77,7 @@ DATA_FILE="$WEB_GREETER_DIR/data.json"
 /usr/bin/systemctl start codam-web-greeter-idler.timer
 
 # Fetch data for the first time (in the background)
-/usr/bin/systemctl start codam-web-greeter.service &
+# /usr/bin/systemctl start codam-web-greeter.service &
 
 # Enable systemd user service for all users
 /usr/bin/systemctl --global enable codam-web-greeter.service

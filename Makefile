@@ -24,11 +24,10 @@ endif
 all: build
 
 npm-install:
-	npm install
+	cd "$(ROOT_DIR)/client" && npm install
 
-build: clean static/greeter.css npm-install copy-files
-	npm run build
-	npm run bundle
+build: clean client/static/greeter.css client/static/settings.json npm-install copy-files
+	cd "$(ROOT_DIR)/client" && npm run build && npm run bundle
 
 copy-files:
 ifeq ($(CLIENT_THEME), light)
@@ -41,14 +40,14 @@ ifeq ($(CLIENT_THEME_BOXED), boxed)
 else # fallback to no boxed theme
 	$(MAKE) no-boxed-theme
 endif
-	mkdir -p "$(ROOT_DIR)/dist"
-	cp README.md LICENSE package.json "$(ROOT_DIR)/dist"
-	cp -r "$(ROOT_DIR)/static/"* "$(ROOT_DIR)/dist"
+	mkdir -p "$(ROOT_DIR)/client/dist"
+	cp README.md LICENSE client/package.json "$(ROOT_DIR)/client/dist"
+	cp -r "$(ROOT_DIR)/client/static/"* "$(ROOT_DIR)/client/dist"
 
 install: build
 	install -dm755 $(THEME_DIR)/$(THEME_NAME)
-	cp -r "$(ROOT_DIR)/dist"/* "$(THEME_DIR)/$(THEME_NAME)"
-	bash "$(ROOT_DIR)/systemd/install.sh"
+	cp -r "$(ROOT_DIR)/client/dist"/* "$(THEME_DIR)/$(THEME_NAME)"
+	bash "$(ROOT_DIR)/client/systemd/install.sh"
 	@echo "Update your /etc/lightdm/web-greeter.yml config file manually to enable the Codam theme"
 
 uninstall:
@@ -60,38 +59,42 @@ re: clean
 	make build
 
 clean:
-	rm -f "$(ROOT_DIR)/static/greeter.css"
-	rm -rf "$(ROOT_DIR)/build"
-	rm -rf "$(ROOT_DIR)/dist"
+	rm -f "$(ROOT_DIR)/client/static/greeter.css"
+	rm -rf "$(ROOT_DIR)/client/build"
+	rm -rf "$(ROOT_DIR)/client/dist"
+
+# SETTINGS FILE
+client/static/settings.json:
+	cp "$(ROOT_DIR)/client/static/settings.default.json" "$(ROOT_DIR)/client/static/settings.json"
 
 # CLIENT THEMING
-static/greeter.css:
-	echo "@import 'css/styles.css';" > "$(ROOT_DIR)/static/greeter.css"
-	echo "@import 'css/dark.css';" >> "$(ROOT_DIR)/static/greeter.css"
+client/static/greeter.css:
+	echo "@import 'css/styles.css';" > "$(ROOT_DIR)/client/static/greeter.css"
+	echo "@import 'css/dark.css';" >> "$(ROOT_DIR)/client/static/greeter.css"
 
 use-light-theme:
-	$(SED) 's/dark.css/light.css/' "$(ROOT_DIR)/static/greeter.css"
+	$(SED) 's/dark.css/light.css/' "$(ROOT_DIR)/client/static/greeter.css"
 
 use-dark-theme:
-	$(SED) 's/light.css/dark.css/' "$(ROOT_DIR)/static/greeter.css"
+	$(SED) 's/light.css/dark.css/' "$(ROOT_DIR)/client/static/greeter.css"
 
 use-boxed-theme:
-	echo "@import 'css/boxed.css';" >> "$(ROOT_DIR)/static/greeter.css"
+	echo "@import 'css/boxed.css';" >> "$(ROOT_DIR)/client/static/greeter.css"
 
 no-boxed-theme:
-	$(SED) '/boxed.css/d' "$(ROOT_DIR)/static/greeter.css"
+	$(SED) '/boxed.css/d' "$(ROOT_DIR)/client/static/greeter.css"
 
 # SERVER
 update-server-version:
 	bash "$(ROOT_DIR)/server/match_versions.sh"
 
-server: update-server-version
-	[ -f $(ROOT_DIR)/server/messages.json ] || echo '{}' > "$(ROOT_DIR)/server/messages.json"
-	cd $(ROOT_DIR)/server
+server/messages.json:
+	echo '{}' > "$(ROOT_DIR)/server/messages.json"
+
+server: update-server-version server/messages.json
 	docker compose -f "$(ROOT_DIR)/server/docker-compose.yaml" up -d
 
 server-stop:
-	cd $(ROOT_DIR)/server
 	docker compose -f "$(ROOT_DIR)/server/docker-compose.yaml" down
 
 .PHONY: all npm-install build copy-files install uninstall re use-light-theme use-boxed-theme server update-server-version server-stop clean
