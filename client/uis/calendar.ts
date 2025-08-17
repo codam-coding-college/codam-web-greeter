@@ -44,6 +44,12 @@ export class CalendarUI {
 		return text;
 	}
 
+	private _greyEvents: string[] = ["bocal q&a", "bocal stand-up", "open hour", "open hour with the student council"];
+	private _isGreyEvent(event: Event42): boolean {
+		// If the name (even only partially) includes any of this._greyEvents, return true
+		return this._greyEvents.some(greyEvent => event.name.toLowerCase().includes(greyEvent));
+	}
+
 	/**
 	 * This function checks if there is still enough space on the screen to fit one more event.
 	 */
@@ -116,7 +122,7 @@ export class CalendarUI {
 		// Main element
 		const calendarEvent = document.createElement('div');
 		calendarEvent.classList.add('calendar-event');
-		calendarEvent.setAttribute("data-event-kind", (event.name.toLowerCase().includes("bocal q&a") ? "standup" : event.kind));
+		calendarEvent.setAttribute("data-event-kind", (this._isGreyEvent(event) ? "recurring" : event.kind));
 		calendarEvent.setAttribute("data-event-id", event.id.toString());
 		calendarEvent.setAttribute("data-event-timestamp", beginDate.getTime().toString());
 

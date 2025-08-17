@@ -517,8 +517,8 @@ aside {
 	--event-color: var(--event-color-workshop);
 }
 
-[data-event-kind="standup"] {
-	--event-color: var(--event-color-standup);
+[data-event-kind="recurring"] {
+	--event-color: var(--event-color-recurring);
 }
 
 /* ***************************************** */
