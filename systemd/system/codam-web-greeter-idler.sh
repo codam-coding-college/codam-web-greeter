@@ -44,7 +44,7 @@ while IFS= read -r line; do
 	MAX_IDLE_TIME=$((MAX_IDLE_TIME_MINUTES * 60 * 1000))
 	if [ "$IDLE_TIME" -gt "$MAX_IDLE_TIME" ] || [ "$TIME_SINCE_LOCK" -gt "$MAX_IDLE_TIME" ]; then
 		/usr/bin/echo "Session for user $USERNAME has been idle for over 42 minutes (idletime $IDLE_TIME ms, time_since_lock $TIME_SINCE_LOCK ms), forcing logout now"
-		/usr/bin/loginctl terminate-user "$USERNAME" && /usr/bin/systemctl restart lightdm
+		/usr/bin/systemctl restart lightdm
 		# Run the hook script
 		if [ -f "/usr/share/codam/codam-web-greeter-idler-hook.sh" ]; then
 			/usr/bin/echo "Running custom codam-web-greeter post-idle logout hook script for user $USERNAME"
