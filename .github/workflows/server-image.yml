@@ -14,7 +14,11 @@ env:
   IMAGE_NAME: ${{ github.repository }}-server
 
 jobs:
+  tests:
+    uses: ./.github/workflows/server-test.yml
+
   server-image:
+    needs: [tests]
     runs-on: ubuntu-latest
     permissions:
       packages: write
