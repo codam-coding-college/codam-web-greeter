@@ -8,7 +8,7 @@ export class WelcomeScreenUI extends UIScreen {
 
 		},
 		authenticationComplete: async () => {
-
+			return true;
 		},
 		authenticationFailure: () => {
 

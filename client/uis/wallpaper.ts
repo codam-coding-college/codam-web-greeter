@@ -14,13 +14,6 @@ export class WallpaperUI {
 	}
 
 	public async displayWallpaper(): Promise<boolean> {
-		let wallpaper: GreeterImage = window.data.loginScreenWallpaper;
-		if (this._isLockScreen) {
-			if (window.data.userLockScreenWallpaper.exists) {
-				wallpaper = window.data.userLockScreenWallpaper;
-			}
-		}
-
 		return true;
 	}
 }
