@@ -34,11 +34,6 @@
 }
 
 @font-face {
-    font-family: "Tahoma Bold";
-    src: url("../fonts/tahomabd.ttf");
-}
-
-@font-face {
     font-family: "Franklin Gothic Demi Italic";
     src: url("../fonts/FRADMIT.ttf");
 }
@@ -519,7 +514,7 @@ img {
 }
 
 .password-error-title {
-    font-family: "Tahoma Bold", "Tahoma", sans-serif;
+    font-family: "Tahoma", sans-serif;
     margin-bottom: 4px;
 }
 
