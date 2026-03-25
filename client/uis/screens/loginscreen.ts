@@ -6,6 +6,7 @@ export class LoginScreenUI extends UIScreen {
 	protected _events: AuthenticatorEvents = {
 		authenticationStart: () => {
 			this._disableForm();
+			this._form.loginWindow.style.display = "none";
 		},
 		authenticationComplete: async () => {
 			this.hideForm();
