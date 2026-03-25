@@ -124,7 +124,7 @@ export class ExamModeUI extends UIScreen {
 			clearTimeout(this._examStartButtonEnableInterval);
 			this._examStartButtonEnableInterval = null;
 		}
-		form.examStartTimer.innerText = "Click the arrow below to start your exam.";
+		form.examStartTimer.innerText = "Click the exam user to start your exam.";
 		this._enableOrDisableSubmitButton();
 	}
 
