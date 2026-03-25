@@ -78,8 +78,10 @@ export class LockScreenUI extends UIScreen {
 			form.avatar.style.display = "none";
 			form.displayName.innerText = "Exam in progress";
 			form.loginName.innerText = "Exam";
-			document.getElementById("text-under-logo").innerText = "To resume your exam, click the exam user."
-			document.getElementById("lock-password-msg").innerText = "";
+			const textUnderLogo = document.getElementById("text-under-logo");
+			if (textUnderLogo) textUnderLogo.innerText = "To resume your exam, click the exam user."
+			const lockPasswordMsg = document.getElementById("lock-password-msg");
+			if (lockPasswordMsg) lockPasswordMsg.innerText = "";
 			form.loginName.style.marginTop = UI.getPadding(); // Add some padding for readability
 			form.passwordInput.value = "exam";
 			form.passwordInput.style.display = "none";
