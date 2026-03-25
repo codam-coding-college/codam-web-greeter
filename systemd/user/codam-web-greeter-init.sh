@@ -54,11 +54,8 @@ DATA_SERVER_URL=$(/usr/bin/grep -Po '(?<=data-server-url=).*' /usr/share/web-gre
 if [ ! -f "$FACE_PATH" ]; then
 	/usr/bin/echo "No user image found in $FACE_PATH, attempting download from the clusterdata server"
 
-	# Get the user's login
-	LOGIN=$(/usr/bin/whoami)
-
 	# Get the user's profile picture from Intra through the clusterdata server
-	IMAGE_URL="${DATA_SERVER_URL}user/${LOGIN}/.face"
+	IMAGE_URL="${DATA_SERVER_URL}user/$USER/.face"
 	/usr/bin/echo "Downloading user image from $IMAGE_URL to $FACE_PATH"
 	/usr/bin/curl -L -s "$IMAGE_URL" -o "$FACE_PATH" || true # Prevent curl from erroring out if the download fails
 else

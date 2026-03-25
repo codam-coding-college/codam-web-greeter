@@ -1,5 +1,5 @@
 # codam-web-greeter
-A greeter theme for [nody-greeter](https://github.com/JezerM/nody-greeter)/web-greeter in LightDM, made specifically for [Codam Coding College](https://codam.nl/en).
+A greeter theme for [nody-greeter](https://github.com/JezerM/nody-greeter)/[web-greeter](https://github.com/JezerM/web-greeter) in LightDM, made specifically for [Codam Coding College](https://codam.nl/en).
 
 ---
 
@@ -11,11 +11,12 @@ A greeter theme for [nody-greeter](https://github.com/JezerM/nody-greeter)/web-g
 - Customizable background image and logo
 - Greeter can be used as a lock screen when someone is already logged in (replacement for ft_lock)
 - Automatically log students out after 42 minutes of inactivity, either in-session or on the lock screen
-- Display user's profile picture (from `~/.face`) on the lock screen
+- Display user's Intra picture on the lock screen
 - Display user's Gnome wallpaper on the lock screen
 - Keybinding to gracefully reboot the computer (<kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>Del</kbd>)
 - Display network status on-screen without having to log in
-- Custom screensaver support (HTML5 canvas)
+- Screen brightness control support
+- Choose between light or dark mode upon installation
 
 
 ## Screenshots
@@ -32,12 +33,12 @@ A greeter theme for [nody-greeter](https://github.com/JezerM/nody-greeter)/web-g
 sudo apt install lightdm light-locker xprintidle
 ```
 
-2. Install *nody-greeter* by downloading the deb from the [nody-greeter repository releases page](https://github.com/codam-coding-college/nody-greeter/releases). If you're at a 42 school, it is recommended to add this deb to your Nexus server so you can easily install it using `apt` later. Alternatively, you can install it by compiling from source (don't forget to clone the repository with the `--recursive` flag to include its submodules).
+2. Install [nody-greeter](https://github.com/JezerM/nody-greeter/releases) or [web-greeter](https://github.com/JezerM/web-greeter/releases) by downloading the deb from the corresponding releases page. Alternatively, you can install it by compiling from source (don't forget to clone the repository with the `--recursive` flag to include its submodules).
 
 4. Download the latest stable release of the greeter theme from the [releases page](https://github.com/codam-coding-college/codam-web-greeter/releases):
 ```bash
-wget https://github.com/codam-coding-college/codam-web-greeter/releases/latest/download/codam-web-greeter.zip
-unzip codam-web-greeter.zip
+wget https://github.com/codam-coding-college/codam-web-greeter/releases/latest/download/codam-web-greeter-dark-default.zip
+unzip codam-web-greeter-dark-default.zip
 ```
 
 4. Install the greeter theme:
@@ -47,13 +48,18 @@ cp -r codam-web-greeter /usr/share/web-greeter/themes/codam
 bash /usr/share/web-greeter/themes/codam/systemd/install.sh
 ```
 
-5. Enable the nody-greeter greeter in LightDM by editing */etc/lightdm/lightdm.conf*:
+5. Specify to use nody-greeter in LightDM by editing */etc/lightdm/lightdm.conf*:
 ```conf
 # Add the following line to the file under [SeatDefaults]:
 greeter-session=nody-greeter
 ```
+or if using web-greeter:
+```conf
+# Add the following line to the file under [SeatDefaults]:
+greeter-session=web-greeter
+```
 
-6. Enable the greeter theme in nody-greeter by editing */etc/lightdm/web-greeter.yml*:
+6. Enable the greeter theme by editing */etc/lightdm/web-greeter.yml*:
 ```yml
 # Replace the theme name with codam-web-greeter:
 greeter:
@@ -95,7 +101,8 @@ X-LightDM-Allow-Greeter=true
 
 This will allow you to run the greeter in debug mode while logged in as a regular user by installing the greeter like normally and running the following command:
 ```bash
-nody-greeter --d
+nody-greeter --debug
+# or if using web-greeter: web-greeter --debug
 ```
 
 You can then open the Developer Tools sidebar from the greeter's menu and view the console output for any warnings and/or errors.

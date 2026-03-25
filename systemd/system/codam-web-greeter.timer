@@ -1,5 +1,5 @@
 [Unit]
-Description=Data fetcher for codam-web-greeter (fetches data every 5 minutes)
+Description=codam-web-greeter data fetcher service timer
 After=network.target
 
 [Timer]

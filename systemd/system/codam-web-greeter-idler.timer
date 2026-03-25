@@ -1,5 +1,5 @@
 [Unit]
-Description=Log users out after a period of inactivity
+Description=codam-web-greeter idle logout service timer
 After=graphical.target
 
 [Timer]

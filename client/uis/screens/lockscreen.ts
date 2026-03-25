@@ -18,6 +18,8 @@ export class LockScreenUI extends UIScreen {
 			this.hideForm();
 			window.ui.welcomeScreen?.showForm();
 			await new Promise(resolve => setTimeout(resolve, 5000));
+			// TODO: Add a loading animation here
+			return true;
 		},
 		authenticationFailure: () => {
 			this._enableForm();
@@ -65,7 +67,8 @@ export class LockScreenUI extends UIScreen {
 			this._connectEvents();
 		}
 	}
-	protected _initForm(): void {
+
+	protected async _initForm(): Promise<void> {
 		const form = this._form as UILockScreenElements;
 
 		// Populate lock screen data
@@ -82,10 +85,9 @@ export class LockScreenUI extends UIScreen {
 		}
 		else {
 			form.avatar.addEventListener('error', () => {
-				console.warn(`Failed to load avatar for user ${this._activeSession.username}`);
 				form.avatar.src = "assets/default-user.png"; // Load fallback image
 			});
-			if (window.data.userImage.exists) {
+			if (await window.data.userImage.exists) {
 				// Show the user's avatar from the /tmp folder
 				form.avatar.src = window.data.userImage.path;
 			}
@@ -94,7 +96,7 @@ export class LockScreenUI extends UIScreen {
 				// The greeter does not have access to the user's home folder...
 				form.avatar.src = this._activeSession.image;
 			}
-			else if (window.data.userDefaultImage.exists) {
+			else if (await window.data.userDefaultImage.exists) {
 				form.avatar.src = window.data.userDefaultImage.path;
 			}
 			form.displayName.innerText = this._activeSession.display_name ?? this._activeSession.username;
@@ -149,17 +151,28 @@ export class LockScreenUI extends UIScreen {
 	}
 
 	private _getScreenLockedTimestamp(login: string): Promise<Date> {
+		// Using XMLHttpRequest to fetch data.json instead of fetch API
+		// because while nody-greeter supports fetch, web-greeter does not.
+		// It would error with "URL scheme 'web-greeter' is not supported"
 		return new Promise((resolve, reject) => {
-			fetch(`${PATH_LOCK_TIMESTAMP_PREFIX}_${login}`)
-				.then(response => response.text())
-				.then(text => {
-					// Get the first word from the text file
-					const timestamp = text.split(' ')[0];
-					resolve(new Date(parseInt(timestamp) * 1000));
-				})
-				.catch(() => {
-					reject();
-				});
+			const req = new XMLHttpRequest();
+			req.addEventListener('load', () => {
+				try {
+					const timestamp = req.responseText.split(' ')[0];
+					if (timestamp) {
+						resolve(new Date(parseInt(timestamp) * 1000));
+					} else {
+						reject(new Error("No timestamp found in response"));
+					}
+				} catch (err) {
+					reject(err);
+				}
+			});
+			req.addEventListener('error', (err) => {
+				reject(err);
+			});
+			req.open('GET', `${PATH_LOCK_TIMESTAMP_PREFIX}_${login}`);
+			req.send();
 		});
 	}
 

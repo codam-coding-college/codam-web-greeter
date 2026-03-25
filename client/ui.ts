@@ -87,6 +87,7 @@ export class UI {
 	}
 
 	public setDebugInfo(info: string): void {
+		console.log("Debug info:", info);
 		this._infoBars.setDebugInfo(info);
 	}
 

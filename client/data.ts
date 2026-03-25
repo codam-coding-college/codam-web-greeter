@@ -1,5 +1,4 @@
 import packageJSON from '../package.json';
-import { lightdm } from 'nody-greeter-types/index'
 
 
 const PATH_DATA_JSON: string = 'data.json';
@@ -12,29 +11,28 @@ const PATH_USER_DEFAULT_IMAGE: string = '/usr/share/codam/web-greeter/user.png';
 
 export class GreeterImage {
 	private _path: string;
-	private _exists: boolean;
+	private _exists: boolean | null = null;
 
 	public constructor(path: string) {
 		this._path = path;
+	}
 
-		// Check if file exists
-		const dir = this._path.split('/').slice(0, -1).join('/');
-		const dirFiles = window.theme_utils?.dirlist_sync(dir, false);
-		this._exists = (dirFiles !== undefined && dirFiles.includes(this._path));
-		if (!this._exists) {
-			console.warn('Wallpaper file does not exist: ' + this._path);
-			return;
+	public async exists(): Promise<boolean> {
+		if (this._exists !== null) {
+			return this._exists;
 		}
-
-		console.log(`Found image at "${this._path}"`);
+		const dir = this._path.split('/').slice(0, -1).join('/');
+		const self = this;
+		return new Promise((resolve) => {
+			window.theme_utils?.dirlist(dir, false, (dirFiles: string[] | undefined) => {
+				self._exists = dirFiles !== undefined && dirFiles.includes(self._path);
+				resolve(self._exists);
+			});
+		});
 	}
 
 	public get path(): string {
 		return this._path;
-	}
-
-	public get exists(): boolean {
-		return this._exists;
 	}
 }
 
@@ -118,7 +116,7 @@ export class Data {
 		this.pkgVersion = packageJSON.version;
 
 		// Get hostname from LightDM
-		this.hostname = lightdm.hostname;
+		this.hostname = window.lightdm?.hostname || 'unknown-hostname';
 
 		// Set up images
 		this.loginScreenWallpaper = new GreeterImage(PATH_WALLPAPER_LOGIN);
@@ -165,29 +163,37 @@ export class Data {
 	}
 
 	private _refetchDataJson(): void {
-		fetch(PATH_DATA_JSON)
-			.then(response => response.json())
-			.then(data => {
+		// Using XMLHttpRequest to fetch data.json instead of fetch API
+		// because while nody-greeter supports fetch, web-greeter does not.
+		// It would error with "URL scheme 'web-greeter' is not supported"
+		const req = new XMLHttpRequest();
+		req.addEventListener('load', () => {
+			try {
+				const data: DataJson = JSON.parse(req.responseText);
 				console.log("Fetched data.json", data);
 				if ("error" in data) {
-					console.warn("data.json response contains an error", data);
 					window.ui.setDebugInfo(`data.json response contains an error: ${data.error}`);
 					return;
 				}
 				// Fallback for missing message field in older versions of data.json
 				if (!("message" in data)) {
-					data.message = "";
+					(data as DataJson).message = "";
 				}
 				this._dataJson = data;
 				// Emit data change event to all listeners
 				for (const listener of this._dataChangeListeners) {
 					listener(this._dataJson);
 				}
-			})
-			.catch(error => {
-				if (window.ui) {
-					window.ui.setDebugInfo(`Error fetching data.json: ${error}`);
-				}
-			});
+			} catch (err) {
+				window.ui.setDebugInfo(`Failed to parse data.json: ${err}`);
+			}
+		});
+		req.addEventListener('error', (err) => {
+			if (window.ui) {
+				window.ui.setDebugInfo(`Error fetching data.json: ${err}`);
+			}
+		});
+		req.open('GET', PATH_DATA_JSON);
+		req.send();
 	}
 }

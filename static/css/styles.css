@@ -117,6 +117,20 @@ footer span {
 	margin: 0 var(--padding);
 }
 
+/*
+header span#info-network-icon::after {
+	content: ' ONLINE';
+}
+*/
+
+header span#info-network-icon.offline {
+	color: var(--color-text-error);
+}
+
+header span#info-network-icon.offline::after {
+	content: ' COMPUTER OFFLINE';
+}
+
 #info-debug {
 	color: var(--color-text-error);
 }
@@ -289,10 +303,17 @@ form#lock-form {
 	display: block;
 	margin: 0 auto calc(var(--padding) * 6) auto;
 	width: 100%;
-	aspect-ratio: 1 / 1;
+	height: calc(264px - var(--padding) * 4); /* same as usual form width, - 4 times padding */
 	object-fit: cover;
 	border-radius: 50%;
 	background-color: var(--bg-color-darken-strong);
+}
+
+@supports (aspect-ratio: 1 / 1) { /* not supported by web-greeter, only nody-greeter */
+	#active-user-session-avatar {
+		height: auto; /* let aspect-ratio do the work */
+		aspect-ratio: 1 / 1;
+	}
 }
 
 /* user display name, "reserved for exam" text */
@@ -496,8 +517,8 @@ aside {
 	--event-color: var(--event-color-workshop);
 }
 
-[data-event-kind="standup"] {
-	--event-color: var(--event-color-standup);
+[data-event-kind="recurring"] {
+	--event-color: var(--event-color-recurring);
 }
 
 /* ***************************************** */
@@ -574,10 +595,10 @@ dialog.calendar-event-dialog .dialog-close-button {
 	padding: 0;
 	width: calc(var(--padding) * 3);
 	height: calc(var(--padding) * 3);
-	color: var(--bg-color-lighten);
+	color: var(--color-text-primary);
 	outline: 0;
 }
 
 dialog.calendar-event-dialog .dialog-close-button:hover {
-	color: var(--color-text-primary);
+	color: var(--color-text-secondary);
 }

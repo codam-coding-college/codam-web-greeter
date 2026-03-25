@@ -11,12 +11,15 @@ export class ExamModeUI extends UIScreen {
 	private _examMode: boolean = false;
 	private _examIds: number[] = [];
 	private _loginScreen: LoginScreenUI;
+	private _examStartButtonEnableInterval: ReturnType<typeof setInterval> | null = null;
+	private _examStartTime = new Date("2099-01-01T00:00:00Z"); // Set to a future date so that the button is disabled by default
 	protected _events: AuthenticatorEvents = {
 		authenticationStart: () => {
 			this._disableForm();
 		},
 		authenticationComplete: async () => {
 			// TODO: add loading animation here
+			return true;
 		},
 		authenticationFailure: () => {
 			this._enableForm();
@@ -57,6 +60,7 @@ export class ExamModeUI extends UIScreen {
 			examStartText: document.getElementById('exam-mode-start') as HTMLSpanElement,
 			examEndText: document.getElementById('exam-mode-end') as HTMLSpanElement,
 			examStartButton: document.getElementById('exam-mode-start-button') as HTMLButtonElement,
+			examStartTimer: document.getElementById('exam-mode-start-timer') as HTMLParagraphElement,
 		} as UIExamModeElements;
 
 		this._initForm();
@@ -114,6 +118,16 @@ export class ExamModeUI extends UIScreen {
 		});
 	}
 
+	private _clearExamStartTimer(): void {
+		const form = this._form as UIExamModeElements;
+		if (this._examStartButtonEnableInterval) {
+			clearTimeout(this._examStartButtonEnableInterval);
+			this._examStartButtonEnableInterval = null;
+		}
+		form.examStartTimer.innerText = "Click the arrow below to start your exam.";
+		this._enableOrDisableSubmitButton();
+	}
+
 	private _populateData(examsToPopulate: ExamForHost[]): void {
 		const form = this._form as UIExamModeElements;
 
@@ -122,13 +136,15 @@ export class ExamModeUI extends UIScreen {
 			form.examProjectsText.innerText = '';
 			form.examStartText.innerText = 'unknown';
 			form.examEndText.innerText = 'unknown';
+			// Clear the timeout for the exam start button and disable it
+			this._examStartTime = new Date("2099-01-01T00:00:00Z");
+			this._clearExamStartTimer();
 		}
 		else {
 			// Find all exams in the data.json file that match the ids in the exams variable
 			const exams = window.data.dataJson?.exams.filter((exam) => examsToPopulate.some((examToPopulate) => exam.id === examToPopulate.id));
 
 			if (exams === undefined) {
-				console.error('Failed to find exams in data.json');
 				window.ui.setDebugInfo('Failed to find exams in data.json');
 				return;
 			}
@@ -158,22 +174,47 @@ export class ExamModeUI extends UIScreen {
 			form.examProjectsText.innerText = projectsText;
 			form.examStartText.innerText = earliestExam.toLocaleTimeString("en-NL", { hour: '2-digit', minute: '2-digit' });
 			form.examEndText.innerText = latestExam.toLocaleTimeString("en-NL", { hour: '2-digit', minute: '2-digit' });
+
+			// Enable or disable the exam start button based on the current time
+			this._clearExamStartTimer();
+			this._examStartTime = earliestExam;
+			this._enableOrDisableSubmitButton();
+			if (this._examStartTime.getTime() > Date.now()) {
+				this._examStartButtonEnableInterval = setInterval(() => {
+					const timeLeft = Math.floor((this._examStartTime.getTime() - Date.now()) / 1000);
+					const minutes = Math.floor(timeLeft / 60);
+					const seconds = timeLeft % 60;
+					const formattedTime = `${(minutes > 0 ? `${minutes} minutes and ` : '')} ${seconds} seconds`;
+					form.examStartTimer.innerText = `You may start your exam in ${formattedTime}.`;
+
+					if (this._examStartTime.getTime() <= Date.now()) {
+						// Clear the timer and enable the button
+						this._clearExamStartTimer();
+						return;
+					}
+				}, 1000);
+			}
 		}
 	}
 
 	// Returns true if the exam-start button is disabled, false otherwise
 	protected _enableOrDisableSubmitButton(): boolean {
 		const form = this._form as UIExamModeElements;
-		form.examStartButton.disabled = false; // Always enable the button
-		return false;
+		const buttonDisabled = this._examStartTime.getTime() > Date.now(); // Disable the button if the exam start time is in the future
+		form.examStartButton.disabled = buttonDisabled;
+		if (!buttonDisabled) {
+			form.examStartTimer.innerText = "Click the arrow below to start your exam.";
+			const focusInput = this._getInputToFocusOn();
+			if (focusInput) {
+				focusInput.focus();
+			}
+		}
+		return buttonDisabled;
 	}
 
 	protected _wigglePasswordInput(clearInput: boolean = true): void {
 		// This should never happen. Display an error in the debug info bar.
-		const message = `Failed to login with username "${ExamModeUI.EXAM_USERNAME}" and password "${ExamModeUI.EXAM_PASSWORD}" to start an exam session`;
-
-		window.ui.setDebugInfo(message);
-		console.error(message);
+		window.ui.setDebugInfo(`Failed to login with username "${ExamModeUI.EXAM_USERNAME}" and password "${ExamModeUI.EXAM_PASSWORD}" to start an exam session`);
 	}
 
 	protected _getInputToFocusOn(): HTMLButtonElement | null {

@@ -8,8 +8,14 @@ export interface AuthenticatorEvents {
 
 	/**
 	 * This event gets called when the login process completes without error.
+	 * The event handler must return a Promise that resolves to a boolean value.
+	 * When this value is true, the user session will be started.
+	 * Otherwise, the user will be returned to the greeter.
+	 * This allows for custom handling of the authentication result or adding another form on top.
+	 * The AuthenticationFailure event is not called afterwards, so update the UI accordingly if
+	 * false is returned.
 	 */
-	authenticationComplete: () => Promise<void>;
+	authenticationComplete: () => Promise<boolean>;
 
 	/**
 	 * This event gets called when the login process fails due to an authentication failure (wrong username or password).
@@ -61,12 +67,12 @@ export class Authenticator {
 						lightdm.respond(this._password);
 						break;
 					default:
-						console.error(`Unknown lightDM prompt type: ${type}`);
+						window.ui.setDebugInfo(`Unknown lightDM prompt type: ${type}`);
 						break;
 				}
 			}
 			catch (err) {
-				console.error(err);
+				window.ui.setDebugInfo(String(err));
 				if (this._authEvents) {
 					this._authEvents.errorMessage(String(err));
 				}
@@ -84,18 +90,18 @@ export class Authenticator {
 						}
 						break;
 					case LightDMMessageType.Error:
-						console.error(`LightDM error message: ${message}`);
+						window.ui.setDebugInfo(`LightDM error message: ${message}`);
 						if (this._authEvents) {
 							this._authEvents.errorMessage(message);
 						}
 						break;
 					default:
-						console.warn(`Unknown lightDM message type: ${type}, message: ${message}`);
+						window.ui.setDebugInfo(`Unknown lightDM message type: ${type}, message: ${message}`);
 						break;
 				}
 			}
 			catch (err) {
-				console.error(err);
+				window.ui.setDebugInfo(String(err));
 				if (this._authEvents) {
 					this._authEvents.errorMessage(String(err));
 				}
@@ -105,26 +111,30 @@ export class Authenticator {
 		// This event gets called when LightDM says the authentication was successful and a session should be started
 		lightdm.authentication_complete.connect(async () => {
 			try {
-				this._authenticating = false;
 				console.log("LightDM authentication complete. Checking results...");
-				if (lightdm.is_authenticated) {
-					this._authenticated = true;
-					console.log("LightDM authentication successful! Starting session...");
-					if (this._authEvents) {
-						await this._authEvents.authenticationComplete();
-					}
-					lightdm.start_session(this._session ?? null);
-				}
-				else {
+				if (!lightdm.is_authenticated) {
+					this._authenticating = false;
 					console.log("LightDM authentication failed. User not found or password incorrect.");
 					this._stopAuthentication();
 					if (this._authEvents) {
 						this._authEvents.authenticationFailure();
 					}
+					return;
+				}
+				this._authenticated = true;
+				this._authenticating = false;
+				console.log("LightDM authentication successful! Starting session...");
+				const eventResult = (this._authEvents) ? await this._authEvents.authenticationComplete() : Promise.resolve(true);
+				if (eventResult) {
+					lightdm.start_session(this._session ?? null);
+				}
+				else {
+					this._stopAuthentication();
 				}
 			}
 			catch (err) {
-				console.error(err);
+				this._authenticating = false;
+				window.ui.setDebugInfo(String(err));
 				if (this._authEvents) {
 					this._authEvents.errorMessage(String(err));
 				}
@@ -185,7 +195,7 @@ export class Authenticator {
 			lightdm.authenticate(this._username); // provide username to skip the username prompt
 		}
 		catch (err) {
-			console.error(err);
+			window.ui.setDebugInfo(String(err));
 			if (this._authEvents) {
 				this._authEvents.errorMessage(String(err));
 			}
@@ -203,12 +213,12 @@ export class Authenticator {
 		this._password = password.substring(0, Authenticator.MAX_LEN_PASSWORD); // do not trim password as it could contain spaces at the beginning or end
 
 		if (this._authenticating || this._authenticated) {
-			console.warn("Login() was called while already authenticating or authenticated. Stopping authentication.");
+			window.ui.setDebugInfo("login() was called while already authenticating or authenticated");
 			return;
 		}
 
 		if (this._username === "" || this._password === "") {
-			console.log("Login() was called while username or password is empty. Stopping authentication.");
+			window.ui.setDebugInfo("login() was called while username or password is empty");
 			return;
 		}
 
