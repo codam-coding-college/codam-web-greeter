@@ -77,7 +77,7 @@ export class LockScreenUI extends UIScreen {
 			this._isExamMode = true;
 			form.avatar.style.display = "none";
 			form.displayName.innerText = "Exam in progress";
-			form.loginName.innerText = "Exam";
+			form.loginName.innerText = "exam";
 			const textUnderLogo = document.getElementById("text-under-logo");
 			if (textUnderLogo) textUnderLogo.innerText = "To resume your exam, click the exam user."
 			const lockPasswordMsg = document.getElementById("lock-password-msg");

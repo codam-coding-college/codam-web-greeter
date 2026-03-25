@@ -185,7 +185,7 @@ export class ExamModeUI extends UIScreen {
 					const minutes = Math.floor(timeLeft / 60);
 					const seconds = timeLeft % 60;
 					const formattedTime = `${(minutes > 0 ? `${minutes} minutes and ` : '')} ${seconds} seconds`;
-					form.examStartTimer.innerText = `You may start your exam in ${formattedTime}.`;
+					form.examStartTimer.innerText = `Exam starts in ${formattedTime}.`;
 
 					if (this._examStartTime.getTime() <= Date.now()) {
 						// Clear the timer and enable the button
