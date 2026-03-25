@@ -211,7 +211,7 @@ img {
     width: var(--logo-size);
 }
 
-#text-under-logo, #exam-mode-projects {
+#text-under-logo {
     display: block;
     margin: var(--logo-text-gap) calc(var(--logo-size) * 0.165) 0 0;
 }
