@@ -216,6 +216,10 @@ img {
     margin: var(--logo-text-gap) calc(var(--logo-size) * 0.165) 0 0;
 }
 
+#exam-mode-projects {
+    font-size: small;
+}
+
 #center, #lock-form, #exam-form {
     /* Positioning */
     grid-row: 3;
