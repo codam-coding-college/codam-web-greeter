@@ -31,14 +31,10 @@ export default (app: Express) => {
 		let lastCacheChange = cache.get<Date>('last-cache-change');
 
 		if (!events && api) {
-			events = await fetchEvents(api);
-			cache.set('events', events);
-			cache.set('last-cache-change', new Date());
+			events = await fetchCacheEvents();
 		}
 		if (!exams && api) {
-			exams = await fetchExams(api);
-			cache.set('exams', exams);
-			cache.set('last-cache-change', new Date());
+			exams = await fetchCacheExams();
 		}
 
 		if (events === undefined || exams === undefined) {
@@ -73,9 +69,7 @@ export default (app: Express) => {
 		// Get the current exams
 		let exams = cache.get<Exam42[]>('exams');
 		if (!exams && api) {
-			exams = await fetchExams(api);
-			cache.set('exams', exams);
-			cache.set('last-cache-change', new Date());
+			exams = await fetchCacheExams();
 		}
 		if (exams === undefined) {
 			return res.status(503).send({ error: 'No data to return, try again later', status: 'error' });
@@ -130,6 +124,52 @@ export default (app: Express) => {
 	});
 };
 
+const fetchCacheEvents = async function() {
+	if (!api) {
+		console.warn('Intra API not initialized, cannot fetch events');
+		return undefined;
+	}
+
+	try {
+		const events = await fetchEvents(api);
+		cache.set('events', events);
+		cache.set('last-cache-change', new Date());
+		console.log('Refreshed events data');
+		return events;
+	} catch (err) {
+		console.error('Error refreshing events data:', err);
+	}
+	return undefined;
+};
+
+const fetchCacheExams = async function() {
+	if (!api) {
+		console.warn('Intra API not initialized, cannot fetch exams');
+		return undefined;
+	}
+
+	try {
+		const exams = await fetchExams(api);
+		cache.set('exams', exams);
+		cache.set('last-cache-change', new Date());
+		console.log('Refreshed exams data');
+		return exams;
+	} catch (err) {
+		console.error('Error refreshing exams data:', err);
+	}
+	return undefined;
+};
+
+const fetchCacheEventsAndExams = async () => {
+	if (!api) {
+		console.warn('Intra API not initialized, cannot fetch events and exams');
+		return;
+	}
+
+	await Promise.all([fetchCacheEvents(), fetchCacheExams()]);
+};
+
+
 const setUpIntraAPI = async function() {
 	try {
 		console.log(`Using Intra API UID: ${process.env.INTRA_API_UID}`);
@@ -140,19 +180,16 @@ const setUpIntraAPI = async function() {
 		}]).init();
 
 		// Fetch initial data
-		if (!cache.has('events')) {
-			const events = await fetchEvents(api);
-			console.log('Fetched future events');
-			cache.set('events', events);
-			cache.set('last-cache-change', new Date());
+		if (!cache.has('events') || !cache.has('exams')) {
+			await fetchCacheEventsAndExams();
 		}
 
-		if (!cache.has('exams')) {
-			const exams = await fetchExams(api);
-			console.log('Fetched future exams');
-			cache.set('exams', exams);
-			cache.set('last-cache-change', new Date());
-		}
+		// Fetch events and exams to prevent cache expiration while the server is running
+		setInterval(async () => {
+			if (!api) return; // If API is not initialized, skip this fetch
+			console.log('Refreshing events and exams data from Intra API to prevent cache expiration...');
+			await fetchCacheEventsAndExams();
+		}, cacheTTL * 1000 - 5000); // Convert TTL to milliseconds
 	}
 	catch(err) {
 		console.warn("[WARNING] Could not initialize Intra API, some features might not work");
