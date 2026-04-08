@@ -14,9 +14,9 @@ const cache = new NodeCache({ stdTTL: cacheTTL });
 
 const FOUND_HOSTS: string[] = [];
 
-export default (app: Express) => {
+export default async (app: Express) => {
 	// Initialize
-	setUpIntraAPI();
+	await setUpIntraAPI();
 
 	// Define routes
 	app.get('/', (req, res) => {
