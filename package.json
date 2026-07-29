@@ -28,6 +28,7 @@
   },
   "homepage": "https://github.com/codam-coding-college/codam-web-greeter#readme",
   "devDependencies": {
+    "@types/node": "14.18.63",
     "nody-greeter-types": "^1.1.0",
     "ts-loader": "^9.5.0",
     "typescript": "^4.9.5",
