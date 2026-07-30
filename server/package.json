@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/codam-coding-college/codam-web-greeter#readme",
   "dependencies": {
-    "@codam/fast42": "^2.1.6",
+    "@codam/fast42": "^3.1.1",
     "dotenv": "^16.3.1",
     "express": "^4.22.2",
     "ip-range-check": "^0.2.0",
