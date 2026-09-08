@@ -1,4 +1,4 @@
-import { Express } from 'express';
+import { Express, Request, Response } from 'express';
 import { Config, ConfigError, Event42, Exam42 } from './interfaces';
 import { getCurrentExams, getExamForHostName, getHostNameFromRequest, hostNameToIp, examAvailableForHost, getMessageForHostName } from './utils';
 import { fetchEvents, fetchExams, fetchUserImage } from './intra';
@@ -23,7 +23,7 @@ export default async (app: Express) => {
 		res.send({ status: 'ok' });
 	});
 
-	app.get('/api/config/:hostname?', async (req, res) => {
+	const configRouteHandler = async (req: Request, res: Response) => {
 		const hostname = await getHostNameFromRequest(req);
 
 		let events = cache.get<Event42[]>('events');
@@ -57,7 +57,10 @@ export default async (app: Express) => {
 			message: await getMessageForHostName(hostname),
 		};
 		res.send(config);
-	});
+	};
+
+	app.get('/api/config', configRouteHandler);
+	app.get('/api/config/:hostname', configRouteHandler);
 
 	app.get('/api/exam_mode_hosts', async (req, res) => {
 		// Check cache first
