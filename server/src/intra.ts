@@ -120,7 +120,7 @@ export const fetchExams = async function(api: Fast42): Promise<Exam42[]> {
 	}
 };
 
-export const fetchUserImage = async function(api: Fast42, login: string): Promise<string> {
+export const getUserImageLink = async function(api: Fast42, login: string): Promise<string | null> {
 	try {
 		const req = await api.get(`/users/`, {
 			'filter[login]': login, // Filtering instead of querying for the specific user is faster
@@ -143,7 +143,7 @@ export const fetchUserImage = async function(api: Fast42, login: string): Promis
 				}
 			}
 			else {
-				throw new Error('User has no image set on Intra');
+				return null; // User has no image set
 			}
 		}
 		else {
@@ -152,6 +152,23 @@ export const fetchUserImage = async function(api: Fast42, login: string): Promis
 	}
 	catch (err) {
 		console.log(`Failed fetching user image for ${login}: ${err}`);
-		return '';
+		return null;
 	}
 }
+
+export const downloadFromCDN = async function(api: Fast42, url: string): Promise<Response> { // Not Express Response, but Fast42 Response (node-fetch)
+	return new Promise(async (resolve, reject) => {
+		try {
+			const res = await api.download(url);
+			if (res.ok && res.body) {
+				return resolve(res);
+			}
+			else {
+				throw new Error(`Failed to download from CDN: ${res.status} ${res.statusText}`);
+			}
+		}
+		catch (err) {
+			return reject(err);
+		}
+	});
+};

@@ -1,7 +1,8 @@
 import { Express, Request, Response } from 'express';
+import { Readable } from 'stream';
 import { Config, ConfigError, Event42, Exam42 } from './interfaces';
 import { getCurrentExams, getExamForHostName, getHostNameFromRequest, hostNameToIp, examAvailableForHost, getMessageForHostName } from './utils';
-import { fetchEvents, fetchExams, fetchUserImage } from './intra';
+import { downloadFromCDN, fetchEvents, fetchExams, getUserImageLink } from './intra';
 
 // Intra API
 import Fast42 from '@codam/fast42';
@@ -112,18 +113,25 @@ export default async (app: Express) => {
 		if (!api) {
 			return res.status(503).send({ error: 'Intra API not initialized' });
 		}
-		if (cache.has(`user-image-${login}`)) {
-			const imageUrl = cache.get<string>(`user-image-${login}`);
-			if (imageUrl) {
-				return res.redirect(imageUrl);
+		try {
+			let imageUrl: string | null | undefined = cache.get<string>(`user-image-${login}`);
+			if (!cache.has(`user-image-${login}`)) {
+				imageUrl = await getUserImageLink(api, login);
 			}
+			if (!imageUrl) {
+				return res.status(404).send({ error: 'User not found or no image set' });
+			}
+			cache.set(`user-image-${login}`, imageUrl, cacheTTL); // Cache the image URL
+			const imageResponse = await downloadFromCDN(api, imageUrl);
+			res.setHeader('Content-Type', imageResponse.headers.get('content-type') || 'application/octet-stream');
+			res.setHeader('Cache-Control', imageResponse.headers.get('cache-control') || 'no-cache');
+			res.setHeader('Content-Length', imageResponse.headers.get('content-length') || '0');
+			return Readable.fromWeb(imageResponse.body as any).pipe(res);
 		}
-		const imageUrl = await fetchUserImage(api, login);
-		if (!imageUrl) {
-			return res.status(404).send({ error: 'User not found or no image set' });
+		catch (err) {
+			console.error(`Error fetching user image for ${login}:`, err);
+			return res.status(500).send({ error: 'Error fetching user image' });
 		}
-		cache.set(`user-image-${login}`, imageUrl, cacheTTL); // Cache the image URL
-		return res.redirect(imageUrl);
 	});
 };
 
